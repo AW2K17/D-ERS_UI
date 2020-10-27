@@ -3,7 +3,9 @@ import { Text, View, StyleSheet, TextInput, Button, TouchableOpacity } from 'rea
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import DatePicker from 'react-native-datepicker';
 
-export const SignUpScreen = (props) => {
+
+
+export const SignUpScreen = () => {
     const [date, setDate] = useState(new Date(1598051730000));
     const [show, setShow] = useState(false);
 
@@ -41,7 +43,7 @@ export const SignUpScreen = (props) => {
 
                 <View style={styles.inputField}>
                     <FontAwesome style={styles.passwordIcon} name="lock" />
-                    <TextInput style={styles.textInput} placeholder="Password"></TextInput>
+                    <TextInput style={styles.textInput}  placeholder="Password" secureTextEntry></TextInput>
                 </View>
 
                 <View style={styles.inputField}>
