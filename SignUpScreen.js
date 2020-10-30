@@ -1,11 +1,15 @@
 import React, { PureComponent, useState } from 'react';
 import { Text, View, StyleSheet, TextInput, Button, TouchableOpacity } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import DatePicker from 'react-native-datepicker';
+import DatePicker from '@react-native-community/datetimepicker';
 
 
 
 export const SignUpScreen = () => {
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [country, setCountry] = useState('');
     const [date, setDate] = useState(new Date(1598051730000));
     const [show, setShow] = useState(false);
 
@@ -33,44 +37,45 @@ export const SignUpScreen = () => {
             <View>
                 <View style={styles.inputField}>
                     <FontAwesome style={styles.icon} name="user" />
-                    <TextInput style={styles.textInput} placeholder="Full Name"></TextInput>
+                    <TextInput style={styles.textInput} placeholder="Full Name"
+                        value={name} onChangeText={setName} />
                 </View>
 
                 <View style={styles.inputField}>
                     <FontAwesome style={styles.icon} name="envelope" />
-                    <TextInput style={styles.textInput} placeholder="Email"></TextInput>
+                    <TextInput style={styles.textInput} placeholder="Email"
+                        value={email} onChangeText={setEmail} />
                 </View>
 
                 <View style={styles.inputField}>
                     <FontAwesome style={styles.passwordIcon} name="lock" />
-                    <TextInput style={styles.textInput}  placeholder="Password" secureTextEntry></TextInput>
+                    <TextInput style={styles.textInput} placeholder="Password"
+                        secureTextEntry={true} value={password} onChangeText={setPassword} />
                 </View>
 
                 <View style={styles.inputField}>
                     <FontAwesome style={styles.icon} name="globe" />
-                    <TextInput style={styles.textInput} placeholder="Country"></TextInput>
+                    <TextInput style={styles.textInput} placeholder="Country"
+                        value={country} onChangeText={setCountry} />
                 </View>
 
                 <DatePicker
+                    value={date}
+                    onDateChange={setDate}
                     placeholder="Select date of birth!"
                     style={styles.dateTime}
                     format="YYYY-MM-DD"
-                    confirmBtnText="Confirm"
-                    cancelBtnText="Cancel"
-                    confirmBtnText="Confirm"
-                    cancelBtnText="Cancel"
                     customStyles={{
-                    dateIcon: {
-                        position: 'absolute',
-                        left: 0,
-                        top: 4,
-                        marginLeft: 0
-                    },
-                    dateInput: {
-                        marginLeft: 36
-                    }
-                    // ... You can check the source to find the other keys.
-                }}
+                        dateIcon: {
+                            position: 'absolute',
+                            left: 0,
+                            top: 4,
+                            marginLeft: 0
+                        },
+                        dateInput: {
+                            marginLeft: 36
+                        }
+                    }}
                     mode="date"
                 />
 
@@ -80,7 +85,7 @@ export const SignUpScreen = () => {
             </View>
 
         </View>
-    )
+    );
 }
 
 export default SignUpScreen;
@@ -123,7 +128,7 @@ const styles = StyleSheet.create({
         width: 220
     },
     btn: {
-        alignItems:'center',
+        alignItems: 'center',
         marginTop: 40,
         marginBottom: 40,
         padding: 10,
