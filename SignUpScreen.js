@@ -1,7 +1,7 @@
 import React, { PureComponent, useState } from 'react';
 import { Text, View, StyleSheet, TextInput, Button, TouchableOpacity } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import DatePicker from '@react-native-community/datetimepicker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 
 
@@ -10,7 +10,7 @@ export const SignUpScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [country, setCountry] = useState('');
-    const [date, setDate] = useState(new Date(1598051730000));
+    const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(false);
 
     const onChange = (event, selectedDate) => {
@@ -19,11 +19,11 @@ export const SignUpScreen = () => {
         setDate(currentDate);
     };
 
-    const showDatepicker = () => {
+    const showDatepicker = (event) => {
         setShow(!show);
     };
 
-    const onCancel = () => {
+    const onCancel = (event) => {
         setShow(!show);
     }
 
@@ -58,26 +58,33 @@ export const SignUpScreen = () => {
                     <TextInput style={styles.textInput} placeholder="Country"
                         value={country} onChangeText={setCountry} />
                 </View>
+                <View>
+                    <Button onPress={showDatepicker} title="Select date of birth" />
+                </View>
+                {show && (
+                    <DateTimePicker
+                        testID="dateTimePicker"
+                        value={date}
+                        onChange={new Date()}
+                        placeholder="Select date of birth!"
 
-                <DatePicker
-                    value={date}
-                    onDateChange={setDate}
-                    placeholder="Select date of birth!"
-                    style={styles.dateTime}
-                    format="YYYY-MM-DD"
-                    customStyles={{
-                        dateIcon: {
-                            position: 'absolute',
-                            left: 0,
-                            top: 4,
-                            marginLeft: 0
-                        },
-                        dateInput: {
-                            marginLeft: 36
-                        }
-                    }}
-                    mode="date"
-                />
+                        format="YYYY-MM-DD"
+                        customStyles={{
+                            dateIcon: {
+                                position: 'absolute',
+                                left: 0,
+                                top: 4,
+                                marginLeft: 0
+                            },
+                            dateInput: {
+                                marginLeft: 36
+                            }
+                        }}
+                        mode="date"
+                        display="default"
+                    />
+                )}
+
 
                 <TouchableOpacity style={styles.btn}>
                     <Text>REGISTER</Text>
