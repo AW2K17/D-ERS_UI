@@ -1,23 +1,31 @@
 import React from 'react';
-import { StyleSheet,Button, Text,View ,TextInput,Platform,Dimensions,TouchableHighlight,ImageBackground,KeyboardAvoidingView} from 'react-native';
+import { StyleSheet,SafeAreaView, Text,View ,TextInput,Platform,Dimensions,TouchableOpacity,ImageBackground,KeyboardAvoidingView} from 'react-native';
 import Constants from 'expo-constants';
 import { FontAwesome } from '@expo/vector-icons'; 
 import { Feather } from '@expo/vector-icons';
+
 import { AntDesign } from '@expo/vector-icons';
 
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const pic ={uri:'https://www5.lunapic.com/do-not-link-here-use-hosting-instead/16035957895669640?6831963316'};
+const pic ={uri:'https://www.linkpicture.com/q/log2.jfif'};
 
 
 const Login = () => {
+  
+  
+  
+  
+  
+  
+  
   return (
     
     
     
-    <View style={styles.container}> 
+    <SafeAreaView style={styles.container}> 
         
       
       <ImageBackground style={styles.header} source={pic}>
@@ -33,11 +41,11 @@ const Login = () => {
           <TextInput placeholder='Password' placeholderTextColor="#EDDDDF" secureTextEntry={true} style={styles.inner2} />
           </View>
 
-          <TouchableHighlight  underlayColor="white">
+          <TouchableOpacity>
           <View style={styles.Btn}>
             <Text style={{color: 'white',fontSize:15}}>LOGIN</Text>
           </View>
-          </TouchableHighlight>
+          </TouchableOpacity>
 
           <Text style={{color: 'white',fontSize:18,marginTop:30}}>Or Join With</Text>
 
@@ -56,12 +64,12 @@ const Login = () => {
           </View>
 
           <Text style={{color: 'white',fontSize:14,marginTop:22}}>Don't Have An Account?
-           <Text style={{fontWeight:'bold'}}>  Create Here</Text>
+           <Text style={{fontWeight:'bold'}} >  Create Here</Text>
            </Text>
       </ImageBackground>
       
-    </View>
-    
+    </SafeAreaView>
+   
     
   );
 }
