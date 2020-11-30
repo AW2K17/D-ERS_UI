@@ -1,56 +1,48 @@
-import { StyleSheet,SafeAreaView, Text,View ,TextInput,Platform,Dimensions,TouchableOpacity,ImageBackground,KeyboardAvoidingView} from 'react-native';
-import Constants from 'expo-constants';
-import { FontAwesome } from '@expo/vector-icons'; 
-import { Feather } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
 import React, { PureComponent, useState } from 'react';
-import { Fontisto } from '@expo/vector-icons';
+import { Text, View, StyleSheet, TextInput, Button, TouchableOpacity,ImageBackground } from 'react-native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Constants from 'expo-constants';
+
+
 
 const pic2= {uri:'https://www.linkpicture.com/q/imageedit_3_4884348579.jpg'};
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-
-
-const Test =()=>{
-
-    const [name, setName] = useState('');
+export const SignUpScreen = () => {
+    const [firstName, setFname] = useState('');
+    const [lastName, setLname] = useState('');
+    
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [country, setCountry] = useState('');
-  
-    const [show, setShow] = useState(false);
-    return(
+ 
    
-
-
-
-
-
-
-
-    <SafeAreaView style={styles.container}>
-
-        <ImageBackground style={styles.header} source={pic2}>
-        <Text style={styles.text}>
-                Create Account
+    return (
+        <ImageBackground style={styles.container} source={pic2}>
+            <Text style={styles.text}>
+                Sign Up With Your Account!
             </Text>
 
             <View>
                 <View style={styles.inputField}>
-                <FontAwesome name="user-o" color="#EDDDDF" style={styles.icon} />
-                    <TextInput style={styles.textInput} placeholder="Full Name"
-                        value={name} onChangeText={setName} placeholderTextColor="#EDDDDF" />
+                    <FontAwesome style={styles.icon} name="user" />
+                    <TextInput style={styles.textInput} placeholder="First Name"
+                        value={firstName} onChangeText={setFname} placeholderTextColor="#EDDDDF" />
                 </View>
 
                 <View style={styles.inputField}>
-                <Fontisto name="email" size={24} color="black" style={styles.icon} />
+                    <FontAwesome style={styles.icon} name="user" />
+                    <TextInput style={styles.textInput} placeholder="Last Name"
+                        value={lastName} onChangeText={setLname} placeholderTextColor="#EDDDDF" />
+                </View>
+
+                <View style={styles.inputField}>
+                    <FontAwesome style={styles.icon} name="envelope" />
                     <TextInput style={styles.textInput} placeholder="Email"
                         value={email} onChangeText={setEmail}  placeholderTextColor="#EDDDDF"/>
                 </View>
 
                 <View style={styles.inputField}>
-                <Feather name="lock" size={24} color="#EDDDDF"  style={styles.passwordIcon} />
+                    <FontAwesome style={styles.passwordIcon} name="lock" />
                     <TextInput style={styles.textInput} placeholder="Password"
                         secureTextEntry={true} value={password} onChangeText={setPassword}  placeholderTextColor="#EDDDDF"/>
                 </View>
@@ -60,49 +52,66 @@ const Test =()=>{
                     <TextInput style={styles.textInput} placeholder="Country"
                         value={country} onChangeText={setCountry} placeholderTextColor="#EDDDDF" />
                 </View>
-             
+              {/*  
+                <View>
+                    <Button onPress={showDatepicker} title="Select date of birth" />
+                </View>
+                {show && (
+                    <DateTimePicker
+                        testID="dateTimePicker"
+                        value={date}
+                        onChange={new Date()}
+                        placeholder="Select date of birth!"
+
+                        format="YYYY-MM-DD"
+                        customStyles={{
+                            dateIcon: {
+                                position: 'absolute',
+                                left: 0,
+                                top: 4,
+                                marginLeft: 0
+                            },
+                            dateInput: {
+                                marginLeft: 36
+                            }
+                        }}
+                        mode="date"
+                        display="default"
+                    />
+                )}
+                        */}
+                    
                 <TouchableOpacity style={styles.btn}>
-                    <Text style={{color:'white'}}>REGISTER</Text>
+                    <Text style={{color:'white'}}>NEXT</Text>
                 </TouchableOpacity>
             </View>
             <Text style={{color: 'white',fontSize:14,marginTop:22}}>Already Have An Account?
            <Text style={{fontWeight:'bold'}}>  Login Here</Text>
            </Text>
+
         </ImageBackground>
 
-    </SafeAreaView>
+        
     );
-
 }
 
-
-export default Test;
-
-
+export default SignUpScreen;
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      alignItems: 'center',
-      
-      paddingTop: Constants.statusBarHeight,
-      
-    },
-  
-    header:{
-  
-      flex:1,
-      width:windowWidth,
-      alignItems: 'center',
-      height:windowHeight,
-    
-     },
-     text: {
         alignItems: 'center',
         justifyContent: 'center',
-        paddingTop: 120,
+        flex:1,
+        paddingTop: Constants.statusBarHeight
+        // backgroundColor: '#00ff88'
+    },
+    text: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingTop: 10,
         paddingBottom:14,
-        fontSize: 30,
+        fontSize: 38,
+        marginLeft:24,
         color:'white'
     },
     inputField: {
@@ -122,7 +131,7 @@ const styles = StyleSheet.create({
     },
     passwordIcon: {
         fontSize: 25,
-        marginLeft: 1,
+        marginLeft: 4,
         width: 20,
         color:'white'
     },
@@ -143,4 +152,4 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         backgroundColor:'#BF243D',
     }
-})
+});
