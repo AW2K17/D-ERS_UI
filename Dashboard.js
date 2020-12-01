@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 
 import { HomeScreen } from './HomeScreen';
 import { WorkoutScreen } from './WorkoutScreen';
-import { DietScreen } from './DietScreen';
+import { Diet } from './DietScreen';
 import { ProgressScreen } from './ProgressScreen';
 import { UsersScreen } from './UsersScreen';
 import { WorkoutsScreen } from './WorkoutsScreen';
@@ -96,7 +96,7 @@ const DietStackScreen = ({ navigation }) => {
       ),
       headerTitleAlign: 'center'
     }}>
-      <DietStack.Screen name="Diet" component={DietScreen} />
+      <DietStack.Screen name="Diet" component={Diet} />
     </DietStack.Navigator>
   );
 }

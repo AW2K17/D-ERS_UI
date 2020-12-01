@@ -1,15 +1,9 @@
 import React, { PureComponent, useState } from 'react';
 import { StyleSheet, Text, View, Dimensions, ImageBackground, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import Constants from 'expo-constants';
 import { FlatList } from 'react-native-gesture-handler';
-
-import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
-
-import Breakfast from './Breakfast';
-import Lunch from './Lunch';
-import Dinner from './Dinner';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -21,7 +15,7 @@ const pic3 = { uri: 'https://media-cdn.tripadvisor.com/media/photo-s/12/4e/29/14
 
 const Stack = createStackNavigator();
 
-const DietScreen = ({ navigation }) => {
+const BreakfastScreen = () => {
 
     const [workouts, setWorkouts] = useState([
         pic1,
@@ -42,12 +36,17 @@ const DietScreen = ({ navigation }) => {
                 <View style={styles.today}>
                     <Text style={styles.h1}>Today's Breakfast</Text>
                     <ImageBackground source={pic1} style={styles.workoutPic}>
-                        <TouchableOpacity onPress={() => navigation.navigate('Breakfast')}>
-                            <View style={styles.Btn}>
-                                <Text style={{ color: 'white', fontSize: 15 }}>View Details</Text>
-                            </View>
-                        </TouchableOpacity>
+
                     </ImageBackground>
+                </View>
+
+                <View>
+                    <Text style={{ marginTop: 30, marginLeft: 23, fontSize: 25, fontWeight: 'bold' }}>Half Fried Eggs With Toast</Text>
+
+                    <Text style={{ marginTop: 30, marginLeft: 15, fontSize: 25 }}>{"    "}Fats{"                           "}11g</Text>
+                    <Text style={{ marginTop: 30, marginLeft: 15, fontSize: 25 }}>{"    "}Proteins{"                    "}13g</Text>
+                    <Text style={{ marginTop: 30, marginLeft: 15, fontSize: 25 }}>{"    "}Calories{"                    "}100g</Text>
+
                 </View>
 
                 {/*
@@ -76,60 +75,24 @@ const DietScreen = ({ navigation }) => {
             
             */}
 
-                <View style={styles.today2}>
-                    <Text style={styles.h2}>Today's Lunch</Text>
-                    <ImageBackground source={pic2} style={styles.workoutPic}>
-                        <TouchableOpacity onPress={() => navigation.navigate('Lunch')}>
-                            <View style={styles.Btn}>
-                                <Text style={{ color: 'white', fontSize: 15 }}>View Details</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </ImageBackground>
-                </View>
-                <View style={styles.today3}>
-                    <Text style={styles.h3}>Today's Dinner</Text>
-                    <ImageBackground source={pic3} style={styles.workoutPic}>
-                        <TouchableOpacity onPress={() => navigation.navigate('Dinner')}>
-                            <View style={styles.Btn}>
-                                <Text style={{ color: 'white', fontSize: 15 }}>View Details</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </ImageBackground>
-                </View>
             </ScrollView>
         </View>
-
-
     );
 }
 
-export const Diet = ({ navigation }) => {
+export const Breakfast = () => {
     return (
-        <Stack.Navigator initialRouteName="Plan">
-            <Stack.Screen
-                name="Diet"
-                component={DietScreen}
-                options={{ headerShown: false }}
-            />
+        <Stack.Navigator>
             <Stack.Screen
                 name="Breakfast"
-                component={Breakfast}
-                options={{ headerShown: false }}
-            />
-            <Stack.Screen
-                name="Lunch"
-                component={Lunch}
-                options={{ headerShown: false }}
-            />
-            <Stack.Screen
-                name="Dinner"
-                component={Dinner}
-                options={{ headerShown: false }}
-            />
+                component={BreakfastScreen}
+                options={{ headerShown: false }} />
         </Stack.Navigator>
+    )
 
-    );
 }
+
+export default Breakfast;
 
 const styles = StyleSheet.create({
     container: {
@@ -154,8 +117,9 @@ const styles = StyleSheet.create({
         fontSize: 26
     },
     h1: {
-        fontSize: 30,
-        marginRight: 120
+        fontSize: 33,
+        marginRight: 100,
+        marginTop: 50
 
     },
     today: {
@@ -174,8 +138,8 @@ const styles = StyleSheet.create({
     },
 
     workoutPic: {
-        width: 330,
-        height: 200,
+        width: 370,
+        height: 320,
         marginTop: 40
     },
     Btn: {

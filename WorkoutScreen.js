@@ -1,7 +1,7 @@
-import React, { PureComponent, useState } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { PlanScreen } from './PlanScreen';
+import { Plan } from './PlanScreen';
 import { HistoryScreen } from './HistoryScreen';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -12,13 +12,13 @@ const PlanStack = createStackNavigator();
 const HistoryStack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
 
-function PlanStackScreen() {
-    return (
-        <PlanStack.Navigator headerMode="none">
-            <PlanStack.Screen name="Plan" component={PlanScreen} />
-        </PlanStack.Navigator>
-    );
-}
+// function PlanStackScreen() {
+//     return (
+//         <PlanStack.Navigator headerMode="none">
+//             <PlanStack.Screen name="Plan" component={PlanScreen} />
+//         </PlanStack.Navigator>
+//     );
+// }
 
 function HistoryStackScreen() {
     return (
@@ -31,12 +31,10 @@ function HistoryStackScreen() {
 
 export const WorkoutScreen = () => {
     return (
-        <NavigationContainer independent={true}>
-            <Tab.Navigator>
-                <Tab.Screen name="Plan" component={PlanStackScreen} />
-                <Tab.Screen name="History" component={HistoryStackScreen} />
-            </Tab.Navigator>
-        </NavigationContainer>
+        <Tab.Navigator>
+            <Tab.Screen name="Plan" component={Plan} />
+            <Tab.Screen name="History" component={HistoryStackScreen} />
+        </Tab.Navigator>
     );
 }
 
