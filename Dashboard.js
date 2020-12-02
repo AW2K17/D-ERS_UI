@@ -125,7 +125,7 @@ function UsersStackScreen() {
 function WorkoutsStackScreen() {
   return (
     <WorkoutsStack.Navigator headerMode="none">
-      <WorkoutsStack.Screen name="Workouts" component={WorkoutsScreen} />
+      <WorkoutsStack.Screen name="Workouts" component={WorkoutScreen} />
     </WorkoutsStack.Navigator>
   );
 }
@@ -133,7 +133,7 @@ function WorkoutsStackScreen() {
 function MealsStackScreen() {
   return (
     <MealsStack.Navigator headerMode="none">
-      <MealsStack.Screen name="Meals" component={MealsScreen} />
+      <MealsStack.Screen name="Meals" component={Diet} />
     </MealsStack.Navigator>
   );
 }
