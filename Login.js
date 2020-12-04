@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { StyleSheet, SafeAreaView, Text, View, TextInput, Platform, Dimensions, TouchableOpacity, ImageBackground, KeyboardAvoidingView } from 'react-native';
 import Constants from 'expo-constants';
 import { FontAwesome } from '@expo/vector-icons';
@@ -7,7 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { AntDesign } from '@expo/vector-icons';
 import SignUpScreen from './SignUpScreen';
-
+import axios from 'axios';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -17,15 +17,15 @@ const pic = { uri: 'https://www.linkpicture.com/q/log2.jfif' };
 const Stack = createStackNavigator();
 
 const Login = ({ navigation }) => {
-  
-  
-    const [firstName, setFname] = useState('');
+
+
+  const [firstName, setFname] = useState('');
   const [password, setPassword] = useState('');
 
 
-  
-  
-  
+
+
+
   return (
     <SafeAreaView style={styles.container}>
 
@@ -34,15 +34,26 @@ const Login = ({ navigation }) => {
 
         <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#EDDDDF' }}>
           <FontAwesome name="user-o" size={24} color="#EDDDDF" style={{ marginTop: 70 }} />
-          <TextInput placeholder='Firstname' placeholderTextColor="#EDDDDF" style={styles.inner1}  onChangeText={setFname} />
+          <TextInput placeholder='Firstname' placeholderTextColor="#EDDDDF" style={styles.inner1} onChangeText={(text) => setFname(text)} />
         </View>
 
         <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#EDDDDF' }}>
           <Feather name="lock" size={24} color="#EDDDDF" style={{ marginTop: 70 }} />
-          <TextInput placeholder='Password' placeholderTextColor="#EDDDDF" secureTextEntry={true} style={styles.inner2} onChangeText={setPassword} />
+          <TextInput placeholder='Password' placeholderTextColor="#EDDDDF" secureTextEntry={true} style={styles.inner2} onChangeText={(text) => setPassword(text)} />
         </View>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => {
+          axios.post('https://localhost:3010//api-gateway/sign-in/user', {
+            email: 'test@test.com',
+            password: 'password'
+          }).then(response => {
+            // console.log(response.data);
+            // navigation.navigate('Register');
+          <Text style={{flex:1, alignItems: 'center', justifyContent: 'center'}}>{response.data}</Text>
+          }).catch(error => {
+            console.log(error);
+          })
+        }}>
           <View style={styles.Btn}>
             <Text style={{ color: 'white', fontSize: 15 }}>LOGIN</Text>
           </View>
@@ -76,7 +87,7 @@ const Signin = ({ navigation }) => {
 
   return (
 
-    <NavigationContainer>
+    
       <Stack.Navigator>
         <Stack.Screen
           name="Login"
@@ -89,7 +100,7 @@ const Signin = ({ navigation }) => {
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
-    </NavigationContainer>
+    
 
   );
 }

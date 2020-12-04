@@ -8,13 +8,19 @@ import { AntDesign } from '@expo/vector-icons';
 import React, { PureComponent, useState } from 'react';
 import RNPickerSelect, { defaultStyles } from 'react-native-picker-select';
 import { Fontisto } from '@expo/vector-icons';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import Dashboard from './Dashboard';
+import Signin from './Login';
 
 const pic2 = { uri: 'https://www.linkpicture.com/q/imageedit_3_4884348579.jpg' };
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const Continue = () => {
+const Stack = createStackNavigator();
+
+const Continue = ({ navigation }) => {
 
 
     const [weight, setWeight] = useState('');
@@ -110,12 +116,12 @@ const Continue = () => {
                             value={age} onChangeText={setAge} placeholderTextColor="#EDDDDF" />
                     </View>
 
-                    <TouchableOpacity style={styles.btn}>
+                    <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Dashboard')}>
                         <Text style={{ color: 'white' }}>CONFIRM REGISTRATION</Text>
                     </TouchableOpacity>
                 </View>
                 <Text style={{ color: 'white', fontSize: 14, marginTop: 22 }}>Already Have An Account?
-           <Text style={{ fontWeight: 'bold' }}>  Login Here</Text>
+           <Text style={{ fontWeight: 'bold' }} onPress={() => navigation.navigate('Login')}>  Login Here</Text>
                 </Text>
             </ImageBackground>
 
@@ -124,8 +130,33 @@ const Continue = () => {
 
 }
 
+export const ContinueScreen = ({ navigation }) => {
 
-export default Continue;
+    return (
+        <Stack.Navigator initialRouteName="Continue">
+            <Stack.Screen
+                name="Continue"
+                component={Continue}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="Dashboard"
+                component={Dashboard}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="Login"
+                component={Signin}
+                options={{ headerShown: false }}
+            />
+        </Stack.Navigator>
+
+
+    );
+}
+
+
+export default ContinueScreen;
 
 
 

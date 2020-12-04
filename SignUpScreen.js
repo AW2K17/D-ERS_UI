@@ -2,7 +2,7 @@ import React, { PureComponent, useState } from 'react';
 import { Text, View, StyleSheet, TextInput, Button, TouchableOpacity, ImageBackground } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Constants from 'expo-constants';
-import Continue from './Continue';
+import ContinueScreen from './Continue';
 import Signin from './Login';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -94,7 +94,7 @@ const Register = ({ navigation }) => {
     )}
             */}
 
-                <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Continue')}>
+                <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('ContinueScreen')}>
                     <Text style={{ color: 'white' }}>NEXT</Text>
                 </TouchableOpacity>
             </View>
@@ -118,8 +118,8 @@ export const SignUpScreen = ({ navigation }) => {
                     options={{ headerShown: false }}
                 />
                 <Stack.Screen
-                    name="Continue"
-                    component={Continue}
+                    name="ContinueScreen"
+                    component={ContinueScreen}
                     options={{ headerShown: false }}
                 />
                 <Stack.Screen

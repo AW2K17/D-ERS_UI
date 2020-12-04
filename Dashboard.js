@@ -212,12 +212,10 @@ function TabsScreen() {
 const Drawer = createDrawerNavigator();
 
 
-export default function Dashboard() {
+export const Dashboard = ({ navigation }) => {
 
   return (
-    <NavigationContainer>
-      {/* <Drawer.Navigator initialRouteName="Profile"> */}
-      {/* <Drawer.Screen options={{ headerShown : false}}> */}
+    
       <Drawer.Navigator initialRouteName="Home" options={{ headerShown: false }}>
         <Drawer.Screen name="Home" component={TabsScreen} options={{ headerShown: false }} />
         <Drawer.Screen name="Users" component={UsersStackScreen} />
@@ -227,7 +225,7 @@ export default function Dashboard() {
         <Drawer.Screen name="Log out" component={LogoutStackScreen} />
       </Drawer.Navigator>
 
-    </NavigationContainer>
+    
 
   );
   // <View style={styles.container}>
@@ -236,6 +234,8 @@ export default function Dashboard() {
   // </View>
 
 }
+
+export default Dashboard;
 
 const styles = StyleSheet.create({
   container: {
