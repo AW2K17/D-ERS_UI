@@ -17,6 +17,15 @@ const pic = { uri: 'https://www.linkpicture.com/q/log2.jfif' };
 const Stack = createStackNavigator();
 
 const Login = ({ navigation }) => {
+  
+  
+    const [firstName, setFname] = useState('');
+  const [password, setPassword] = useState('');
+
+
+  
+  
+  
   return (
     <SafeAreaView style={styles.container}>
 
@@ -25,12 +34,12 @@ const Login = ({ navigation }) => {
 
         <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#EDDDDF' }}>
           <FontAwesome name="user-o" size={24} color="#EDDDDF" style={{ marginTop: 70 }} />
-          <TextInput placeholder='Username' placeholderTextColor="#EDDDDF" style={styles.inner1} />
+          <TextInput placeholder='Firstname' placeholderTextColor="#EDDDDF" style={styles.inner1}  onChangeText={setFname} />
         </View>
 
         <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#EDDDDF' }}>
           <Feather name="lock" size={24} color="#EDDDDF" style={{ marginTop: 70 }} />
-          <TextInput placeholder='Password' placeholderTextColor="#EDDDDF" secureTextEntry={true} style={styles.inner2} />
+          <TextInput placeholder='Password' placeholderTextColor="#EDDDDF" secureTextEntry={true} style={styles.inner2} onChangeText={setPassword} />
         </View>
 
         <TouchableOpacity>
