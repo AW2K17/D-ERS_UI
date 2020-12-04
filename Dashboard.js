@@ -11,6 +11,7 @@ import { WorkoutsScreen } from './WorkoutsScreen';
 import { MealsScreen } from './MealsScreen';
 import { SettingsScreen } from './SettingsScreen';
 import { LogoutScreen } from './LogoutScreen';
+import Signin from './Login';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -148,8 +149,8 @@ function SettingsStackScreen() {
 
 function LogoutStackScreen() {
   return (
-    <LogoutStack.Navigator headerMode="none">
-      <LogoutStack.Screen name="Logout" component={LogoutScreen} />
+    <LogoutStack.Navigator headerMode="none" >
+      <LogoutStack.Screen name="Logout" component={Signin} />
     </LogoutStack.Navigator>
   );
 }
@@ -222,7 +223,7 @@ export const Dashboard = ({ navigation }) => {
         <Drawer.Screen name="Meals" component={MealsStackScreen} />
         <Drawer.Screen name="Workouts" component={WorkoutsStackScreen} />
         <Drawer.Screen name="Settings" component={SettingsStackScreen} />
-        <Drawer.Screen name="Log out" component={LogoutStackScreen} />
+        <Drawer.Screen name="Log out" component={LogoutStackScreen} options={{headerShown: false}} />
       </Drawer.Navigator>
 
     
