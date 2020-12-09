@@ -1,16 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
-
+import { StyleSheet, Text, View, TouchableOpacity, Image,Button } from 'react-native';
+import axios from 'axios';
 import { HomeScreen } from './HomeScreen';
 import { WorkoutScreen } from './WorkoutScreen';
-import { DietScreen } from './DietScreen';
+import { Diet } from './DietScreen';
 import { ProgressScreen } from './ProgressScreen';
 import { UsersScreen } from './UsersScreen';
 import { WorkoutsScreen } from './WorkoutsScreen';
 import { MealsScreen } from './MealsScreen';
 import { SettingsScreen } from './SettingsScreen';
 import { LogoutScreen } from './LogoutScreen';
+import Signin from './Login';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -64,7 +65,7 @@ const getHeaderTitle = (route) => {
 const HomeStackScreen = ({ navigation }) => {
   return (
     <HomeStack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
-      <HomeStack.Screen name="HOME" component={HomeScreen} options={({ route }) => ({
+      <HomeStack.Screen name="Home" component={HomeScreen} options={({ route }) => ({
         headerTitle: getHeaderTitle(route),
         headerLeft: () => (
           <NavigationDrawerStructure
@@ -83,7 +84,7 @@ const WorkoutStackScreen = ({ navigation }) => {
       ),
       headerTitleAlign: 'center'
     }}>
-      <WorkoutStack.Screen name="WORKOUT" component={WorkoutScreen} />
+      <WorkoutStack.Screen name="Workout" component={WorkoutScreen} />
     </WorkoutStack.Navigator>
   );
 }
@@ -96,7 +97,7 @@ const DietStackScreen = ({ navigation }) => {
       ),
       headerTitleAlign: 'center'
     }}>
-      <DietStack.Screen name="DIET" component={DietScreen} />
+      <DietStack.Screen name="Diet" component={Diet} />
     </DietStack.Navigator>
   );
 }
@@ -109,7 +110,7 @@ const ProgressStackScreen = ({ navigation }) => {
       ),
       headerTitleAlign: 'center'
     }}>
-      <ProgressStack.Screen name="PROGRESS" component={ProgressScreen} />
+      <ProgressStack.Screen name="Progress" component={ProgressScreen} />
     </ProgressStack.Navigator>
   );
 }
@@ -125,7 +126,7 @@ function UsersStackScreen() {
 function WorkoutsStackScreen() {
   return (
     <WorkoutsStack.Navigator headerMode="none">
-      <WorkoutsStack.Screen name="Workouts" component={WorkoutsScreen} />
+      <WorkoutsStack.Screen name="Workouts" component={WorkoutScreen} />
     </WorkoutsStack.Navigator>
   );
 }
@@ -133,7 +134,7 @@ function WorkoutsStackScreen() {
 function MealsStackScreen() {
   return (
     <MealsStack.Navigator headerMode="none">
-      <MealsStack.Screen name="Meals" component={MealsScreen} />
+      <MealsStack.Screen name="Meals" component={Diet} />
     </MealsStack.Navigator>
   );
 }
@@ -146,11 +147,29 @@ function SettingsStackScreen() {
   );
 }
 
+function Signout(){
+
+
+
+  axios.post('http://localhost:3010/api-gateway/sign-out/user').then(response =>{
+                
+                console.log(response);
+                navigation.navigate('Signin');
+                
+            }).catch(error => {
+                console.log(error);
+                }
+            )
+
+
+}
+
 function LogoutStackScreen() {
   return (
-    <LogoutStack.Navigator headerMode="none">
-      <LogoutStack.Screen name="Logout" component={LogoutScreen} />
+<LogoutStack.Navigator headerMode="none" >
+      <LogoutStack.Screen name="Logout" component={Signin}  />
     </LogoutStack.Navigator>
+    
   );
 }
 
@@ -212,22 +231,20 @@ function TabsScreen() {
 const Drawer = createDrawerNavigator();
 
 
-export default function Dashboard() {
+export const Dashboard = ({ navigation }) => {
 
   return (
-    <NavigationContainer>
-      {/* <Drawer.Navigator initialRouteName="Profile"> */}
-      {/* <Drawer.Screen options={{ headerShown : false}}> */}
+    
       <Drawer.Navigator initialRouteName="Home" options={{ headerShown: false }}>
         <Drawer.Screen name="Home" component={TabsScreen} options={{ headerShown: false }} />
         <Drawer.Screen name="Users" component={UsersStackScreen} />
         <Drawer.Screen name="Meals" component={MealsStackScreen} />
         <Drawer.Screen name="Workouts" component={WorkoutsStackScreen} />
         <Drawer.Screen name="Settings" component={SettingsStackScreen} />
-        <Drawer.Screen name="Log out" component={LogoutStackScreen} />
+        <Drawer.Screen name="Log Out" component={LogoutStackScreen} onPress={Signout} options={{headerShown: false}} />
       </Drawer.Navigator>
 
-    </NavigationContainer>
+    
 
   );
   // <View style={styles.container}>
@@ -236,6 +253,8 @@ export default function Dashboard() {
   // </View>
 
 }
+
+export default Dashboard;
 
 const styles = StyleSheet.create({
   container: {
