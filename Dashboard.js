@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
-
+import { StyleSheet, Text, View, TouchableOpacity, Image,Button } from 'react-native';
+import axios from 'axios';
 import { HomeScreen } from './HomeScreen';
 import { WorkoutScreen } from './WorkoutScreen';
 import { Diet } from './DietScreen';
@@ -12,6 +12,7 @@ import { MealsScreen } from './MealsScreen';
 import { SettingsScreen } from './SettingsScreen';
 import { LogoutScreen } from './LogoutScreen';
 import Signin from './Login';
+import PlanScreen from './Plan';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -65,7 +66,7 @@ const getHeaderTitle = (route) => {
 const HomeStackScreen = ({ navigation }) => {
   return (
     <HomeStack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
-      <HomeStack.Screen name="Home" component={HomeScreen} options={({ route }) => ({
+      <HomeStack.Screen name="Home" component={PlanScreen} options={({ route }) => ({
         headerTitle: getHeaderTitle(route),
         headerLeft: () => (
           <NavigationDrawerStructure
@@ -147,11 +148,29 @@ function SettingsStackScreen() {
   );
 }
 
+function Signout(){
+
+
+
+  axios.post('http://localhost:3010/api-gateway/sign-out/user').then(response =>{
+                
+                console.log(response);
+                navigation.navigate('Signin');
+                
+            }).catch(error => {
+                console.log(error);
+                }
+            )
+
+
+}
+
 function LogoutStackScreen() {
   return (
-    <LogoutStack.Navigator headerMode="none" >
-      <LogoutStack.Screen name="Logout" component={Signin} />
+<LogoutStack.Navigator headerMode="none" >
+      <LogoutStack.Screen name="Logout" component={Signin}  />
     </LogoutStack.Navigator>
+    
   );
 }
 
@@ -220,12 +239,12 @@ export const Dashboard = ({ navigation }) => {
       <Drawer.Navigator initialRouteName="Home" options={{ headerShown: false }}>
         <Drawer.Screen name="Home" component={TabsScreen} options={{ headerShown: false }} />
         <Drawer.Screen name="Users" component={UsersStackScreen} />
-        <Drawer.Screen name="Meals" component={MealsStackScreen} />
+        <Drawer.Screen name="Meals" component={MealsScreen} />
         <Drawer.Screen name="Workouts" component={WorkoutsStackScreen} />
         <Drawer.Screen name="Settings" component={SettingsStackScreen} />
-        <Drawer.Screen name="Log out" component={LogoutStackScreen} options={{headerShown: false}} />
+        <Drawer.Screen name="Log Out" component={LogoutStackScreen} onPress={Signout} options={{headerShown: false}} />
       </Drawer.Navigator>
-
+      
     
 
   );
