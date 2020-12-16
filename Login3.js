@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { StyleSheet, SafeAreaView, Text, View, TextInput,Button, Platform, Dimensions, TouchableOpacity, ImageBackground, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, SafeAreaView, Text, View, TextInput, Platform, Dimensions, TouchableOpacity, ImageBackground, KeyboardAvoidingView } from 'react-native';
 import Constants from 'expo-constants';
 import { FontAwesome } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
@@ -7,9 +7,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { AntDesign } from '@expo/vector-icons';
 import SignUpScreen from './SignUpScreen';
-import Dashboard from './Dashboard';
-import {MaterialCommunityIcons} from '@expo/vector-icons';
 import axios from 'axios';
+import Dashboard from './Dashboard';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -18,14 +17,11 @@ const pic = { uri: 'https://www.linkpicture.com/q/log2.jfif' };
 
 const Stack = createStackNavigator();
 
-const Login = ({ navigation }) => {
+const Login3 = ({ navigation }) => {
 
 
-  const [email, setEmail] = useState('');
+  const [firstName, setFname] = useState('');
   const [password, setPassword] = useState('');
-  const [error,setError]=useState('');
-  const [show,setShow]=useState('false');
-  const [visible,setVisible]=useState('true');
 
 
 
@@ -39,43 +35,23 @@ const Login = ({ navigation }) => {
 
         <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#EDDDDF' }}>
           <FontAwesome name="user-o" size={24} color="#EDDDDF" style={{ marginTop: 70 }} />
-          <TextInput placeholder='Email' placeholderTextColor="#EDDDDF" style={styles.inner1} onChangeText={setEmail} />
+          <TextInput placeholder='Firstname' placeholderTextColor="#EDDDDF" style={styles.inner1} onChangeText={(text) => setFname(text)} />
         </View>
 
         <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#EDDDDF' }}>
           <Feather name="lock" size={24} color="#EDDDDF" style={{ marginTop: 70 }} />
-          <TextInput placeholder='Password' placeholderTextColor="#EDDDDF" secureTextEntry={visible} style={styles.inner2} onChangeText={setPassword} />
-          <TouchableOpacity style={{marginTop:70}} onPress={()=>{setShow(!show),setVisible(!visible)}}>
-            <MaterialCommunityIcons name={show===false ? 'eye-outline' : 'eye-off-outline'} size={26} color={'white'}/>
-          </TouchableOpacity>
+          <TextInput placeholder='Password' placeholderTextColor="#EDDDDF" secureTextEntry={true} style={styles.inner2} onChangeText={(text) => setPassword(text)} />
         </View>
 
-        <Button title={'Login'} style={styles.Btn}  onPress={()=>{ 
-            const ran={
-                
-                email: email,
-                password: password
-            
-            }
-
-
-            console.log(ran);
-            
-            axios.post('http://localhost:3010/api-gateway/sign-in/user',ran,{withCredentials : true}).then(response =>{
-                console.log(navigation);
-                
-                navigation.navigate('dash');
-                
-            }).catch(error => {
-                if(error){
-                  setError("Email Or Password Not Correct, Make Sure You're Registered!");
-                }
-            })
-        }}
-           />
-           <Text style={{color:'red'}}>{error}</Text>
-
-          
+        <TouchableOpacity onPress={() => {
+           navigation.navigate('Dashboard');
+          <Text style={{flex:1, alignItems: 'center', justifyContent: 'center'}}>{response.data}</Text>
+         
+        }}>
+          <View style={styles.Btn}>
+            <Text style={{ color: 'white', fontSize: 15 }}>LOGIN</Text>
+          </View>
+        </TouchableOpacity>
 
         <Text style={{ color: 'white', fontSize: 18, marginTop: 30 }}>Or Join With</Text>
 
@@ -93,7 +69,7 @@ const Login = ({ navigation }) => {
         </View>
 
         <Text style={{ color: 'white', fontSize: 14, marginTop: 22 }}>Don't Have An Account?
-          <Text style={{ fontWeight: 'bold' }} onPress={() => navigation.navigate('signup')} >  Create Here</Text>
+          <Text style={{ fontWeight: 'bold' }} onPress={() => navigation.navigate('Register')} >  Create Here</Text>
         </Text>
       </ImageBackground>
 
@@ -101,9 +77,27 @@ const Login = ({ navigation }) => {
   )
 }
 
+const Signin = ({ navigation }) => {
 
+  return (
 
+    
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Register"
+          component={Register}
+          options={{ headerShown: false }}
+        />
+      </Stack.Navigator>
+    
 
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -149,7 +143,7 @@ const styles = StyleSheet.create({
 
   Btn: {
 
-    marginTop: 90,
+    marginTop: 70,
     borderRadius: 20,
     width: 244,
     backgroundColor: '#BF243D',
@@ -182,4 +176,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default Login;
+export default Login3;

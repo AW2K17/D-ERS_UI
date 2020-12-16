@@ -51,7 +51,6 @@ const DinnerScreen = () => {
             
             {/*
             <Text>{"\n"}</Text>
-
             <View style={styles.today2}>
                 <Text style={styles.h1}>Today's Lunch</Text>
                 <ImageBackground source={pic2} style={styles.workoutPic}>

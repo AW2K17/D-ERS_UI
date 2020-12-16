@@ -12,6 +12,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import Dashboard from './Dashboard';
 import Signin from './Login';
+import axios from 'axios';
 
 const pic2 = { uri: 'https://www.linkpicture.com/q/imageedit_3_4884348579.jpg' };
 
@@ -20,12 +21,103 @@ const windowHeight = Dimensions.get('window').height;
 
 const Stack = createStackNavigator();
 
-const Continue = ({ navigation }) => {
+const Continue = ({ navigation,route }) => {
+
+    const { fn,ln,eml,pwd,bm } = route.params.ran;
+    console.log(fn);
+    
+
 
 
     const [weight, setWeight] = useState('');
     const [height, setHeight] = useState('');
     const [age, setAge] = useState('');
+    const [err1,setErr1]=useState('');
+    const [err2,setErr2]=useState('');
+    const [err3,setErr3]=useState('');
+
+    function wgtCheck(){
+
+        if(weight==''){
+            setErr1("Weight Can't Be Empty");
+        }
+        else{
+            setErr1('');
+            return 'true';
+        }
+    }
+
+    function hgtCheck(){
+
+        if(height==''){
+            setErr2("Height Can't Be Empty");
+        }
+        else{
+            setErr2('');
+            return 'true';
+        }
+    
+}
+
+function ageCheck(){
+
+    if(age==''){
+        setErr3("Age Can't Be Empty");
+    }
+    else{
+        setErr3('');
+        return 'true';
+    }
+}
+    
+
+
+
+
+
+
+    function Validations(){
+
+        const c1=wgtCheck();
+        const c2=hgtCheck();
+        const c3=ageCheck();
+
+        if(c1=='true' && c2=='true' && c3=='true'){
+
+            
+                    
+                const ran={
+            
+                     firstName:fn,
+                     lastName:ln,
+                     email: eml,
+                     password: pwd,
+                     bmi:bm,
+                     weight:weight,
+                     height: height,
+                     age:age,
+                     
+            
+                    }
+                    
+                        
+                          axios.get('http://localhost:3010/api-gateway/current-user/user',{withCredentials : true}).then(response=>{console.log(response.data)}).catch(error=>{console.log(error)})
+                            
+                        
+                        
+                        
+                        
+                        
+                    
+                    console.log(ran);
+                    axios.post('http://localhost:3010/api-gateway/sign-up/user',ran,{withCredentials : true}).then(response=>{console.log(response.data);navigation.navigate('Dashboard')}).catch(error => {
+                        console.log(error);
+                        
+            })
+        }
+        
+    }
+    
 
 
     return (
@@ -41,7 +133,7 @@ const Continue = ({ navigation }) => {
                     <View style={styles.inputField}>
                         <FontAwesome5 name="weight-hanging" color="#EDDDDF" style={styles.icon} />
                         <TextInput style={styles.textInput1} placeholder="Weight"
-                            value={weight} onChangeText={setWeight} placeholderTextColor="#EDDDDF" />
+                            value={weight} onChangeText={setWeight} placeholderTextColor="#EDDDDF" keyboardType={'numeric'} />
                         <RNPickerSelect
                             placeholder={{
                                 label: 'Select Unit',
@@ -60,25 +152,29 @@ const Continue = ({ navigation }) => {
                                 }
                             }}
                             placeholderColor='white'
-
+                            
 
 
                             onValueChange={(value) => console.log(value)}
-
-                            items={[
+                            
+                             items={[
                                 { label: 'Kg', value: 'wgt1' },
                                 { label: 'lbs', value: 'wgt2' },
 
                             ]}
+
+                            
                         />
+                    
                     </View>
+                    <Text style={{color: 'red'}}>{err1}</Text>
 
 
 
                     <View style={styles.inputField}>
                         <MaterialCommunityIcons name="human-male" style={styles.heightIcon} color="#EDDDDF" />
                         <TextInput style={styles.textInput2} placeholder="Height"
-                            value={height} onChangeText={setHeight} placeholderTextColor="#EDDDDF" />
+                            value={height} onChangeText={setHeight} placeholderTextColor="#EDDDDF" keyboardType={'numeric'}/>
                         <RNPickerSelect
                             placeholder={{
                                 label: 'Select Unit',
@@ -109,14 +205,18 @@ const Continue = ({ navigation }) => {
                             ]}
                         />
                     </View>
+                    <Text style={{color: 'red'}}>{err2}</Text>
 
                     <View style={styles.inputField}>
                         <Feather name="users" style={styles.icon} />
                         <TextInput style={styles.textInput2} placeholder="Age"
-                            value={age} onChangeText={setAge} placeholderTextColor="#EDDDDF" />
+                            value={age} onChangeText={setAge} placeholderTextColor="#EDDDDF" keyboardType={'numeric'} />
                     </View>
+                    <Text style={{color: 'red'}}>{err3}</Text>
 
-                    <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Dashboard')}>
+                    <TouchableOpacity style={styles.btn} 
+                    onPress={Validations}>
+                    
                         <Text style={{ color: 'white' }}>CONFIRM REGISTRATION</Text>
                     </TouchableOpacity>
                 </View>

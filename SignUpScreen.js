@@ -2,10 +2,12 @@ import React, { PureComponent, useState } from 'react';
 import { Text, View, StyleSheet, TextInput, Button, TouchableOpacity, ImageBackground } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Constants from 'expo-constants';
-import ContinueScreen from './Continue';
+import Continue from './Continue';
 import Signin from './Login';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import {MaterialCommunityIcons} from '@expo/vector-icons';
+import validator from 'validator';
 
 
 const pic2 = { uri: 'https://www.linkpicture.com/q/imageedit_3_4884348579.jpg' };
@@ -27,7 +29,119 @@ const Register = ({ navigation }) => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [country, setCountry] = useState('');
+    const [bmi, setBmi] = useState('');
+    const [show,setShow]=useState('false');
+  const [visible,setVisible]=useState('true');
+  const [err1,setErr1]= useState('');
+  const [err2,setErr2]= useState('');
+  const [err3,setErr3]= useState('');
+  const [err4,setErr4]= useState('');
+  const [err5,setErr5]= useState('');
+
+  function fnCheck(){
+
+   
+    if(firstName==""){
+        setErr1("* Firstname Can't Be Empty");
+    }
+    else if (/\s/.test(firstName)) {
+        setErr1("* Can't Have Spaces, Must Be A Single Word");
+    }
+    else{
+        setErr1("");
+        return 'true';
+    }
+}
+
+
+function lnCheck(){
+
+   
+    if(lastName==""){
+        setErr2("* Lastname Can't Be Empty");
+    }
+    else if (/\s/.test(lastName)) {
+        setErr1("* Can't Have Spaces, Must Be A Single Word");
+    }
+    else{
+        setErr2("");
+        return 'true';
+    }
+}
+
+function emailCheck(){
+
+   
+    if(email==""){
+        setErr3("* Email Can't Be Empty");
+    }
+    else if(!validator.isEmail(email)){
+
+        setErr3("*Invalid Email, Try Again");
+    }
+    else{
+        setErr3("");
+        return 'true';
+    }
+}
+
+
+function pwdCheck(){
+
+   
+    if(password==""){
+        setErr4("* Password Can't Be Empty");
+    }
+    else if(password.length<7){
+
+        setErr4("Password Must Be At Least 7 Characters Long");
+    }
+    else{
+        setErr4("");
+        return 'true';
+    }
+}
+
+
+
+function bmiCheck(){
+
+   
+    if(bmi==""){
+        setErr5("* BMI Can't Be Empty");
+    }
+    
+    else{
+        setErr5("");
+        return 'true';
+    }
+}
+
+
+
+
+
+
+
+
+
+
+  function Validations(){
+
+    const c1=fnCheck();
+    const c2=lnCheck();
+    const c3=emailCheck();
+    const c4=pwdCheck();
+    const c5=bmiCheck();
+
+    if(c1=='true' && c2=='true' && c3=='true' && c4=='true' && c5=='true')
+    {
+        const ran={fn:firstName,ln:lastName,eml:email,pwd:password,bm:bmi};
+        console.log(ran);
+        navigation.navigate( 'Continue',{screen: 'Continue', params: {ran}});
+    }
+    
+  }
 
     return (
         <ImageBackground style={styles.container} source={pic2}>
@@ -41,30 +155,41 @@ const Register = ({ navigation }) => {
                     <TextInput style={styles.textInput} placeholder="First Name"
                         value={firstName} onChangeText={setFname} placeholderTextColor="#EDDDDF" />
                 </View>
+                <Text style={{color: 'red'}}>{err1}</Text>
 
                 <View style={styles.inputField}>
                     <FontAwesome style={styles.icon} name="user" />
                     <TextInput style={styles.textInput} placeholder="Last Name"
                         value={lastName} onChangeText={setLname} placeholderTextColor="#EDDDDF" />
                 </View>
+                <Text style={{color: 'red'}}>{err2}</Text>
 
                 <View style={styles.inputField}>
                     <FontAwesome style={styles.icon} name="envelope" />
                     <TextInput style={styles.textInput} placeholder="Email"
                         value={email} onChangeText={setEmail} placeholderTextColor="#EDDDDF" />
+                        
                 </View>
+                <Text style={{color: 'red'}}>{err3}</Text>
+                        
 
-                <View style={styles.inputField}>
+
+                <View style={styles.inputField2}>
                     <FontAwesome style={styles.passwordIcon} name="lock" />
-                    <TextInput style={styles.textInput} placeholder="Password"
-                        secureTextEntry={true} value={password} onChangeText={setPassword} placeholderTextColor="#EDDDDF" />
+                    <TextInput style={{marginLeft:10,color:'white',marginTop:22}} placeholder="Password"
+                        secureTextEntry={visible} value={password} onChangeText={setPassword} placeholderTextColor="#EDDDDF" />
+                     <TouchableOpacity style={{marginTop:30}} onPress={()=>{setShow(!show),setVisible(!visible)}}>
+            <MaterialCommunityIcons name={show===false ? 'eye-outline' : 'eye-off-outline'} size={26} color={'white'}/>
+          </TouchableOpacity>
                 </View>
+                <Text style={{color: 'red'}}>{err4}</Text>
 
                 <View style={styles.inputField}>
                     <FontAwesome style={styles.icon} name="globe" />
-                    <TextInput style={styles.textInput} placeholder="Country"
-                        value={country} onChangeText={setCountry} placeholderTextColor="#EDDDDF" />
+                    <TextInput style={styles.textInput} placeholder="BMI"
+                        value={bmi} onChangeText={setBmi} placeholderTextColor="#EDDDDF" keyboardType={'numeric'} />
                 </View>
+                <Text style={{color: 'red'}}>{err5}</Text>
                 {/*  
     <View>
         <Button onPress={showDatepicker} title="Select date of birth" />
@@ -75,7 +200,6 @@ const Register = ({ navigation }) => {
             value={date}
             onChange={new Date()}
             placeholder="Select date of birth!"
-
             format="YYYY-MM-DD"
             customStyles={{
                 dateIcon: {
@@ -94,7 +218,14 @@ const Register = ({ navigation }) => {
     )}
             */}
 
-                <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('ContinueScreen')}>
+                <TouchableOpacity style={styles.btn} onPress={
+
+                  /*  const ran={fn:firstName,ln:lastName,eml:email,pwd:password,bm:bmi}
+                    
+                    console.log(ran) navigation.navigate( 'Continue',{screen: 'Continue', params: {ran}})}*/
+                    Validations
+                    
+                    }>
                     <Text style={{ color: 'white' }}>NEXT</Text>
                 </TouchableOpacity>
             </View>
@@ -110,7 +241,7 @@ const Register = ({ navigation }) => {
 export const SignUpScreen = ({ navigation }) => {
 
     return (
-        <NavigationContainer>
+       
             <Stack.Navigator initialRouteName="Register">
                 <Stack.Screen
                     name="Register"
@@ -118,8 +249,8 @@ export const SignUpScreen = ({ navigation }) => {
                     options={{ headerShown: false }}
                 />
                 <Stack.Screen
-                    name="ContinueScreen"
-                    component={ContinueScreen}
+                    name="Continue"
+                    component={Continue}
                     options={{ headerShown: false }}
                 />
                 <Stack.Screen
@@ -128,8 +259,7 @@ export const SignUpScreen = ({ navigation }) => {
                     options={{ headerShown: false }}
                 />
             </Stack.Navigator>
-        </NavigationContainer>
-
+      
     );
 }
 
@@ -160,6 +290,15 @@ const styles = StyleSheet.create({
         width: 220,
 
     },
+    
+    inputField2: {
+        paddingTop: 20,
+        flexDirection: 'row',
+        borderBottomColor: 'white',
+        borderBottomWidth: 2,
+        width: 220,
+
+    },
     icon: {
         marginTop: 5,
         marginLeft: 2,
@@ -171,7 +310,7 @@ const styles = StyleSheet.create({
         fontSize: 25,
         marginLeft: 4,
         width: 20,
-        color: 'white'
+        color: 'white',marginTop:30
     },
     textInput: {
         marginLeft: 10,

@@ -3,6 +3,7 @@ import { StyleSheet, Button, Text, View, TextInput, Platform, TouchableOpacity }
 import Constants from 'expo-constants';
 import Search from './Search';
 import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
 
 
 const Stack = createStackNavigator();
@@ -47,7 +48,7 @@ const Plans = ({ navigation }) => {
 export const PlanScreen = ({ navigation }) => {
 
   return (
-
+<NavigationContainer>
     <Stack.Navigator initialRouteName="Plans">
       <Stack.Screen
         name="Plans"
@@ -61,7 +62,7 @@ export const PlanScreen = ({ navigation }) => {
       />
 
     </Stack.Navigator>
-
+    </NavigationContainer>
   );
 }
 
