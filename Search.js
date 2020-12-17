@@ -39,6 +39,10 @@ const Search = ({ navigation }) => {
 
 
     const [title, setTitle] = useState('');
+    const [albumId,setAlbumId]=useState('&albumId=3');
+    
+    var filters=[disp1,disp2,disp3,disp4];
+    var add=[title,albumId];
 
 
 
@@ -48,7 +52,7 @@ const Search = ({ navigation }) => {
     const link2 = link1 + '&title=' + title;
 
 
-    function Check() {
+    function Check1() {
 
         if (disp1 == 'false') {
             setDisp1('true');
@@ -62,6 +66,59 @@ const Search = ({ navigation }) => {
 
         }
     }
+    
+      function Check2(){
+
+        if(disp2=='false')
+        { 
+            setDisp2('true');
+            setShow2('true');
+            
+        }
+
+        else if(disp2=='true')
+        { 
+            setDisp2('false');
+            setShow2('false');
+            
+        }
+    }
+    
+    
+    function Check3(){
+
+        if(disp3=='false')
+        { 
+            setDisp3('true');
+            setShow3('true');
+            
+        }
+
+        else if(disp3=='true')
+        { 
+            setDisp3('false');
+            setShow3('false');
+            
+        }
+    }
+    
+    
+    function Check4(){
+
+        if(disp4=='false')
+        { 
+            setDisp4('true');
+            setShow4('true');
+            
+        }
+
+        else if(disp4=='true')
+        { 
+            setDisp4('false');
+            setShow4('false');
+            
+        }
+    }
 
 
 
@@ -70,6 +127,29 @@ const Search = ({ navigation }) => {
 
 
     function fetchData() {
+        
+        /*
+             for(var i=0;i<2;i++)
+        { 
+            if(filters[i]==='true'){
+
+                link1=link1+add[i];
+            }
+        }
+        
+        
+        
+        
+        
+        
+        */
+        
+        
+        
+        
+        
+        
+        
 
         // fetch(link, {credentials: "include"}).then((e) => e.json().then((f) => console.log(f)));    
         // if(show1=='true'){
@@ -122,22 +202,22 @@ const Search = ({ navigation }) => {
 
             <View style={{ marginTop: 9, marginLeft: 8, flexDirection: 'row' }}>
                 <Text>Biceps</Text>
-                <TouchableOpacity onPress={Check}>
+                <TouchableOpacity onPress={Check1}>
                     <MaterialIcons name={disp1 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
                 </TouchableOpacity>
 
                 <Text style={{ marginLeft: 8 }}>Triceps</Text>
-                <TouchableOpacity onPress={Check}>
+                <TouchableOpacity onPress={Check2}>
                     <MaterialIcons name={disp2 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
                 </TouchableOpacity>
 
                 <Text style={{ marginLeft: 8 }}>Lats</Text>
-                <TouchableOpacity onPress={Check}>
+                <TouchableOpacity onPress={Check3}>
                     <MaterialIcons name={disp3 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
                 </TouchableOpacity>
 
                 <Text style={{ marginLeft: 8 }}>Chest</Text>
-                <TouchableOpacity onPress={Check}>
+                <TouchableOpacity onPress={Check4}>
                     <MaterialIcons name={disp4 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
                 </TouchableOpacity>
 
