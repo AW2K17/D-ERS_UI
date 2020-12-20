@@ -19,11 +19,13 @@ const Chart=()=>{
       );
 
 
-      const data2 = [
+      var data2 = [
         'Protein',
         'Fats',
         'Carbs',
       ];
+
+      var check=[]
 
       const meal=[
           'Breakfast','Lunch','Dinner'
@@ -34,7 +36,7 @@ const Chart=()=>{
       const [selectedIndex2, setSelectedIndex2] = React.useState(new IndexPath(0));
       
     
-    const [pro,setPro]=useState();
+    const [pro,setPro]=useState(22);
    
         //displayValue--> fats/protein/carbs
         const displayValue = data2[selectedIndex.row]; 
@@ -42,15 +44,23 @@ const Chart=()=>{
         //displayValue2--> breakfast/lunch/dinner
         const displayValue2 = meal[selectedIndex2.row];  
         
-  
+        var j=0;
+        for(var i=0;i<3;i++)
+        { 
+            if(displayValue!=data2[i]){
+
+                check[j]=data2[i];
+                j=j+1;
+            }
+        }
+        
+        console.log(check[0],check[1]);
+
+
+
+
 
         
-
-
-
-
-
-
 
 
 
@@ -72,14 +82,14 @@ const Chart=()=>{
                 key: 3,
                 amount: 40,
                 svg: { fill: 'blue' }
-            },
-            {
-                key: 4,
-                amount: 95,
-                svg: { fill: '#d966ff' }
             }
         ]
-
+        console.log(data[0].amount);
+        
+        console.log(data[1].amount);
+        console.log(data[2].amount);
+        
+        
         const Labels = ({ slices, height, width }) => {
             return slices.map((slice, index) => {
                 const { labelCentroid, pieCentroid, data} = slice;
@@ -103,9 +113,10 @@ const Chart=()=>{
         }
 
         return (
-            <View>           
+            <View>
+                 
             <PieChart
-                style={{ height: 200,marginTop:15 }}
+                style={{ height: 200,marginTop:15,marginRight:75 }}
                 valueAccessor={({ item }) => item.amount}
                 data={data}
                 spacing={0}
@@ -113,6 +124,16 @@ const Chart=()=>{
             >
                 <Labels/>
             </PieChart>
+            
+           <View style={{flexDirection: 'row'}}>
+               
+               <Text style={{fontSize:18,fontWeight:'bold'}}>{displayValue}: {data[0].amount}</Text>
+               <Text style={{fontSize:18,fontWeight:'bold',marginLeft:8}}>{check[0]}:{data[1].amount}</Text>
+               <Text style={{fontSize:18,fontWeight:'bold',marginLeft:8}}>{check[1]}: {data[2].amount}</Text>
+               
+               
+               
+           </View>
             <View style={{flexDirection: 'row',marginTop:33}}>
                 <Select
                     style={styles.select}
