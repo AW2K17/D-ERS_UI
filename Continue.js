@@ -13,6 +13,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import Dashboard from './Dashboard';
 import Signin from './Login';
 import axios from 'axios';
+import { Button, Card, Modal} from '@ui-kitten/components';
 
 const pic2 = { uri: 'https://www.linkpicture.com/q/imageedit_3_4884348579.jpg' };
 
@@ -35,14 +36,22 @@ const Continue = ({ navigation,route }) => {
     const [err1,setErr1]=useState('');
     const [err2,setErr2]=useState('');
     const [err3,setErr3]=useState('');
+    const [visible1,setVisible1]=useState('false');
+  const [visible2,setVisible2]=useState('false');
+  const [visible3,setVisible3]=useState('false');
+
+
+
 
     function wgtCheck(){
 
         if(weight==''){
             setErr1("Weight Can't Be Empty");
+            setVisible1('true');
         }
         else{
             setErr1('');
+            setVisible1('false');
             return 'true';
         }
     }
@@ -51,9 +60,11 @@ const Continue = ({ navigation,route }) => {
 
         if(height==''){
             setErr2("Height Can't Be Empty");
+            setVisible2('true');
         }
         else{
             setErr2('');
+            setVisible2('false');
             return 'true';
         }
     
@@ -63,9 +74,11 @@ function ageCheck(){
 
     if(age==''){
         setErr3("Age Can't Be Empty");
+        setVisible3('true');
     }
     else{
         setErr3('');
+        setVisible3('false');
         return 'true';
     }
 }
@@ -167,7 +180,21 @@ function ageCheck(){
                         />
                     
                     </View>
-                    <Text style={{color: 'red'}}>{err1}</Text>
+
+
+                    {/*<Text style={{color: 'red'}}>{err1}</Text>*/}
+
+                    <Modal
+                    visible={visible1}
+                    backdropStyle={styles.backdrop}
+                    onBackdropPress={() => setVisible1(false)}>
+                    <Card disabled={true}>
+                    <Text>{err1}</Text>
+                    <Button onPress={() => setVisible1(false)} style={{width:127,backgroundColor:'red',marginLeft:100,marginTop:10,borderRadius:20}}>
+                    OK
+                    </Button>
+            </Card>
+        </Modal>
 
 
 
@@ -205,14 +232,37 @@ function ageCheck(){
                             ]}
                         />
                     </View>
-                    <Text style={{color: 'red'}}>{err2}</Text>
+                    {/*<Text style={{color: 'red'}}>{err2}</Text>*/}
+
+                    <Modal
+                visible={visible2}
+                backdropStyle={styles.backdrop}
+                onBackdropPress={() => setVisible2(false)}>
+                <Card disabled={true}>
+                <Text>{err2}</Text>
+                <Button onPress={() => setVisible2(false)} style={{width:127,backgroundColor:'red',marginLeft:100,marginTop:10,borderRadius:20}}>
+                OK
+                </Button>
+            </Card>
+        </Modal>
 
                     <View style={styles.inputField}>
                         <Feather name="users" style={styles.icon} />
                         <TextInput style={styles.textInput2} placeholder="Age"
                             value={age} onChangeText={setAge} placeholderTextColor="#EDDDDF" keyboardType={'numeric'} />
                     </View>
-                    <Text style={{color: 'red'}}>{err3}</Text>
+                    {/*<Text style={{color: 'red'}}>{err3}</Text>*/}
+                    <Modal
+                visible={visible3}
+                backdropStyle={styles.backdrop}
+                onBackdropPress={() => setVisible3(false)}>
+                <Card disabled={true}>
+                <Text>{err3}</Text>
+                <Button onPress={() => setVisible3(false)} style={{width:127,backgroundColor:'red',marginLeft:100,marginTop:10,borderRadius:20}}>
+                OK
+                </Button>
+            </Card>
+        </Modal>
 
                     <TouchableOpacity style={styles.btn} 
                     onPress={Validations}>

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { StyleSheet, SafeAreaView, Text, View, TextInput,Button, Platform, Dimensions, TouchableOpacity, ImageBackground, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, SafeAreaView,  View, TextInput, Platform, Dimensions, TouchableOpacity, ImageBackground, KeyboardAvoidingView } from 'react-native';
 import Constants from 'expo-constants';
 import { FontAwesome } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
@@ -10,6 +10,8 @@ import SignUpScreen from './SignUpScreen';
 import Dashboard from './Dashboard';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import axios from 'axios';
+import { Button, Card, Modal, Text} from '@ui-kitten/components';
+
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -17,6 +19,13 @@ const windowHeight = Dimensions.get('window').height;
 const pic = { uri: 'https://www.linkpicture.com/q/log2.jfif' };
 
 const Stack = createStackNavigator();
+
+
+
+const MAX_LEN = 15,
+  MIN_LEN = 6,
+  PASS_LABELS = ["Too Short", "Weak", "Normal", "Strong", "Secure"];
+
 
 const Login = ({ navigation }) => {
 
@@ -26,6 +35,13 @@ const Login = ({ navigation }) => {
   const [error,setError]=useState('');
   const [show,setShow]=useState('false');
   const [visible,setVisible]=useState('true');
+  const [visible1, setVisible1] = React.useState(false);
+    const [visible2, setVisible2] = React.useState(false);
+    const [visible3, setVisible3] = React.useState(false);
+
+
+
+    
 
 
 
@@ -48,9 +64,10 @@ const Login = ({ navigation }) => {
           <TouchableOpacity style={{marginTop:70}} onPress={()=>{setShow(!show),setVisible(!visible)}}>
             <MaterialCommunityIcons name={show===false ? 'eye-outline' : 'eye-off-outline'} size={26} color={'white'}/>
           </TouchableOpacity>
+         
         </View>
 
-        <Button title={'Login'} style={styles.Btn}  onPress={()=>{ 
+        <Button  style={styles.Btn}  onPress={()=>{ 
             const ran={
                 
                 email: email,
@@ -63,17 +80,30 @@ const Login = ({ navigation }) => {
             
             axios.post('http://localhost:3010/api-gateway/sign-in/user',ran,{withCredentials : true}).then(response =>{
                 console.log(navigation);
-                
+                setVisible1('false')
                 navigation.navigate('dash');
                 
             }).catch(error => {
                 if(error){
+                  setVisible1('true');
                   setError("Email Or Password Not Correct, Make Sure You're Registered!");
                 }
             })
         }}
-           />
-           <Text style={{color:'red'}}>{error}</Text>
+           >Login</Button>
+
+           {/*<Text style={{color:'red'}}>{error}</Text>*/}
+           <Modal
+            visible={visible1}
+            backdropStyle={styles.backdrop}
+            onBackdropPress={() => setVisible1(false)}>
+            <Card disabled={true}>
+            <Text>{error}</Text>
+            <Button onPress={() => setVisible1(false)} style={{width:127,backgroundColor:'red',marginLeft:100,marginTop:10,borderRadius:20}}>
+            OK
+            </Button>
+        </Card>
+      </Modal>
 
           
 

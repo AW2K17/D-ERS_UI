@@ -1,5 +1,5 @@
 import React, { PureComponent, useState } from 'react';
-import { Text, View, StyleSheet, TextInput, Button, TouchableOpacity, ImageBackground } from 'react-native';
+import {  View, StyleSheet, TextInput, TouchableOpacity, ImageBackground } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Constants from 'expo-constants';
 import Continue from './Continue';
@@ -8,6 +8,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import validator from 'validator';
+import PassMeter from "react-native-passmeter";
+import { Button, Card, Modal, Text} from '@ui-kitten/components';
+
+
+const MAX_LEN = 15,
+  MIN_LEN = 6,
+  PASS_LABELS = ["Too Short", "Weak", "Normal", "Strong", "Secure"];
+
 
 
 const pic2 = { uri: 'https://www.linkpicture.com/q/imageedit_3_4884348579.jpg' };
@@ -38,17 +46,35 @@ const Register = ({ navigation }) => {
   const [err4,setErr4]= useState('');
   const [err5,setErr5]= useState('');
 
+
+
+  const [visible1,setVisible1]=useState('false');
+  const [visible2,setVisible2]=useState('false');
+  const [visible3,setVisible3]=useState('false');
+  const [visible4,setVisible4]=useState('false');
+  const [visible5,setVisible5]=useState('false');
+  
+
+
+
+
+
+
+
   function fnCheck(){
 
    
     if(firstName==""){
         setErr1("* Firstname Can't Be Empty");
+        setVisible1('true');
     }
     else if (/\s/.test(firstName)) {
         setErr1("* Can't Have Spaces, Must Be A Single Word");
+        setVisible1('true');
     }
     else{
         setErr1("");
+        setVisible1('false');
         return 'true';
     }
 }
@@ -59,12 +85,15 @@ function lnCheck(){
    
     if(lastName==""){
         setErr2("* Lastname Can't Be Empty");
+        setVisible2('true');
     }
     else if (/\s/.test(lastName)) {
         setErr1("* Can't Have Spaces, Must Be A Single Word");
+        setVisible2('true');
     }
     else{
         setErr2("");
+        setVisible2('false');
         return 'true';
     }
 }
@@ -74,14 +103,18 @@ function emailCheck(){
    
     if(email==""){
         setErr3("* Email Can't Be Empty");
+        setVisible3('true');
     }
     else if(!validator.isEmail(email)){
 
         setErr3("*Invalid Email, Try Again");
+        setVisible3('true');
     }
     else{
         setErr3("");
+        setVisible3('false');
         return 'true';
+
     }
 }
 
@@ -91,13 +124,16 @@ function pwdCheck(){
    
     if(password==""){
         setErr4("* Password Can't Be Empty");
+        setVisible4('true');
     }
     else if(password.length<7){
 
         setErr4("Password Must Be At Least 7 Characters Long");
+        setVisible4('true');
     }
     else{
         setErr4("");
+        setVisible4('false');
         return 'true';
     }
 }
@@ -109,10 +145,12 @@ function bmiCheck(){
    
     if(bmi==""){
         setErr5("* BMI Can't Be Empty");
+        setVisible5('true');
     }
     
     else{
         setErr5("");
+        setVisible5('false');
         return 'true';
     }
 }
@@ -155,14 +193,38 @@ function bmiCheck(){
                     <TextInput style={styles.textInput} placeholder="First Name"
                         value={firstName} onChangeText={setFname} placeholderTextColor="#EDDDDF" />
                 </View>
-                <Text style={{color: 'red'}}>{err1}</Text>
+                {/*<Text style={{color: 'red'}}>{err1}</Text>*/}
+                <Modal
+                visible={visible1}
+                backdropStyle={styles.backdrop}
+                onBackdropPress={() => setVisible1(false)}>
+                <Card disabled={true}>
+                <Text>{err1}</Text>
+                <Button onPress={() => setVisible1(false)} style={{width:127,backgroundColor:'red',marginLeft:100,marginTop:10,borderRadius:20}}>
+                OK
+                </Button>
+            </Card>
+        </Modal>
 
                 <View style={styles.inputField}>
                     <FontAwesome style={styles.icon} name="user" />
                     <TextInput style={styles.textInput} placeholder="Last Name"
                         value={lastName} onChangeText={setLname} placeholderTextColor="#EDDDDF" />
                 </View>
-                <Text style={{color: 'red'}}>{err2}</Text>
+                
+                {/*<Text style={{color: 'red'}}>{err2}</Text>*/}
+
+                <Modal
+                visible={visible2}
+                backdropStyle={styles.backdrop}
+                onBackdropPress={() => setVisible2(false)}>
+                <Card disabled={true}>
+                <Text>{err2}</Text>
+                <Button onPress={() => setVisible2(false)} style={{width:127,backgroundColor:'red',marginLeft:100,marginTop:10,borderRadius:20}}>
+                OK
+                </Button>
+            </Card>
+        </Modal>
 
                 <View style={styles.inputField}>
                     <FontAwesome style={styles.icon} name="envelope" />
@@ -170,7 +232,19 @@ function bmiCheck(){
                         value={email} onChangeText={setEmail} placeholderTextColor="#EDDDDF" />
                         
                 </View>
-                <Text style={{color: 'red'}}>{err3}</Text>
+                {/*<Text style={{color: 'red'}}>{err3}</Text>*/}
+
+                <Modal
+                visible={visible3}
+                backdropStyle={styles.backdrop}
+                onBackdropPress={() => setVisible3(false)}>
+                <Card disabled={true}>
+                <Text>{err3}</Text>
+                <Button onPress={() => setVisible3(false)} style={{width:127,backgroundColor:'red',marginLeft:100,marginTop:10,borderRadius:20}}>
+                OK
+                </Button>
+            </Card>
+        </Modal>
                         
 
 
@@ -182,7 +256,28 @@ function bmiCheck(){
             <MaterialCommunityIcons name={show===false ? 'eye-outline' : 'eye-off-outline'} size={26} color={'white'}/>
           </TouchableOpacity>
                 </View>
-                <Text style={{color: 'red'}}>{err4}</Text>
+                <PassMeter
+        
+                showLabels
+                password={password}
+                maxLength={MAX_LEN}
+                minLength={MIN_LEN}
+                labels={PASS_LABELS}
+                />
+                {/*<Text style={{color: 'red'}}>{err4}</Text>*/}
+
+
+                <Modal
+                visible={visible4}
+                backdropStyle={styles.backdrop}
+                onBackdropPress={() => setVisible4(false)}>
+                <Card disabled={true}>
+                <Text>{err4}</Text>
+                <Button onPress={() => setVisible4(false)} style={{width:127,backgroundColor:'red',marginLeft:100,marginTop:10,borderRadius:20}}>
+                OK
+                </Button>
+            </Card>
+        </Modal>
 
                 <View style={styles.inputField}>
                     <FontAwesome style={styles.icon} name="globe" />
@@ -190,33 +285,30 @@ function bmiCheck(){
                         value={bmi} onChangeText={setBmi} placeholderTextColor="#EDDDDF" keyboardType={'numeric'} />
                 </View>
                 <Text style={{color: 'red'}}>{err5}</Text>
-                {/*  
-    <View>
-        <Button onPress={showDatepicker} title="Select date of birth" />
-    </View>
-    {show && (
-        <DateTimePicker
-            testID="dateTimePicker"
-            value={date}
-            onChange={new Date()}
-            placeholder="Select date of birth!"
-            format="YYYY-MM-DD"
-            customStyles={{
-                dateIcon: {
-                    position: 'absolute',
-                    left: 0,
-                    top: 4,
-                    marginLeft: 0
-                },
-                dateInput: {
-                    marginLeft: 36
-                }
-            }}
-            mode="date"
-            display="default"
-        />
-    )}
-            */}
+                
+                <Modal
+                visible={visible5}
+                backdropStyle={styles.backdrop}
+                onBackdropPress={() => setVisible5(false)}>
+                <Card disabled={true}>
+                <Text>{err5}</Text>
+                <Button onPress={() => setVisible5(false)} style={{width:127,backgroundColor:'red',marginLeft:100,marginTop:10,borderRadius:20}}>
+                OK
+                </Button>
+            </Card>
+        </Modal>
+
+
+
+
+
+
+
+
+
+
+
+
 
                 <TouchableOpacity style={styles.btn} onPress={
 
