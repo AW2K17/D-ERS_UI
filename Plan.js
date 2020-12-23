@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Button, Text, View, TextInput, Platform, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
 import Search from './Search';
+import SearchD from './Search copy';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -17,7 +18,7 @@ const Plans = ({ navigation }) => {
     <View style={styles.container}>
       <Text style={styles.Qus}>Choose Your Plan</Text>
 
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('SearchD')}>
         <View style={styles.option}>
           <Text style={styles.choice}>Custom Diet</Text>
         </View>
@@ -48,21 +49,25 @@ const Plans = ({ navigation }) => {
 export const PlanScreen = ({ navigation }) => {
 
   return (
-<NavigationContainer>
-    <Stack.Navigator initialRouteName="Plans">
-      <Stack.Screen
-        name="Plans"
-        component={Plans}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Search"
-        component={Search}
-        options={{ headerShown: false }}
-      />
-
-    </Stack.Navigator>
-    </NavigationContainer>
+    
+      <Stack.Navigator initialRouteName="Plans">
+        <Stack.Screen
+          name="Plans"
+          component={Plans}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Search"
+          component={Search}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SearchD"
+          component={SearchD}
+          options={{ headerShown: false }}
+        />
+      </Stack.Navigator>
+    
   );
 }
 

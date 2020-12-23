@@ -13,6 +13,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import Dashboard from './Dashboard';
 import Signin from './Login';
 import axios from 'axios';
+import { Button, Card, Modal } from '@ui-kitten/components';
 
 const pic2 = { uri: 'https://www.linkpicture.com/q/imageedit_3_4884348579.jpg' };
 
@@ -21,103 +22,125 @@ const windowHeight = Dimensions.get('window').height;
 
 const Stack = createStackNavigator();
 
-const Continue = ({ navigation,route }) => {
+const Continue = ({ navigation, route }) => {
 
-    const { fn,ln,eml,pwd,bm } = route.params.ran;
+    const { fn, ln, eml, pwd, bm } = route.params.ran;
     console.log(fn);
-    
+
 
 
 
     const [weight, setWeight] = useState('');
     const [height, setHeight] = useState('');
     const [age, setAge] = useState('');
-    const [err1,setErr1]=useState('');
-    const [err2,setErr2]=useState('');
-    const [err3,setErr3]=useState('');
+    const [err1, setErr1] = useState('');
+    const [err2, setErr2] = useState('');
+    const [err3, setErr3] = useState('');
+    const [visible1, setVisible1] = useState('');
+    const [visible2, setVisible2] = useState('');
+    const [visible3, setVisible3] = useState('');
 
-    function wgtCheck(){
 
-        if(weight==''){
+
+
+    function wgtCheck() {
+
+        if (weight == '') {
             setErr1("Weight Can't Be Empty");
+            setVisible1('true');
         }
-        else{
+        else {
             setErr1('');
+            setVisible1('');
             return 'true';
         }
     }
 
-    function hgtCheck(){
+    function hgtCheck() {
 
-        if(height==''){
+        if (height == '') {
             setErr2("Height Can't Be Empty");
+            setVisible2('true');
         }
-        else{
+        else {
             setErr2('');
+            setVisible2('');
             return 'true';
         }
-    
-}
 
-function ageCheck(){
-
-    if(age==''){
-        setErr3("Age Can't Be Empty");
     }
-    else{
-        setErr3('');
-        return 'true';
-    }
-}
-    
 
+    function ageCheck() {
 
-
-
-
-
-    function Validations(){
-
-        const c1=wgtCheck();
-        const c2=hgtCheck();
-        const c3=ageCheck();
-
-        if(c1=='true' && c2=='true' && c3=='true'){
-
-            
-                    
-                const ran={
-            
-                     firstName:fn,
-                     lastName:ln,
-                     email: eml,
-                     password: pwd,
-                     bmi:bm,
-                     weight:weight,
-                     height: height,
-                     age:age,
-                     
-            
-                    }
-                    
-                        
-                          axios.get('http://localhost:3010/api-gateway/current-user/user',{withCredentials : true}).then(response=>{console.log(response.data)}).catch(error=>{console.log(error)})
-                            
-                        
-                        
-                        
-                        
-                        
-                    
-                    console.log(ran);
-                    axios.post('http://localhost:3010/api-gateway/sign-up/user',ran,{withCredentials : true}).then(response=>{console.log(response.data);navigation.navigate('Dashboard')}).catch(error => {
-                        console.log(error);
-                        
-            })
+        if (age == '') {
+            setErr3("Age Can't Be Empty");
+            setVisible3('true');
         }
-        
+        else {
+            setErr3('');
+            setVisible3('');
+            return 'true';
+        }
     }
-    
+
+
+
+
+
+
+
+    function Validations() {
+
+        const c1 = wgtCheck();
+        const c2 = hgtCheck();
+        const c3 = ageCheck();
+
+        if (c1 == 'true' && c2 == 'true' && c3 == 'true') {
+
+
+
+            const ran = {
+
+                firstName: fn,
+                lastName: ln,
+                email: eml,
+                password: pwd,
+                bmi: bm,
+                weight: weight,
+                height: height,
+                age: age,
+
+
+            }
+
+
+            axios.get('http://localhost:3010/api-gateway/current-user/user', { withCredentials: true })
+                .then(response => {
+                    console.log(response.data)
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+
+
+
+
+
+
+
+            console.log(ran);
+            axios.post('http://localhost:3010/api-gateway/sign-up/user', ran, { withCredentials: true })
+                .then(response => {
+                    console.log(response.data);
+                    navigation.navigate('Dashboard')
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        }
+
+    }
+
 
 
     return (
@@ -152,29 +175,43 @@ function ageCheck(){
                                 }
                             }}
                             placeholderColor='white'
-                            
+
 
 
                             onValueChange={(value) => console.log(value)}
-                            
-                             items={[
+
+                            items={[
                                 { label: 'Kg', value: 'wgt1' },
                                 { label: 'lbs', value: 'wgt2' },
 
                             ]}
 
-                            
+
                         />
-                    
+
                     </View>
-                    <Text style={{color: 'red'}}>{err1}</Text>
+
+
+                    {/*<Text style={{color: 'red'}}>{err1}</Text>*/}
+
+                    <Modal
+                        visible={visible1}
+                        backdropStyle={styles.backdrop}
+                        onBackdropPress={() => setVisible1(false)}>
+                        <Card disabled={true}>
+                            <Text>{err1}</Text>
+                            <Button onPress={() => setVisible1(false)} style={{ width: 127, backgroundColor: 'red', marginLeft: 100, marginTop: 10, borderRadius: 20 }}>
+                                OK
+                    </Button>
+                        </Card>
+                    </Modal>
 
 
 
                     <View style={styles.inputField}>
                         <MaterialCommunityIcons name="human-male" style={styles.heightIcon} color="#EDDDDF" />
                         <TextInput style={styles.textInput2} placeholder="Height"
-                            value={height} onChangeText={setHeight} placeholderTextColor="#EDDDDF" keyboardType={'numeric'}/>
+                            value={height} onChangeText={setHeight} placeholderTextColor="#EDDDDF" keyboardType={'numeric'} />
                         <RNPickerSelect
                             placeholder={{
                                 label: 'Select Unit',
@@ -205,18 +242,41 @@ function ageCheck(){
                             ]}
                         />
                     </View>
-                    <Text style={{color: 'red'}}>{err2}</Text>
+                    {/*<Text style={{color: 'red'}}>{err2}</Text>*/}
+
+                    <Modal
+                        visible={visible2}
+                        backdropStyle={styles.backdrop}
+                        onBackdropPress={() => setVisible2(false)}>
+                        <Card disabled={true}>
+                            <Text>{err2}</Text>
+                            <Button onPress={() => setVisible2(false)} style={{ width: 127, backgroundColor: 'red', marginLeft: 100, marginTop: 10, borderRadius: 20 }}>
+                                OK
+                </Button>
+                        </Card>
+                    </Modal>
 
                     <View style={styles.inputField}>
                         <Feather name="users" style={styles.icon} />
                         <TextInput style={styles.textInput2} placeholder="Age"
                             value={age} onChangeText={setAge} placeholderTextColor="#EDDDDF" keyboardType={'numeric'} />
                     </View>
-                    <Text style={{color: 'red'}}>{err3}</Text>
+                    {/*<Text style={{color: 'red'}}>{err3}</Text>*/}
+                    <Modal
+                        visible={visible3}
+                        backdropStyle={styles.backdrop}
+                        onBackdropPress={() => setVisible3(false)}>
+                        <Card disabled={true}>
+                            <Text>{err3}</Text>
+                            <Button onPress={() => setVisible3(false)} style={{ width: 127, backgroundColor: 'red', marginLeft: 100, marginTop: 10, borderRadius: 20 }}>
+                                OK
+                </Button>
+                        </Card>
+                    </Modal>
 
-                    <TouchableOpacity style={styles.btn} 
-                    onPress={Validations}>
-                    
+                    <TouchableOpacity style={styles.btn}
+                        onPress={Validations}>
+
                         <Text style={{ color: 'white' }}>CONFIRM REGISTRATION</Text>
                     </TouchableOpacity>
                 </View>

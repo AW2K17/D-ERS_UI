@@ -1,11 +1,12 @@
-import React, { PureComponent, useState } from 'react';
+import React, { PureComponent, useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Dimensions, ImageBackground, Image, TouchableOpacity, ScrollView } from 'react-native';
 
 import Constants from 'expo-constants';
 import { FlatList } from 'react-native-gesture-handler';
-import Lunch from './WorkoutDetail';
+import WorkoutDetail from './WorkoutDetail';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
+import axios from 'axios';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -17,41 +18,91 @@ const pic3 = { uri: 'https://www.muscleandfitness.com/wp-content/uploads/2019/01
 
 const Stack = createStackNavigator();
 
-export const PlanScreen = ({ navigation }) => {
-    const [workouts, setWorkouts] = useState([
-        pic1,
-        pic2,
-        pic3,
-        pic1,
-        pic2,
-        pic3,
-    ]);
+export function Plan({ navigation }) {
+    // const [workouts, setWorkouts] = useState([]);
+
+    const [today, setToday] = useState();
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                axios.get('http://localhost:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
+                    .then(response => {
+                        // console.log(response);
+                        // setExe(response.data.schedulee[0].document[1].day[0].exercise);
+                        axios.get('http://localhost:3021/api-gateway/current-user/schedulee/' + response.data.schedulee[0].id, { withCredentials: true })
+                            .then((res) => {
+                                // setWorkouts(res.data.schedule.document[2].day[0].exercise.photos);
+                                // setExe(res.data.schedule.document[2].day[0].exercise);
+                                console.log(res.data.schedule.document)
+                                function byDate(a, b) {
+                                    const aa = new Date(a.sameDay)
+                                    const bb = new Date(b.sameDay)
+
+                                    if (aa < bb) return -1;
+                                    if (aa > bb) return 1;
+                                    return 0;
+                                }
+                                function filterDate(a) {
+                                    const aa = new Date(a.sameDay).toISOString().substring(0, 10)
+                                    var bb = new Date().toISOString().substring(0, 10);
+                                    var datt = new Date(bb).toISOString().substring(0, 10)
+                                    // console.log(aa);
+                                    // console.log(bb);
+                                    // console.log(datt);
+                                    if (aa == datt) {
+                                        return aa
+                                    }
+                                    return 0;
+                                }
+                                var dat = res.data.schedule.document.sort(byDate)
+                                var datt2 = dat.filter(filterDate)
+                                console.log(datt2)
+                                if (datt2) {
+                                    setToday(datt2)
+                                }
+                            })
+                            .catch(error => {
+                                console.log(error.response)
+                            })
+                    }
+                    );
+            }
+            catch (err) {
+                console.log(err);
+            }
+        }
+        fetchData();
+    }, []);
+    // if (res.data.schedulee) {
+    //     console.log(res.data.schedulee[0].document[0].day[0].exercise.photos[0]);
+    //     console.log(photoUrl);
+    // }
 
 
 
+    if (today != null) {
+        return (
+            <View style={styles.container}>
 
-
-    return (
-        <View style={styles.container}>
-
-            <View style={styles.today}>
-                <Text style={styles.h1}>Today's Workout</Text>
-                <ImageBackground source={pic1} style={styles.workoutPic}>
-                    <TouchableOpacity onPress={() => navigation.navigate('Lunch')}>
-                        <View style={styles.Btn}>
-                            <Text style={{ color: 'white', fontSize: 15 }}>View Details</Text>
-                        </View>
-                    </TouchableOpacity>
-                </ImageBackground>
-            </View>
-            <View style={styles.upcoming}>
+                <View style={styles.today}>
+                    <Text style={styles.h1}>Today's Workout</Text>
+                    <ImageBackground source={today[0].day[0].exercise.photos[0]} style={styles.workoutPic}>
+                        <TouchableOpacity onPress={() => navigation.navigate('WorkoutDetail', today)}>
+                            <View style={styles.Btn}>
+                                <Text style={{ color: 'white', fontSize: 15 }}>View Details</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </ImageBackground>
+                </View>
+                {/* <View style={styles.upcoming}>
 
                 <Text style={styles.h2}>Upcoming Workouts</Text>
 
-            </View>
+            </View> */}
 
 
-            <FlatList
+                {/* <FlatList
                 horizontal={true}
                 horizontal
                 pagingEnabled={true}
@@ -59,38 +110,45 @@ export const PlanScreen = ({ navigation }) => {
                 data={workouts}
                 renderItem={({ item, index }) => (
 
-                    <Image source={item}
-                        key={index}
-                        style={{
-                            width: 200,
-                            height: 200,
+                    <View>
+                        <Image source={item}
+                            key={index}
+                            style={{
+                                width: 200,
+                                height: 200,
 
 
-                            marginLeft: 20,
-                            margin: 7,
-                            marginBottom: 10
-                        }}
-                    />
+                                marginLeft: 20,
+                                margin: 7,
+                                marginBottom: 10
+                            }}
+                        ></Image>
+                        <Text>{exe.exerciseName}</Text>
+                    </View>
                 )}
-            />
-        </View>
+            /> */}
+            </View>
 
 
-    );
+        );
+    }
+    else {
+        return (<View><Text>No workout Today</Text></View>)
+    }
 }
 
-export const Plan = ({ navigation }) => {
+export const PlanScreen = ({ navigation }) => {
     return (
 
         <Stack.Navigator initialRouteName="Plan">
             <Stack.Screen
                 name="Plan"
-                component={PlanScreen}
+                component={Plan}
                 options={{ headerShown: false }}
             />
             <Stack.Screen
-                name="Lunch"
-                component={Lunch}
+                name="WorkoutDetail"
+                component={WorkoutDetail}
                 options={{ headerShown: false }}
             />
         </Stack.Navigator>

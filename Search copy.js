@@ -9,11 +9,12 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import AddExercise from './AddExercise';
+import AddDiet from './AddDiet';
+
 
 const Stack = createStackNavigator();
 
-const Search = ({ navigation }) => {
+const SearchD = ({ navigation }) => {
 
     const [d, setD] = useState([]);
     const [result, setResult] = useState('');
@@ -39,20 +40,16 @@ const Search = ({ navigation }) => {
 
 
     const [title, setTitle] = useState('');
-    const [albumId, setAlbumId] = useState('&albumId=3');
-
-    var filters = [disp1, disp2, disp3, disp4];
-    var add = ['exerciseCategory=Biceps', 'exerciseCategory=Triceps', 'exerciseCategory=Lats', 'exerciseCategory=Chest'];
 
 
 
 
-    var link = 'http://localhost:3020/api-gateway/current-user/exercise/?' + result;
+    const link = 'http://localhost:3030/api-gateway/current-user/nutritionfact/';
     const link1 = 'https://jsonplaceholder.typicode.com/photos?q=' + result;
     const link2 = link1 + '&title=' + title;
 
 
-    function Check1() {
+    function Check() {
 
         if (disp1 == 'false') {
             setDisp1('true');
@@ -67,63 +64,7 @@ const Search = ({ navigation }) => {
         }
     }
 
-    function Check2() {
-
-        if (disp2 == 'false') {
-            setDisp2('true');
-            setShow2('true');
-
-        }
-
-        else if (disp2 == 'true') {
-            setDisp2('false');
-            setShow2('false');
-
-        }
-    }
-
-
-    function Check3() {
-
-        if (disp3 == 'false') {
-            setDisp3('true');
-            setShow3('true');
-
-        }
-
-        else if (disp3 == 'true') {
-            setDisp3('false');
-            setShow3('false');
-
-        }
-    }
-
-
-    function Check4() {
-
-        if (disp4 == 'false') {
-            setDisp4('true');
-            setShow4('true');
-
-        }
-
-        else if (disp4 == 'true') {
-            setDisp4('false');
-            setShow4('false');
-
-        }
-    }
-
-
     function fetchData() {
-
-
-        for (var i = 0; i < 4; i++) {
-            if (filters[i] === 'true') {
-                link = link + add[i];
-            }
-        }
-
 
         // fetch(link, {credentials: "include"}).then((e) => e.json().then((f) => console.log(f)));    
         // if(show1=='true'){
@@ -132,7 +73,7 @@ const Search = ({ navigation }) => {
             .then(data => {
                 console.log(data)
                 setMiniCard(data)
-                setD(data.exercise)
+                setD(data.nutrition)
                 console.log(miniCard)
                 console.log(d)
             }).catch((error) => {
@@ -175,35 +116,39 @@ const Search = ({ navigation }) => {
             </View>
 
             <View style={{ marginTop: 9, marginLeft: 8, flexDirection: 'row' }}>
-                <Text>Biceps</Text>
-                <TouchableOpacity onPress={Check1}>
+                <Text>Dairy</Text>
+                <TouchableOpacity onPress={Check}>
                     <MaterialIcons name={disp1 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
                 </TouchableOpacity>
 
-                <Text style={{ marginLeft: 8 }}>Triceps</Text>
-                <TouchableOpacity onPress={Check2}>
+                <Text style={{ marginLeft: 8 }}>Vegetable</Text>
+                <TouchableOpacity onPress={Check}>
                     <MaterialIcons name={disp2 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
                 </TouchableOpacity>
 
-                <Text style={{ marginLeft: 8 }}>Lats</Text>
-                <TouchableOpacity onPress={Check3}>
+                <Text style={{ marginLeft: 8 }}>Fruit</Text>
+                <TouchableOpacity onPress={Check}>
                     <MaterialIcons name={disp3 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
                 </TouchableOpacity>
 
-                <Text style={{ marginLeft: 8 }}>Chest</Text>
-                <TouchableOpacity onPress={Check4}>
+                <Text style={{ marginLeft: 8 }}>Nuts</Text>
+                <TouchableOpacity onPress={Check}>
+                    <MaterialIcons name={disp4 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
+                </TouchableOpacity>
+
+                <Text style={{ marginLeft: 8 }}>Meat</Text>
+                <TouchableOpacity onPress={Check}>
                     <MaterialIcons name={disp4 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
                 </TouchableOpacity>
 
             </View>
-
 
             {/* <Minicard/>
             <Minicard/>
             <Minicard/> */}
             {/* <Text>{show}</Text> */}
 
-
+            {/* <Button title="Go back" onPress={() => navigation.goBack()} /> */}
             <FlatList
 
                 data={d}
@@ -211,15 +156,12 @@ const Search = ({ navigation }) => {
                     <Minicard>
                         <Image source={{ uri: item.photos.mainPhoto }} style={{ width: 100, height: 80, marginLeft: 7 }} />
 
-                        <Text style={{ marginLeft: 20 }}>{item.exerciseName}</Text>
-                        <TouchableOpacity onPress={() => navigation.navigate('AddExercise', item)}
-                            style={{ backgroundColor: '#BF243D', marginLeft: 60, width: 48, borderRadius: 20, height: 20 }}
-                        >
-                            <Text style={{ color: 'white', marginLeft: 10 }}>Add</Text>
+                        <Text style={{ marginLeft: 20 }}>{item.nutritionName}</Text>
+                        <TouchableOpacity onPress={() => navigation.navigate('AddDiet', item)}
+                            style={{ backgroundColor: '#BF243D', marginLeft: 60, width: 48, borderRadius: 20, height: 20 }}>
+                            <Text style={{ marginLeft: 10, color: 'white'}}>Add</Text>
                         </TouchableOpacity>
                     </Minicard>
-
-
                 )}
             />
 
@@ -235,16 +177,16 @@ export const SearchScreen = ({ navigation }) => {
         <Stack.Navigator initialRouteName="Search">
             <Stack.Screen
                 name="Search"
-                component={Search}
+                component={SearchD}
                 options={{ headerShown: false }}
             />
             <Stack.Screen
-                name="AddExercise"
-                component={AddExercise}
+                name="AddDiet"
+                component={AddDiet}
                 options={{ headerShown: false }}
             />
         </Stack.Navigator>
-
+        
     );
 }
 

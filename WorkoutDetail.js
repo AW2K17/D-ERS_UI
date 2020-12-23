@@ -10,7 +10,10 @@ const pic1={uri:'https://www.dymatize.com/wp-content/uploads/2017/08/brandan-fok
 
 const pic3={uri:'https://www.muscleandfitness.com/wp-content/uploads/2019/01/Bearded-Young-Man-Doing-Bicep-Workout-With-Preacher-Curls-Exercise.jpg?w=1109&quality=86&strip=all'}
 
-const Lunch = () => {
+const WorkoutDetail = ({ route }) => {
+
+
+    const workout = route.params;
 
     const [workouts,setWorkouts]=useState([
        
@@ -25,16 +28,16 @@ const Lunch = () => {
            <ScrollView>
             <View style={styles.today}>
                 <Text style={styles.h1}>Today's Workout</Text>
-                <ImageBackground source={pic1} style={styles.workoutPic}>
+                <ImageBackground source={workout[0].day[0].exercise.photos[0]} style={styles.workoutPic}>
                
                 </ImageBackground>
             </View>
 
             <View>
-            <Text style={{marginTop:30,marginLeft:62,fontSize:25,fontWeight:'bold'}}>Bicep Workout</Text>
+            <Text style={{marginTop:30,marginLeft:62,fontSize:25,fontWeight:'bold'}}>{workout[0].day[0].exercise.exerciseName}</Text>
                 
-                <Text style={{marginTop:30,marginLeft:1,fontSize:21}}>{"   "}Barbell Curls{"      "}6 Sets 4-20 Reps</Text>
-                <Text style={{marginTop:30,marginLeft:1,fontSize:21}}>{"   "}Dumbbell Curls{"     "}6 Sets 10 Reps</Text>
+                <Text style={{marginTop:30,marginLeft:1,fontSize:21}}>{"Sets:   "}{workout[0].day[0].exercise.sets}{"      "}</Text>
+                <Text style={{marginTop:30,marginLeft:1,fontSize:21}}>{"Reps:   "}{workout[0].day[0].exercise.reps[0]}{"     "}</Text>
                 
                 
             </View>
@@ -71,7 +74,7 @@ const Lunch = () => {
     );
 }
 
-export default Lunch;
+export default WorkoutDetail;
 
 const styles = StyleSheet.create ({
     container: {
