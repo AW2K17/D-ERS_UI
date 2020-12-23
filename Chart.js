@@ -6,9 +6,18 @@ import {  IndexPath,Datepicker, Layout,  Select, SelectItem } from '@ui-kitten/c
 import Constants from 'expo-constants';
 
 
-const Chart=()=>{
+
+// 3 values leni hain : protein, carbohydrates , fats, jo nutrition se arahi hain values ,woh pass krni hain
+// handlegram me jo values 100 se divide horahi woh peeche se receive horahi hongi
 
 
+//Values send hongi: pro, fat, carbs,calories
+
+const Chart=({})=>{
+
+    const protein=22;
+    const fats=13;
+    const carbohydrates=1.2;
 
     const renderOption = (title) => (
      
@@ -36,7 +45,50 @@ const Chart=()=>{
       const [selectedIndex2, setSelectedIndex2] = React.useState(new IndexPath(0));
       
     
-    const [pro,setPro]=useState(22);
+    //const [pro,setPro]=useState(22);
+    //const [fat,setFat]=useState(34);
+    //const [carbs,setCarbs]=useState(21);
+    const [calories,setCalories]=useState(12);
+    const [quantity,setQuantity]=useState(0);
+    const [data,setData]=useState(
+
+        [
+            {
+                key: 1,
+                amount: protein,
+                svg: { fill: 'red' },
+            },
+            {
+                key: 2,
+                amount: fats,
+                svg: { fill: 'green' }
+            },
+            {
+                key: 3,
+                amount: carbohydrates,
+                svg: { fill: 'blue' }
+            }
+        ]
+
+
+
+
+
+    );
+    
+
+
+
+    let fat;
+    let pro;
+    let carbs;
+
+
+
+
+
+
+
    
         //displayValue--> fats/protein/carbs
         const displayValue = data2[selectedIndex.row]; 
@@ -53,8 +105,130 @@ const Chart=()=>{
                 j=j+1;
             }
         }
+       
+        /*
+        const data = [
+            {
+                key: 1,
+                amount: pro,
+                svg: { fill: 'red' },
+            },
+            {
+                key: 2,
+                amount: fats,
+                svg: { fill: 'green' }
+            },
+            {
+                key: 3,
+                amount: carbs,
+                svg: { fill: 'blue' }
+            }
+        ]
+        */
+
+
+
+
+
+
+
+
+
+       // console.log(check[0],check[1]);
+       
+       // console.log('Pro:'+ran);
+
+
+
+
+
+
+
+
+
+
+
+
+      
+        const handleGram=(val,cat)=>{
+            if(cat==="f")
+            {
+                pro=(parseFloat(((protein/100)*val).toFixed(2)))
+               carbs=(parseFloat(((carbohydrates/100)*val).toFixed(2)))
+            }
+            if(cat==="c")
+            {
+                fat=(parseFloat(((fats/100)*val).toFixed(2)))
+                pro=(parseFloat(((protein/100)*val).toFixed(2)))
+            }
+            if(cat==="p")
+            {
+                carbs=(parseFloat(((carbohydrates/100)*val).toFixed(2)))
+                fat=(parseFloat(((fats/100)*val).toFixed(2)))
+            }
+            
+        }
         
-        console.log(check[0],check[1]);
+        
+        
+        
+        const generateData=()=>{
+            
+            return (
+                [
+                    {
+                        key: 1,
+                        amount: pro,
+                        svg: { fill: 'red' },
+                    },
+                    {
+                        key: 2,
+                        amount: fat,
+                        svg: { fill: 'green' }
+                    },
+                    {
+                        key: 3,
+                        amount: carbs,
+                        svg: { fill: 'blue' }
+                    }
+                ]
+        
+            
+            )
+        }
+        const change=()=>{
+            setCalories((4*(carbs+pro))+(9*(fat)))
+        
+            setData(generateData());
+            
+        }
+
+
+
+        if(displayValue=='Fats')
+        {
+           // handleFats(quantity);
+            fat=parseFloat(quantity);
+            handleGram((parseFloat(quantity)/fats)*100,"f")
+        }
+        else if (displayValue=='Protein')
+        {
+            //handleProtein(quantity);
+            pro=parseFloat(quantity);
+            handleGram((parseFloat(quantity)/protein)*100,"p")
+        }
+        else if(displayValue=='Carbs')
+        {
+            //handleCarbohydrate(quantity);
+            carbs=parseFloat(quantity);
+            handleGram((parseFloat(quantity)/carbohydrates)*100,"c")
+        }
+
+
+        console.log(fat,carbs,pro,calories);
+
+
+
 
 
 
@@ -67,50 +241,31 @@ const Chart=()=>{
     
 
 
-        const data = [
-            {
-                key: 1,
-                amount: pro,
-                svg: { fill: 'red' },
-            },
-            {
-                key: 2,
-                amount: 50,
-                svg: { fill: 'green' }
-            },
-            {
-                key: 3,
-                amount: 40,
-                svg: { fill: 'blue' }
-            }
-        ]
-        console.log(data[0].amount);
-        
-        console.log(data[1].amount);
-        console.log(data[2].amount);
         
         
-        const Labels = ({ slices, height, width }) => {
-            return slices.map((slice, index) => {
-                const { labelCentroid, pieCentroid, data} = slice;
-                return (
-                    <Text
-                        key={index}
-                        x={pieCentroid[ 0 ]}
-                        y={pieCentroid[ 1 ]}
-                        fill={'white'}
-                        textAnchor={'middle'}
-                        alignmentBaseline={'middle'}
-                        fontSize={24}
-                        stroke={'black'}
-                        strokeWidth={0.2}
-                    >
-                                          
-                    {data.amount}                      
-                     </Text>
-                )
-            })
-        }
+        
+        
+        function Labels({ slices, height, width }) {
+        return slices.map((slice, index) => {
+            const { labelCentroid, pieCentroid, data } = slice;
+            return (
+                <Text
+                    key={index}
+                    x={pieCentroid[0]}
+                    y={pieCentroid[1]}
+                    fill={'white'}
+                    textAnchor={'middle'}
+                    alignmentBaseline={'middle'}
+                    fontSize={24}
+                    stroke={'black'}
+                    strokeWidth={0.2}
+                >
+
+                    {data.amount}
+                </Text>
+            );
+        });
+    }
 
         return (
             <View>
@@ -130,8 +285,7 @@ const Chart=()=>{
                <Text style={{fontSize:18,fontWeight:'bold'}}>{displayValue}: {data[0].amount}</Text>
                <Text style={{fontSize:18,fontWeight:'bold',marginLeft:8}}>{check[0]}:{data[1].amount}</Text>
                <Text style={{fontSize:18,fontWeight:'bold',marginLeft:8}}>{check[1]}: {data[2].amount}</Text>
-               
-               
+               <Button title="Update" onPress={change} />               
                
            </View>
             <View style={{flexDirection: 'row',marginTop:33}}>
@@ -144,7 +298,7 @@ const Chart=()=>{
                     {data2.map(renderOption)}
                 </Select>
 
-                <TextInput style={{backgroundColor:'silver',width:120,marginLeft:6}} placeholder={'Enter Quantity'} onChangeText={setPro}></TextInput>
+                <TextInput style={{backgroundColor:'silver',width:120,marginLeft:6}} placeholder={'Enter Quantity'} onChangeText={setQuantity}></TextInput>
                 
                 </View>
                 <View style={{marginTop:7}}>
