@@ -1,19 +1,38 @@
 import React, { useState } from "react";
 import {
   Alert,
-  Modal,
+  
   StyleSheet,
   Text,
   TouchableHighlight,
   View
 } from "react-native";
+import Modal from 'modal-react-native-web';
 
 const Dialog = () => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalVisible2, setModalVisible2] = useState(false);
+  const [modalVisible, setModalVisible] = useState('');
+  const [modalVisible2, setModalVisible2] = useState('');
   
   return (
+    
     <View style={styles.centeredView}>
+
+
+     <TouchableHighlight
+        style={styles.openButton}
+        onPress={() => {
+          setModalVisible(true);
+        }}
+      >
+        <Text style={styles.textStyle}>Delete</Text>
+      </TouchableHighlight>
+
+
+
+
+
+
+    
       <Modal
         animationType="slide"
         transparent={true}
@@ -25,21 +44,22 @@ const Dialog = () => {
             <Text style={styles.modalText}>Are You Sure You Want To Delete?</Text>
             <View style={{flexDirection:'row'}}>
             <TouchableHighlight
-              style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+              style={ styles.openButton}
+              onPress={() => {
+                setModalVisible2(!modalVisible2),setModalVisible(!modalVisible);
+              }}
+            >
+              <Text style={styles.textStyle}>Yess</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={styles.openButton}
               onPress={() => {
                 setModalVisible(!modalVisible);
               }}
             >
               <Text style={styles.textStyle}>No</Text>
             </TouchableHighlight>
-              <TouchableHighlight
-              style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-              onPress={() => {
-                setModalVisible2(!modalVisible2),setModalVisible(!modalVisible);
-              }}
-            >
-              <Text style={styles.textStyle}>Yes</Text>
-            </TouchableHighlight>
+              
           </View>
           </View>
         </View>
@@ -61,7 +81,7 @@ const Dialog = () => {
             <Text style={styles.modalText}>Deleted Items Will Not Be Recovered, Still Want To Delete?</Text>
             <View style={{flexDirection:'row'}}>
             <TouchableHighlight
-              style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+              style={styles.openButton}
               onPress={() => {
                 setModalVisible2(!modalVisible2);
               }}
@@ -70,7 +90,7 @@ const Dialog = () => {
             </TouchableHighlight>
               
               <TouchableHighlight
-              style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+              style={styles.openButton}
               onPress={() => {
                 setModalVisible2(!modalVisible2);
               }}
@@ -82,20 +102,13 @@ const Dialog = () => {
         </View>
       </Modal>
       
+      
 
 
 
 
 
-
-      <TouchableHighlight
-        style={styles.openButton}
-        onPress={() => {
-          setModalVisible(true);
-        }}
-      >
-        <Text style={styles.textStyle}>Delete</Text>
-      </TouchableHighlight>
+     
     </View>
   );
 };
