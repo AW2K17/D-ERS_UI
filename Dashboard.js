@@ -1,10 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image,Button } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Image, Button } from 'react-native';
 import axios from 'axios';
 import { HomeScreen } from './HomeScreen';
 import { WorkoutScreen } from './WorkoutScreen';
-import { Diet } from './DietScreen';
+import { DietScreen } from './DietScreen';
 import { ProgressScreen } from './ProgressScreen';
 import { UsersScreen } from './UsersScreen';
 import { WorkoutsScreen } from './WorkoutsScreen';
@@ -12,11 +12,16 @@ import { MealsScreen } from './MealsScreen';
 import { SettingsScreen } from './SettingsScreen';
 import { LogoutScreen } from './LogoutScreen';
 import Signin from './Login';
+import LoginScreen from './Login';
+import PlanScreen from './Plan';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 // import MyTabs from './BottomTab';
+
+import FlashMessage from "react-native-flash-message";
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 import { NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -65,7 +70,7 @@ const getHeaderTitle = (route) => {
 const HomeStackScreen = ({ navigation }) => {
   return (
     <HomeStack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
-      <HomeStack.Screen name="Home" component={HomeScreen} options={({ route }) => ({
+      <HomeStack.Screen name="Home" component={PlanScreen} options={({ route }) => ({
         headerTitle: getHeaderTitle(route),
         headerLeft: () => (
           <NavigationDrawerStructure
@@ -97,7 +102,7 @@ const DietStackScreen = ({ navigation }) => {
       ),
       headerTitleAlign: 'center'
     }}>
-      <DietStack.Screen name="Diet" component={Diet} />
+      <DietStack.Screen name="Diet" component={DietScreen} />
     </DietStack.Navigator>
   );
 }
@@ -147,29 +152,29 @@ function SettingsStackScreen() {
   );
 }
 
-function Signout(){
+function Signout() {
 
 
 
-  axios.post('http://localhost:3010/api-gateway/sign-out/user').then(response =>{
-                
-                console.log(response);
-                navigation.navigate('Signin');
-                
-            }).catch(error => {
-                console.log(error);
-                }
-            )
+  axios.post('http://localhost:3010/api-gateway/sign-out/user').then(response => {
+
+    console.log(response);
+    // navigation.navigate('Login');
+
+  }).catch(error => {
+    console.log(error);
+  }
+  )
 
 
 }
 
 function LogoutStackScreen() {
   return (
-<LogoutStack.Navigator headerMode="none" >
-      <LogoutStack.Screen name="Logout" component={Signin}  />
+    <LogoutStack.Navigator headerMode="none" >
+      <LogoutStack.Screen name="Logout" component={LogoutScreen} />
     </LogoutStack.Navigator>
-    
+
   );
 }
 
@@ -227,24 +232,238 @@ function TabsScreen() {
 }
 
 
+function byDate(a, b) {
+  const aa = new Date(a)
+  const bb = new Date(b)
+
+  if (aa < bb) return -1;
+  if (aa > bb) return 1;
+  return 0;
+}
+function filterDate(a) {
+  const aa = new Date(a).toISOString().substring(0, 10)
+  console.log(aa)
+  var bb = new Date().toISOString().substring(0, 10);
+  var datt = new Date(bb).toISOString().substring(0, 10)
+  // console.log(aa);
+  // console.log(bb);
+  // console.log(datt);
+  if (aa == datt) {
+      return aa
+  }
+  return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const Drawer = createDrawerNavigator();
 
 
 export const Dashboard = ({ navigation }) => {
 
-  return (
-    
-      <Drawer.Navigator initialRouteName="Home" options={{ headerShown: false }}>
-        <Drawer.Screen name="Home" component={TabsScreen} options={{ headerShown: false }} />
-        <Drawer.Screen name="Users" component={UsersStackScreen} />
-        <Drawer.Screen name="Meals" component={MealsStackScreen} />
-        <Drawer.Screen name="Workouts" component={WorkoutsStackScreen} />
-        <Drawer.Screen name="Settings" component={SettingsStackScreen} />
-        <Drawer.Screen name="Log Out" component={LogoutStackScreen} onPress={Signout} options={{headerShown: false}} />
-      </Drawer.Navigator>
+  
+   var intervalId = null;
+   var varCounter = 0;
 
+  // var intervalId2 = null;
+  // var varCounter2 = 1;
+  // // var d = ['20-12-2020', '22-12-2020', '25-12-2020', '27-12-2020'];
+   var count1 = 0;
+  // var count2 = 0;
+
+   const [dates, setDates] = useState('');
+  //var dates
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        axios.get('http://localhost:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+          .then((res) => {
+            axios.get('http://localhost:3032/api-gateway/current-user/nutrition-schedule/reminder/' + res.data.schedulenf[0].id, { withCredentials: true })
+              .then((res) => {
+                dates =res.data.map((e) => {
+                  
+                  return e.sameDay;
+                  
+                })
+                console.log(dates)
+
+                var dat = dates.sort(byDate)
+                console.log(dat);
+                var datt2 = dat.filter(filterDate)
+                console.log("Aaj waali"+datt2)
+              })
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+
+        // console.log(response.data.schedulenf[0].id)
+
+
+      }
+      catch (err) {
+        console.log(err)
+      }
+    }
+    fetchData();
+  }, [])
+
+
+
+   //console.log(dates[0])
+
+
+
+   var varName = function () {
+
+     var dateFormat = require("dateformat");
+     var now = new Date();
+     var currentDate = dateFormat(now, "yyyy-mm-dd");
+
+
+     if (varCounter < 3) {
+
+       if (currentDate == dates[count1]) {
+
+         setTimeout(() => {
+           showMessage({
+             message: 'Its Time for Breakfast! ', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
+             color: "black", backgroundColor: '#F5FAFA'
+           })
+         }, 3000);
+
+        setTimeout(() => {
+          showMessage({
+            message: 'Its Time For Lunch! ', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
+            color: "black", backgroundColor: '#F5FAFA'
+          })
+        }, 7000);
+
+
+        setTimeout(() => {
+          showMessage({
+            message: 'Its Time For Dinner! ', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
+            color: "black", backgroundColor: '#F5FAFA'
+          })
+        }, 10000);
+
+
+        count1++;
+        
+      }
+  else if (currentDate != dates[count1]) {
+  
+  showMessage({
+    message:'cant show',type:'info',color: "white",type:'warning',icon: { icon: "auto", position: "left" },
+    color: "#606060"})
     
+  }
+ 
+  count1++;
+  varCounter++;
+  console.log("Limit: "+varCounter);
+
+    } else {
+      clearInterval(intervalId);
+    }
+  };
+
+
+
+
+  // var varName2 = function () {
+
+  //   var dateFormat = require("dateformat");
+  //   var now = new Date();
+  //   var currentDate = dateFormat(now, "d-m-yyyy");
+
+
+  //   if (varCounter2 <= 4) {
+
+  //     if (currentDate == d[count2]) {
+  //       showMessage({
+  //         message: 'Its Time for Workout! ', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
+  //         color: "black", backgroundColor: '#F5FAFA'
+  //       })
+
+  //       count2++;
+  //       varCounter2++;
+  //     }
+  //     else if (currentDate != d[count2]) {
+  //       /*
+  //       showMessage({
+  //         message:'cant show',type:'info',color: "white",type:'warning',icon: { icon: "auto", position: "left" },
+  //         color: "#606060"})
+  //         varCounter++;*/
+  //     }
+
+  //   } else {
+  //     clearInterval(intervalId2);
+  //   }
+  // };
+
+
+
+
+
+
+  function stopDiet() {
+    useEffect(() => {
+      intervalId = setInterval(varName, 20000);
+    }, []);
+    
+  };
+
+
+  // function stopExercise() {
+  //   intervalId2 = setInterval(varName2, 3000);
+  // };
+
+
+
+
+  stopDiet();
+  // stopExercise();
+
+
+  return (
+
+    <Drawer.Navigator initialRouteName="Home" options={{ headerShown: false }} independent={true}>
+      <Drawer.Screen name="Home" component={TabsScreen} options={{ headerShown: false }} />
+      <Drawer.Screen name="Users" component={UsersStackScreen} />
+      <Drawer.Screen name="Meals" component={MealsScreen} />
+      <Drawer.Screen name="Workouts" component={WorkoutsStackScreen} />
+      <Drawer.Screen name="Settings" component={SettingsStackScreen} />
+      <Drawer.Screen name="Log Out" component={LogoutStackScreen} options={{ headerShown: false }} />
+    </Drawer.Navigator>
+
+
 
   );
   // <View style={styles.container}>
