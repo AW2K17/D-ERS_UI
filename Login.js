@@ -34,7 +34,7 @@ const Login = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [show, setShow] = useState('false');
-  const [visible, setVisible] = useState('true');
+  const [visible, setVisible] = useState(true);
   const [visible1, setVisible1] = React.useState('');
   const [visible2, setVisible2] = React.useState('');
   const [visible3, setVisible3] = React.useState('');
@@ -42,9 +42,11 @@ const Login = ({ navigation }) => {
   useEffect(() => {
     async function fetchData() {
       try {
+        console.log('I am running')
         axios.get('http://localhost:3010/api-gateway/current-user/user', { withCredentials: true })
           .then((res) => {
             console.log(res);
+            console.log('inside')
             if (res.status == '401') {
               navigation.navigate('Login')
             }
@@ -53,7 +55,7 @@ const Login = ({ navigation }) => {
             }
           }).catch((error) => {
             navigation.navigate('Login')
-            console.log(error.response)
+            console.log('Error', error)
           })
 
 
@@ -86,7 +88,7 @@ const Login = ({ navigation }) => {
 
         <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#EDDDDF' }}>
           <Feather name="lock" size={24} color="#EDDDDF" style={{ marginTop: 70 }} />
-          <TextInput placeholder='Password' placeholderTextColor="#EDDDDF" secureTextEntry={visible} style={styles.inner2} onChangeText={setPassword} />
+          <TextInput placeholder='Password' placeholderTextColor="#EDDDDF" keyboardType="default" secureTextEntry={visible} style={styles.inner2} onChangeText={setPassword} />
           <TouchableOpacity style={{ marginTop: 70 }} onPress={() => { setShow(!show), setVisible(!visible) }}>
             <MaterialCommunityIcons name={show === false ? 'eye-outline' : 'eye-off-outline'} size={26} color={'white'} />
           </TouchableOpacity>
@@ -103,22 +105,31 @@ const Login = ({ navigation }) => {
 
 
           console.log(ran);
-
-          axios.post('http://localhost:3010/api-gateway/sign-in/user', ran, { withCredentials: true }).then(response => {
-            console.log(navigation);
-            setVisible1('')
-            navigation.navigate('Dashboard');
-
-          }).catch(error => {
-            if (error) {
-              setVisible1('true');
-              setError("Email Or Password Not Correct, Make Sure You're Registered!");
-            }
-          })
+          try {
+            console.log('Login running')
+            axios.post('http://localhost:3010/api-gateway/sign-in/user', ran, { withCredentials: true })
+            .then(response => {
+              console.log('Login inside')
+              console.log(response);
+              setVisible1(false)
+              navigation.navigate('Dashboard');
+  
+            }).catch(error => {
+              if (error) {
+                console.log("Inside", error)
+                setVisible1(true);
+                // setError(error);
+                setError("Email Or Password Not Correct, Make Sure You're Registered!");
+              }
+            })
+          }
+          catch (error) {
+            console.log(error);
+          }
         }}
         >Login</Button>
 
-        {/*<Text style={{color:'red'}}>{error}</Text>*/}
+        {/* <Text style={{color:'red'}}>{error}</Text> */}
         <Modal
           visible={visible1}
           backdropStyle={styles.backdrop}
@@ -149,12 +160,12 @@ const Login = ({ navigation }) => {
         </View>
 
         <Text style={{ color: 'white', fontSize: 14, marginTop: 22 }}>Don't Have An Account?
-          <Text style={{ fontWeight: 'bold' }} onPress={() => navigation.navigate('Signup')} >  Create Here</Text>
+          <Text style={{ fontWeight: 'bold', color: 'white' }} onPress={() => navigation.navigate('Signup')} >  Create Here</Text>
         </Text>
       </ImageBackground>
 
     </SafeAreaView>
-  )
+  );
 }
 
 export const LoginScreen = ({ navigation }) => {

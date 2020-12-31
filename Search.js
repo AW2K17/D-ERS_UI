@@ -10,6 +10,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AddExercise from './AddExercise';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const Stack = createStackNavigator();
 
@@ -162,19 +163,20 @@ const Search = ({ navigation }) => {
     return (
         <View style={{ marginTop: Constant.statusBarHeight }}>
             <View style={{ flexDirection: 'row' }}>
-                <Ionicons name="arrow-back" size={24} color="black"
+                <Ionicons name="arrow-back" size={30} color="black"
                     onPress={() => navigation.goBack()}
+                    style={{ marginTop: 3, marginLeft: 12 }}
                 />
                 <TextInput
                     value={result}
-                    style={{ backgroundColor: 'silver', width: 280, height: 29, marginLeft: 9, marginTop: 5 }}
+                    style={{ backgroundColor: 'silver', width: 280, height: 29, marginLeft: 9, marginTop: 5, padding: 10 }}
                     placeholder={'Search Here'}
                     onChangeText={(text) => setResult(text)}
                 />
-                <MaterialCommunityIcons name="send" size={24} style={{ marginTop: 6, marginLeft: 12 }} color="black" onPress={fetchData} />
+                <MaterialCommunityIcons name="send" size={30} style={{ marginTop: 3, marginLeft: 12 }} color="black" onPress={fetchData} />
             </View>
 
-            <View style={{ marginTop: 9, marginLeft: 8, flexDirection: 'row' }}>
+            <View style={{ marginTop: 10, marginLeft: 50, flexDirection: 'row' }}>
                 <Text>Biceps</Text>
                 <TouchableOpacity onPress={Check1}>
                     <MaterialIcons name={disp1 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
@@ -208,17 +210,19 @@ const Search = ({ navigation }) => {
 
                 data={d}
                 renderItem={({ item }) => (
+                    <ScrollView>
                     <Minicard>
                         <Image source={{ uri: item.photos.mainPhoto }} style={{ width: 100, height: 80, marginLeft: 7 }} />
 
-                        <Text style={{ marginLeft: 20 }}>{item.exerciseName}</Text>
+                        <Text style={{ fontSize: 15, marginLeft: 20 }}>{item.exerciseName}</Text>
                         <TouchableOpacity onPress={() => navigation.navigate('AddExercise', item)}
-                            style={{ backgroundColor: '#BF243D', marginLeft: 60, width: 48, borderRadius: 20, height: 20 }}
+                            style={{ flexDirection: 'row', padding: 10, backgroundColor: '#BF243D', marginLeft: 60, width: 100, borderRadius: 20, height: 42 }}
                         >
-                            <Text style={{ color: 'white', marginLeft: 10 }}>Add</Text>
+                            <MaterialIcons name={'add'} style={{ marginRight: 10, color: 'white' }} size={22} />
+                            <Text style={{ fontSize: 15, color: 'white' }}>Add</Text>
                         </TouchableOpacity>
                     </Minicard>
-
+                    </ScrollView>
 
                 )}
             />

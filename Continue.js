@@ -14,6 +14,7 @@ import Dashboard from './Dashboard';
 import Signin from './Login';
 import axios from 'axios';
 import { Button, Card, Modal } from '@ui-kitten/components';
+import { IndexPath, Layout, Select, SelectItem } from '@ui-kitten/components';
 
 const pic2 = { uri: 'https://www.linkpicture.com/q/imageedit_3_4884348579.jpg' };
 
@@ -24,14 +25,17 @@ const Stack = createStackNavigator();
 
 const Continue = ({ navigation, route }) => {
 
-    const { fn, ln, eml, pwd, bm } = route.params.ran;
-    console.log(fn);
+    const { fn, ln, eml, pwd } = route.params.ran;
+    //console.log(fn);
 
 
 
 
     const [weight, setWeight] = useState('');
     const [height, setHeight] = useState('');
+    const [selectedIndex, setSelectedIndex] = React.useState(new IndexPath(0));
+    const [selectedIndex2, setSelectedIndex2] = React.useState(new IndexPath(0));
+    const [inch, setInch] = useState('');
     const [age, setAge] = useState('');
     const [err1, setErr1] = useState('');
     const [err2, setErr2] = useState('');
@@ -39,6 +43,26 @@ const Continue = ({ navigation, route }) => {
     const [visible1, setVisible1] = useState('');
     const [visible2, setVisible2] = useState('');
     const [visible3, setVisible3] = useState('');
+
+    const data1 = [
+        'Kg',
+        'Pounds',
+    ];
+
+    const data2 = [
+        "FeetInches",
+        'Meter',
+    ];
+
+
+
+
+    const displayValue = data1[selectedIndex.row];
+    const displayValue2 = data2[selectedIndex2.row];
+
+    const renderOption = (title) => (
+        <SelectItem title={title} />
+    );
 
 
 
@@ -105,7 +129,7 @@ const Continue = ({ navigation, route }) => {
                 lastName: ln,
                 email: eml,
                 password: pwd,
-                bmi: bm,
+                bmi: weight / Math.pow(height + inch, 2),
                 weight: weight,
                 height: height,
                 age: age,
@@ -114,13 +138,13 @@ const Continue = ({ navigation, route }) => {
             }
 
 
-            axios.get('http://localhost:3010/api-gateway/current-user/user', { withCredentials: true })
-                .then(response => {
-                    console.log(response.data)
-                })
-                .catch(error => {
-                    console.log(error)
-                })
+            // axios.get('http://localhost:3010/api-gateway/current-user/user', { withCredentials: true })
+            //     .then(response => {
+            //         console.log(response.data)
+            //     })
+            //     .catch(error => {
+            //         console.log(error)
+            //     })
 
 
 
@@ -129,7 +153,8 @@ const Continue = ({ navigation, route }) => {
 
 
             console.log(ran);
-            axios.post('http://localhost:3010/api-gateway/sign-up/user', ran, { withCredentials: true })
+            try{
+                axios.post('http://localhost:3010/api-gateway/sign-up/user', ran, { withCredentials: true })
                 .then(response => {
                     console.log(response.data);
                     navigation.navigate('Dashboard')
@@ -137,9 +162,90 @@ const Continue = ({ navigation, route }) => {
                 .catch(error => {
                     console.log(error);
                 })
+            
+            }
+            catch (error) {
+                console.log(error);
+            }
         }
 
     }
+
+
+    const handleHeighttF = (e) => {
+        console.log(displayValue2);
+
+
+        if (displayValue2 === "FeetInches") {
+
+            const i = e.toString().split(".")
+            setHeight(parseFloat(i[0]) * 0.3048)
+            handleHeighttI(i[1]);
+        }
+        else {
+
+            handleHeighttM(e)
+        }
+        console.log(height)
+        console.log(inch)
+
+
+    }
+    const handleHeighttM = (e) => {
+        setHeight(parseFloat(e))
+    }
+    const handleHeighttI = (e) => {
+        if (displayValue2 === "FeetInches") {
+            setInch(parseFloat(e) * 0.0254)
+        }
+
+    }
+
+
+
+
+    const handleWeightOptions = (e) => {
+
+
+
+        setSelectedIndex(e);
+
+        if (e === 1)
+            handleWeight(weight);
+
+    }
+
+    const handleHeightOptions = (e) => {
+
+        setSelectedIndex2(e);
+
+        if (e === 0) {
+            handleHeight(height);
+        }
+    }
+
+
+
+
+    const handleWeight = (e) => {
+
+        if (displayValue === "Pounds") {
+            if (e)
+                setWeight(parseFloat((parseFloat(e) * 0.453592).toFixed(2)))
+
+
+        }
+        else {
+            if (e)
+                setWeight(parseFloat((parseFloat(e)).toFixed(2)))
+        }
+        console.log(e);
+        console.log(displayValue);
+        console.log(weight);
+
+    }
+
+
 
 
 
@@ -156,14 +262,14 @@ const Continue = ({ navigation, route }) => {
                     <View style={styles.inputField}>
                         <FontAwesome5 name="weight-hanging" color="#EDDDDF" style={styles.icon} />
                         <TextInput style={styles.textInput1} placeholder="Weight"
-                            value={weight} onChangeText={setWeight} placeholderTextColor="#EDDDDF" keyboardType={'numeric'} />
-                        <RNPickerSelect
+                            onChangeText={handleWeight} placeholderTextColor="#EDDDDF" keyboardType={'numeric'} />
+
+                        {/*<RNPickerSelect
                             placeholder={{
                                 label: 'Select Unit',
                                 value: null,
                                 color: 'red',
                             }}
-
                             style={{
                                 inputAndroid: {
                                     fontSize: 34,
@@ -171,23 +277,25 @@ const Continue = ({ navigation, route }) => {
                                     backgroundColor: 'transparent',
                                     width: 120,
                                     marginLeft: 10
-
                                 }
                             }}
                             placeholderColor='white'
-
-
-
-                            onValueChange={(value) => console.log(value)}
-
+                           
                             items={[
                                 { label: 'Kg', value: 'wgt1' },
                                 { label: 'lbs', value: 'wgt2' },
-
                             ]}
+                        />*/}
 
+                        <Select level='1'
+                            style={styles.select}
+                            placeholder='Default'
+                            value={displayValue}
+                            selectedIndex={selectedIndex}
+                            onSelect={index => handleWeightOptions(index)}>
+                            {data1.map(renderOption)}
+                        </Select>
 
-                        />
 
                     </View>
 
@@ -211,14 +319,13 @@ const Continue = ({ navigation, route }) => {
                     <View style={styles.inputField}>
                         <MaterialCommunityIcons name="human-male" style={styles.heightIcon} color="#EDDDDF" />
                         <TextInput style={styles.textInput2} placeholder="Height"
-                            value={height} onChangeText={setHeight} placeholderTextColor="#EDDDDF" keyboardType={'numeric'} />
-                        <RNPickerSelect
+                            onChangeText={handleHeighttF} placeholderTextColor="#EDDDDF" keyboardType={'numeric'} />
+                        {/*<RNPickerSelect
                             placeholder={{
                                 label: 'Select Unit',
                                 value: null,
                                 color: 'red',
                             }}
-
                             style={{
                                 inputAndroid: {
                                     fontSize: 19,
@@ -226,21 +333,26 @@ const Continue = ({ navigation, route }) => {
                                     backgroundColor: 'transparent',
                                     width: 120,
                                     marginLeft: 10
-
                                 }
                             }}
                             placeholderColor='white'
-
-
-
                             onValueChange={(value) => console.log(value)}
-
                             items={[
                                 { label: 'Foot', value: 'ht1' },
                                 { label: 'Meter', value: 'ht2' },
-
                             ]}
-                        />
+                        />*/}
+
+
+                        <Select level='1'
+                            style={styles.select}
+                            placeholder='Default'
+                            value={displayValue2}
+                            selectedIndex={selectedIndex2}
+                            onSelect={index => handleHeightOptions(index)}>
+                            {data2.map(renderOption)}
+                        </Select>
+
                     </View>
                     {/*<Text style={{color: 'red'}}>{err2}</Text>*/}
 
@@ -387,5 +499,11 @@ const styles = StyleSheet.create({
         width: 220,
         borderRadius: 15,
         backgroundColor: '#BF243D',
+    },
+    select: {
+
+
+        marginTop: 20,
+        width: 120
     }
 })

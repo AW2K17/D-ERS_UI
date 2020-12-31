@@ -37,9 +37,9 @@ const Register = ({ navigation }) => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [bmi, setBmi] = useState('');
+    // const [bmi, setBmi] = useState('');
     const [show, setShow] = useState('false');
-    const [visible, setVisible] = useState('true');
+    const [visible, setVisible] = useState(true);
     const [err1, setErr1] = useState('');
     const [err2, setErr2] = useState('');
     const [err3, setErr3] = useState('');
@@ -140,20 +140,20 @@ const Register = ({ navigation }) => {
 
 
 
-    function bmiCheck() {
+    // function bmiCheck() {
 
 
-        if (bmi == "") {
-            setErr5("* BMI Can't Be Empty");
-            setVisible5('true');
-        }
+    //     if (bmi == "") {
+    //         setErr5("* BMI Can't Be Empty");
+    //         setVisible5('true');
+    //     }
 
-        else {
-            setErr5("");
-            setVisible5('');
-            return 'true';
-        }
-    }
+    //     else {
+    //         setErr5("");
+    //         setVisible5('');
+    //         return 'true';
+    //     }
+    // }
 
 
 
@@ -170,10 +170,10 @@ const Register = ({ navigation }) => {
         const c2 = lnCheck();
         const c3 = emailCheck();
         const c4 = pwdCheck();
-        const c5 = bmiCheck();
+        // const c5 = bmiCheck();
 
-        if (c1 == 'true' && c2 == 'true' && c3 == 'true' && c4 == 'true' && c5 == 'true') {
-            const ran = { fn: firstName, ln: lastName, eml: email, pwd: password, bm: bmi };
+        if (c1 == 'true' && c2 == 'true' && c3 == 'true' && c4 == 'true') {
+            const ran = { fn: firstName, ln: lastName, eml: email, pwd: password };
             console.log(ran);
             navigation.navigate('Continue', { screen: 'Continue', params: { ran } });
         }
@@ -251,7 +251,7 @@ const Register = ({ navigation }) => {
                         <FontAwesome style={styles.passwordIcon} name="lock" />
                         <TextInput maxLength={15} style={{ marginLeft: 10, color: 'white', marginTop: 22 }} placeholder="Password"
                             secureTextEntry={visible} value={password} onChangeText={setPassword} placeholderTextColor="#EDDDDF" />
-                        <TouchableOpacity style={{ marginTop: 30 }} onPress={() => { setShow(!show), setVisible(!visible) }}>
+                        <TouchableOpacity style={{ marginLeft: 90, marginTop: 30 }} onPress={() => { setShow(!show), setVisible(!visible) }}>
                             <MaterialCommunityIcons name={show === false ? 'eye-outline' : 'eye-off-outline'} size={26} color={'white'} />
                         </TouchableOpacity>
                     </View>
@@ -279,7 +279,7 @@ const Register = ({ navigation }) => {
                     </Card>
                 </Modal>
 
-                <View style={styles.inputField}>
+                {/* <View style={styles.inputField}>
                     <FontAwesome style={styles.icon} name="globe" />
                     <TextInput style={styles.textInput} placeholder="BMI"
                         value={bmi} onChangeText={setBmi} placeholderTextColor="#EDDDDF" keyboardType={'numeric'} />
@@ -296,7 +296,7 @@ const Register = ({ navigation }) => {
                             OKbmi
                 </Button>
                     </Card>
-                </Modal>
+                </Modal> */}
 
 
 

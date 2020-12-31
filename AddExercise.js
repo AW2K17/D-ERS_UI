@@ -128,7 +128,7 @@ const AddExercise = ({ route, navigation }) => {
               // console.log(response);
 
               const res = await axios.get('http://localhost:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
-
+              console.log(res);
               if (res.data.schedulee) {
                 axios.put('http://localhost:3021/api-gateway/current-user/schedulee/' + res.data.schedulee[0].id, { document: document }, { withCredentials: true })
                   .then(response => {
@@ -150,6 +150,13 @@ const AddExercise = ({ route, navigation }) => {
               }
             }
             catch (er) {
+              axios.post('http://localhost:3021/api-gateway/current-user/exerciseschedule', { document: document }, { withCredentials: true })
+                .then(response => {
+                  // navigation.navigate('Search');
+                  console.log(response);
+                }).catch(error => {
+                  console.log(error);
+                })
               console.log(er);
             }
 

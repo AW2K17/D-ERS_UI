@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { PieChart } from 'react-native-svg-charts'
-import { Button, View, ScrollView, TextInput, StyleSheet } from 'react-native';
+import { Button, View, ScrollView, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-svg';
 import { IndexPath, Datepicker, Layout, Select, SelectItem } from '@ui-kitten/components';
 import Constants from 'expo-constants';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-
+// import { TouchableOpacity } from 'react-native-gesture-handler';
+import SelectDayTime from './Select';
 
 
 // 3 values leni hain : protein, carbohydrates , fats, jo nutrition se arahi hain values ,woh pass krni hain
@@ -16,10 +16,12 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const Chart = ({ item }) => {
 
-    const protein = item.protein;
-    const fats = item.fats;
-    const carbohydrates = item.carbohydrates;
+    console.log(item);
+    const protein = item[0].day[0].time[0].nutrition.protein;
+    const fats = item[0].day[0].time[0].nutrition.fats;
+    const carbohydrates = item[0].day[0].time[0].nutrition.carbohydrates;
 
+    
     const renderOption = (title) => (
 
 
@@ -27,7 +29,6 @@ const Chart = ({ item }) => {
 
 
     );
-
 
     var data2 = [
         'Protein',
@@ -37,13 +38,10 @@ const Chart = ({ item }) => {
 
     var check = []
 
-    const meal = [
-        'Breakfast', 'Lunch', 'Dinner'
-    ];
+    
 
 
     const [selectedIndex, setSelectedIndex] = React.useState(new IndexPath(0));
-    const [selectedIndex2, setSelectedIndex2] = React.useState(new IndexPath(0));
 
 
     //const [pro,setPro]=useState(22);
@@ -94,8 +92,7 @@ const Chart = ({ item }) => {
     //displayValue--> fats/protein/carbs
     const displayValue = data2[selectedIndex.row];
 
-    //displayValue2--> breakfast/lunch/dinner
-    const displayValue2 = meal[selectedIndex2.row];
+    
 
     var j = 0;
     for (var i = 0; i < 3; i++) {
@@ -193,9 +190,12 @@ const Chart = ({ item }) => {
 
         )
     }
-    const change = () => {
+    function change () {
+        console.log("I am running")
         setCalories((4 * (carbs + pro)) + (9 * (fat)))
-
+        console.log(fat)
+        console.log(carbs)
+        console.log(pro)
         setData(generateData());
 
     }
@@ -298,20 +298,9 @@ const Chart = ({ item }) => {
                 <TextInput style={{ backgroundColor: 'silver', width: 120, marginLeft: 6 }} placeholder={'Enter Quantity'} onChangeText={setQuantity}></TextInput>
 
             </View>
-            <View style={{ marginTop: 7 }}>
-                <Select
-                    style={styles.select}
-                    placeholder='Default'
-                    value={displayValue2}
-                    selectedIndex={selectedIndex2}
-                    onSelect={index => setSelectedIndex2(index)}>
-                    {meal.map(renderOption)}
-                </Select>
-            </View>
 
-
-
-
+            <SelectDayTime item={item} />
+            
         </View>
 
     )

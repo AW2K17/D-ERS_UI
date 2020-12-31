@@ -239,7 +239,7 @@ const Drawer = createDrawerNavigator();
 export const Dashboard = ({ navigation }) => {
 
   var intervalId = null;
-  var varCounter = 1;
+  var varCounter = 0;
 
   var intervalId2 = null;
   var varCounter2 = 1;
@@ -247,35 +247,36 @@ export const Dashboard = ({ navigation }) => {
   var count1 = 0;
   var count2 = 0;
 
-  // const [dates, setDates] = useState([]);
-  var dates
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        axios.get('http://localhost:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
-          .then((res) => {
-            axios.get('http://localhost:3032/api-gateway/current-user/nutrition-schedule/reminder/' + res.data.schedulenf[0].id, { withCredentials: true })
-              .then((res) => {
-                dates = res.data.map((e) => {
-                  return e.sameDay;
-                })
-                // setDates(res.data)
-              })
-          })
-          .catch((error) => {
-            console.log(error.response)
-          })
+  const [dates, setDates] = useState([]);
+  // var dates
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       axios.get('http://localhost:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+  //         .then((res) => {
+  //           axios.get('http://localhost:3032/api-gateway/current-user/nutrition-schedule/reminder/' + res.data.schedulenf[0].id, { withCredentials: true })
+  //             .then((res) => {
+  //               dates = res.data.map((e) => {
+  //                 console.log(e.sameDay)
+  //                 return e.sameDay;
+  //               })
+  //               // setDates(res.data)
+  //             })
+  //         })
+  //         .catch((error) => {
+  //           console.log(error.response)
+  //         })
 
-        // console.log(response.data.schedulenf[0].id)
+  //       // console.log(response.data.schedulenf[0].id)
 
 
-      }
-      catch (err) {
-        console.log(err)
-      }
-    }
-    fetchData();
-  }, [])
+  //     }
+  //     catch (err) {
+  //       console.log(err)
+  //     }
+  //   }
+  //   fetchData();
+  // }, [])
 
 
 
@@ -283,92 +284,20 @@ export const Dashboard = ({ navigation }) => {
 
 
 
-  // var varName = function () {
 
-  //   var dateFormat = require("dateformat");
-  //   var now = new Date();
-  //   var currentDate = dateFormat(now, "yyyy-mm-dd");
+  
 
 
-  //   if (varCounter <= 4) {
-
-  //     if (currentDate == dates[count1]) {
-
-  //       setTimeout(() => {
-  //         showMessage({
-  //           message: 'Its Time for Breakfast! ', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
-  //           color: "black", backgroundColor: '#F5FAFA'
-  //         })
-  //       }, 3000);
-
-  //       setTimeout(() => {
-  //         showMessage({
-  //           message: 'Its Time For Lunch! ', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
-  //           color: "black", backgroundColor: '#F5FAFA'
-  //         })
-  //       }, 5000);
 
 
-  //       setTimeout(() => {
-  //         showMessage({
-  //           message: 'Its Time For Dinner! ', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
-  //           color: "black", backgroundColor: '#F5FAFA'
-  //         })
-  //       }, 9000);
 
 
-  //       count1++;
-  //       varCounter++;
-  //     }
-  // else if (currentDate != d[count1]) {
-  /*
-  showMessage({
-    message:'cant show',type:'info',color: "white",type:'warning',icon: { icon: "auto", position: "left" },
-    color: "#606060"})
-    varCounter++;*/
-  // }
-
-  //   } else {
-  //     clearInterval(intervalId);
-  //   }
+  // function stopDiet() {
+  //   useEffect(() => {
+  //     intervalId = setInterval(varName, 20000);
+  //   }, []);
+    
   // };
-
-
-
-
-  // var varName2 = function () {
-
-  //   var dateFormat = require("dateformat");
-  //   var now = new Date();
-  //   var currentDate = dateFormat(now, "d-m-yyyy");
-
-
-  //   if (varCounter2 <= 4) {
-
-  //     if (currentDate == d[count2]) {
-  //       showMessage({
-  //         message: 'Its Time for Workout! ', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
-  //         color: "black", backgroundColor: '#F5FAFA'
-  //       })
-
-  //       count2++;
-  //       varCounter2++;
-  //     }
-  //     else if (currentDate != d[count2]) {
-  //       /*
-  //       showMessage({
-  //         message:'cant show',type:'info',color: "white",type:'warning',icon: { icon: "auto", position: "left" },
-  //         color: "#606060"})
-  //         varCounter++;*/
-  //     }
-
-  //   } else {
-  //     clearInterval(intervalId2);
-  //   }
-  // };
-
-
-
 
 
 

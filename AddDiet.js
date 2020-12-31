@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, View, TextInput, Image, StyleSheet, Dimensions, TouchableOpacity, ImageBackground } from 'react-native';
+import { Button, View, TextInput, Image, StyleSheet, Dimensions, TouchableOpacity, ImageBackground, ScrollView } from 'react-native';
 import Constants from 'expo-constants';
 import Carousel, { Pagination } from 'react-native-x-carousel';
 import { IndexPath, Datepicker, Layout, Select, SelectItem } from '@ui-kitten/components';
@@ -69,7 +69,7 @@ const AddDiet = ({ route, navigation }) => {
     protein: item.protein,
     calories: item.calories,
     discription: [''],
-    photos: item.photos
+    photos: item.photos.photosUrl
 
   }
   const time = [{
@@ -79,15 +79,17 @@ const AddDiet = ({ route, navigation }) => {
   const day = [{
     dayTime: "Dinner",
     time: time,
-
-
-
   }]
+
   const document = [{
     sameDay: date.toISOString().substring(0, 10),
     day: day
 
   }];
+
+  const meal = [
+    'Breakfast', 'Lunch', 'Dinner'
+  ];
 
   const renderItem = data => (
     <View key={data.text} style={styles.item}>
@@ -97,92 +99,58 @@ const AddDiet = ({ route, navigation }) => {
     </View>
   );
 
+  const renderOption = (title) => (
+
+
+    <SelectItem title={title} />
+
+
+  );
 
 
   return (
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={{ marginTop: -40 }}>
+          <Text style={{ fontSize: 40, fontWeight: 'bold', paddingLeft: 10, margin: 30, textAlign: 'center' }}>{item.nutritionName}</Text>
+          <Text style={{ fontSize: 24, fontWeight: 'bold', paddingBottom: 10, margin: 30, textAlign: 'center' }}>Days Limit Left: {limit}</Text>
+          <Carousel
+            pagination={Pagination}
+            renderItem={renderItem}
+            data={DATAX}
 
-    <View style={styles.container}>
-      <View style={{ marginTop: -40 }}>
-        <Text style={{ fontSize: 40, fontWeight: 'bold', paddingLeft: 10, margin: 30, textAlign: 'center' }}>{item.nutritionName}</Text>
-        <Text style={{ fontSize: 24, fontWeight: 'bold', paddingBottom: 10, margin: 30, textAlign: 'center' }}>Days Limit Left: {limit}</Text>
-        <Carousel
-          pagination={Pagination}
-          renderItem={renderItem}
-          data={DATAX}
+          />
 
-        />
+        </View>
+
+
+        <Chart item={document} />
+
+
+
+        <Text style={{ fontSize: 17, fontWeight: 'bold', marginRight: 24, marginTop: 34 }}>Select Date</Text>
+        <Layout level='1' style={{ flexDirection: 'row', marginRight: 24, marginTop: 13 }}>
+
+          <Datepicker
+            date={date}
+            onSelect={nextDate => setDate(nextDate)}
+          />
+        </Layout>
+
+
+
+        <View style={{ flexDirection: 'row' }}>
+
+
+
+          <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 10, marginTop: 30, width: 270, height: 40, backgroundColor: '#BF243D', borderRadius: 30 }}>
+            <Text style={{ color: 'white', fontSize: 19, marginLeft: 70, marginTop: 5 }}>GO BACK</Text>
+          </TouchableOpacity>
+        </View>
 
       </View>
 
-
-      <Chart item={item} />
-
-
-      <Text style={{ fontSize: 17, fontWeight: 'bold', marginRight: 24, marginTop: 34 }}>Select Date</Text>
-      <Layout level='1' style={{ flexDirection: 'row', marginRight: 24, marginTop: 13 }}>
-
-        <Datepicker
-          date={date}
-          onSelect={nextDate => setDate(nextDate)}
-        />
-      </Layout>
-
-
-
-      <View style={{ flexDirection: 'row' }}>
-        <TouchableOpacity style={{ marginTop: 30, width: 270, height: 40, backgroundColor: '#BF243D', borderRadius: 30 }}
-          onPress={async () => {
-
-            try {
-              const res = await axios.get('http://localhost:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
-              // .then(response => {
-              console.log(res.data.schedulenf[0]);
-              // navigation.navigate('Search');
-              // console.log(response);
-
-              if (res.data.scehdulenf) {
-                axios.put('http://localhost:3031/api-gateway/current-user/schedulenf/' + res.data.schedulenf[0].id, { document: document }, { withCredentials: true })
-                  .then(response => {
-                    // navigation.navigate('Search');
-                    console.log(response);
-                  }).catch(error => {
-                    console.log(error);
-                  })
-
-              }
-              else {
-                axios.post('http://localhost:3031/api-gateway/current-user/nutritionschedule', { document: document }, { withCredentials: true })
-                  .then(response => {
-                    // navigation.navigate('Search');
-                    console.log(response);
-                  }).catch(error => {
-                    console.log(error);
-                  })
-              }
-            }
-            catch (er) {
-              console.log(er);
-            }
-
-            // }).catch(error => {
-            //   console.log(error);
-            // })
-
-
-          }}
-        >
-          <Text style={{ color: 'white', fontSize: 19, marginLeft: 49, marginTop: 5 }}>CONFIRM CHANGES</Text>
-        </TouchableOpacity>
-
-
-        <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 10, marginTop: 30, width: 270, height: 40, backgroundColor: '#BF243D', borderRadius: 30 }}>
-          <Text style={{ color: 'white', fontSize: 19, marginLeft: 70, marginTop: 5 }}>GO BACK</Text>
-        </TouchableOpacity>
-      </View>
-
-    </View>
-
-
+    </ScrollView>
   );
 }
 
