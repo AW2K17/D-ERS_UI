@@ -17,18 +17,18 @@ const AddDiet = ({ route, navigation }) => {
 
 
   const item = route.params;
-
+  const image = { uri: item.photos.mainPhoto}
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await axios.get('http://localhost:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+        const res = await axios.get('http://192.168.1.101:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
         console.log(res);
 
         if (res.data.schedulenf) {
           // setSc(res.data.schedulee);
           // console.log(sc);
-          axios.get('http://localhost:3032/api-gateway/current-user/nutrition-schedule/count/' + res.data.schedulenf[0].id, { withCredentials: true })
+          axios.get('http://192.168.1.101:3032/api-gateway/current-user/nutrition-schedule/count/' + res.data.schedulenf[0].id, { withCredentials: true })
             .then(response => {
               console.log(response.data.limit);
               setLimit(response.data.limit);
@@ -49,7 +49,7 @@ const AddDiet = ({ route, navigation }) => {
 
   console.log(route.params);
   const DATAX = [
-    { text: '#1', img: item.photos.mainPhoto },
+    { text: '#1', img: image },
     { text: '#2' },
     { text: '#3' },
   ];
@@ -111,7 +111,7 @@ const AddDiet = ({ route, navigation }) => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <View style={{ marginTop: -40 }}>
+        <View style={{ marginTop: 10 }}>
           <Text style={{ fontSize: 40, fontWeight: 'bold', paddingLeft: 10, margin: 30, textAlign: 'center' }}>{item.nutritionName}</Text>
           <Text style={{ fontSize: 24, fontWeight: 'bold', paddingBottom: 10, margin: 30, textAlign: 'center' }}>Days Limit Left: {limit}</Text>
           <Carousel
@@ -128,14 +128,7 @@ const AddDiet = ({ route, navigation }) => {
 
 
 
-        <Text style={{ fontSize: 17, fontWeight: 'bold', marginRight: 24, marginTop: 34 }}>Select Date</Text>
-        <Layout level='1' style={{ flexDirection: 'row', marginRight: 24, marginTop: 13 }}>
-
-          <Datepicker
-            date={date}
-            onSelect={nextDate => setDate(nextDate)}
-          />
-        </Layout>
+        
 
 
 

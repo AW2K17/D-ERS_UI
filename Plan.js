@@ -134,13 +134,13 @@ const Plans = ({ navigation }) => {
         count1++;
         varCounter++;
       }
-      else if (currentDate != dates[count1]) {
+      // else if (currentDate != dates[count1]) {
 
-        showMessage({
-          message: 'cant show', type: 'info', color: "white", type: 'warning', icon: { icon: "auto", position: "left" },
-          color: "#606060"
-        })
-      }
+      //   showMessage({
+      //     message: 'cant show', type: 'info', color: "white", type: 'warning', icon: { icon: "auto", position: "left" },
+      //     color: "#606060"
+      //   })
+      // }
       varCounter++;
       count1++;
       // console.log("Limit: " + varCounter);
@@ -162,17 +162,17 @@ const Plans = ({ navigation }) => {
       if (currentDate == datesE[count2]) {
         showMessage({
           message: 'Its Time for Workout! ', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
-          color: "black", backgroundColor: '#F5FAFA'
+          color: "white", backgroundColor: '#dc3545'
         })
 
 
       }
-      else if (currentDate != datesE[count2]) {
-        showMessage({
-          message: 'cant show', type: 'info', color: "white", type: 'warning', icon: { icon: "auto", position: "left" },
-          color: "#606060"
-        })
-      }
+      // else if (currentDate != datesE[count2]) {
+      //   showMessage({
+      //     message: 'cant show', type: 'info', color: "white", type: 'warning', icon: { icon: "auto", position: "left" },
+      //     color: "#606060"
+      //   })
+      // }
       count2++;
       varCounter2++;
       console.log("Limit: " + varCounter2);

@@ -11,7 +11,7 @@ const DietDetail = ({ route, navigation }) => {
     
     const nutrition = route.params;
     console.log(nutrition)
-
+    const image = { uri: nutrition.param.item.time[0].nutrition.photos[0] };
     const [scheduleId, setScheduleId] = useState();
 
     const [calories, setCalories] = useState(nutrition.param.item.time[0].nutrition.calories);
@@ -54,20 +54,20 @@ const DietDetail = ({ route, navigation }) => {
             <ScrollView>
                 <View style={styles.today}>
                     <Text style={styles.h1}>Today's {nutrition.param.item.dayTime}</Text>
-                    <ImageBackground source={nutrition.param.item.time[0].nutrition.photos[0]} style={styles.workoutPic}>
+                    <ImageBackground source={image} style={styles.workoutPic}>
 
                     </ImageBackground>
                 </View>
 
                 <View>
                     <Text>Calories: </Text>
-                    <TextInput style={{ padding: 10, marginTop: 30, marginLeft: 23, fontSize: 25, fontWeight: 'bold' }} value={calories} onChangeText={(text) => setCalories(text)}/>
+                    <TextInput style={{ padding: 10, marginTop: 30, marginLeft: 23, fontSize: 25, fontWeight: 'bold' }} value={calories.toString()} onChangeText={(text) => setCalories(text)}/>
                     <Text>Carbohydrates: </Text>
-                    <TextInput style={{ padding: 10, marginTop: 30, marginLeft: 23, fontSize: 25, fontWeight: 'bold' }} value={carbohydrates} onChangeText={(text) => setCarbohydrates(text)}/>
+                    <TextInput style={{ padding: 10, marginTop: 30, marginLeft: 23, fontSize: 25, fontWeight: 'bold' }} value={carbohydrates.toString()} onChangeText={(text) => setCarbohydrates(text)}/>
                     <Text>Fats: </Text>
-                    <TextInput style={{ padding: 10, marginTop: 30, marginLeft: 23, fontSize: 25, fontWeight: 'bold' }} value={fats} onChangeText={(text) => setFats(text)}/>
+                    <TextInput style={{ padding: 10, marginTop: 30, marginLeft: 23, fontSize: 25, fontWeight: 'bold' }} value={fats.toString()} onChangeText={(text) => setFats(text)}/>
                     <Text>Proteins: </Text>
-                    <TextInput style={{ padding: 10, marginTop: 30, marginLeft: 23, fontSize: 25, fontWeight: 'bold' }} value={proteins} onChangeText={(text) => setProteins(text)}/>
+                    <TextInput style={{ padding: 10, marginTop: 30, marginLeft: 23, fontSize: 25, fontWeight: 'bold' }} value={proteins.toString()} onChangeText={(text) => setProteins(text)}/>
                     {/* 
                     <Text style={{ marginTop: 30, marginLeft: 15, fontSize: 25 }}>{"    "}Fats{"                           "}11g</Text>
                     <Text style={{ marginTop: 30, marginLeft: 15, fontSize: 25 }}>{"    "}Proteins{"                    "}13g</Text>
@@ -78,14 +78,14 @@ const DietDetail = ({ route, navigation }) => {
                 <TouchableOpacity onPress={async () => {
 
                     try{
-                        const res = await axios.get('http://localhost:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+                        const res = await axios.get('http://192.168.1.101:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
                         // .then(response => {
                         console.log(res);
 
                         if (res.data.schedulenf[0].id) {
                             setScheduleId(res.data.schedulenf[0].id)
 
-                            axios.put('http://localhost:3031/api-gateway/current-user/schedulenf/object/' + res.data.schedulenf[0].id + '/' + nutrition.param.item.time[0].sameNutrition, { document: document }, { withCredentials: true })
+                            axios.put('http://192.168.1.101:3031/api-gateway/current-user/schedulenf/object/' + res.data.schedulenf[0].id + '/' + nutrition.param.item.time[0].sameNutrition, { document: document }, { withCredentials: true })
                                 .then(response => {
                                     // navigation.navigate('Search');
                                     console.log(response);

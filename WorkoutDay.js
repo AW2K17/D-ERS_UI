@@ -62,7 +62,7 @@ const WorkoutDay = ({ route, navigation }) => {
 
 export const WorkoutDayScreen = ({ navigation }) => {
     return (
-        <Stack.Navigator initialRouteName="DietDay">
+        <Stack.Navigator initialRouteName="WorkoutDay">
             <Stack.Screen
                 name="WorkoutDay"
                 component={WorkoutDay}

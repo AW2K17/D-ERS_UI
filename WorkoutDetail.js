@@ -10,14 +10,16 @@ const pic1 = { uri: 'https://www.dymatize.com/wp-content/uploads/2017/08/brandan
 
 const pic3 = { uri: 'https://www.muscleandfitness.com/wp-content/uploads/2019/01/Bearded-Young-Man-Doing-Bicep-Workout-With-Preacher-Curls-Exercise.jpg?w=1109&quality=86&strip=all' }
 
-const WorkoutDetail = ({ route, navigation }) => {
 
+const WorkoutDetail = ({ route, navigation }) => {
+    
     const [scheduleId, setScheduleId] = useState();
     const workout = route.params;
     console.log(workout)
     const [sets, setSets] = useState(workout.param.item.exercise.sets);
     // const [reps, setReps] = useState();
-
+    const image = { uri: workout.param.item.exercise.photos[0] };
+    
     const exercise = {
         exerciseName: workout.param.item.exercise.exerciseName,
         sets: sets,
@@ -46,17 +48,17 @@ const WorkoutDetail = ({ route, navigation }) => {
             <ScrollView>
                 <View style={styles.today}>
                     <Text style={styles.h1}>{workout.param.item.exercise.exerciseName}</Text>
-                    <ImageBackground source={workout.param.item.exercise.photos[0]} style={styles.workoutPic}>
+                    <ImageBackground source={image} style={styles.workoutPic}>
 
                     </ImageBackground>
                 </View>
 
                 <View>
                     <Text>Sets: </Text>
-                    <TextInput style={{ padding: 10, marginTop: 30, marginLeft: 23, fontSize: 25, fontWeight: 'bold' }} value={sets}
+                    <TextInput style={{ padding: 10, marginTop: 30, marginLeft: 23, fontSize: 25, fontWeight: 'bold' }} value={sets.toString()}
                         onChangeText={text => setSets(text)} />
                     <Text>Reps: </Text>
-                    <TextInput style={{ padding: 10, marginTop: 30, marginLeft: 23, fontSize: 25, fontWeight: 'bold' }} value={workout.param.item.exercise.reps[0]} />
+                    <TextInput style={{ padding: 10, marginTop: 30, marginLeft: 23, fontSize: 25, fontWeight: 'bold' }} value={workout.param.item.exercise.reps[0].toString()} />
                     {/* <Text style={{marginTop:30,marginLeft:62,fontSize:25,fontWeight:'bold'}}>{workout[0].day[0].exercise.exerciseName}</Text>
                 
                 <Text style={{marginTop:30,marginLeft:1,fontSize:21}}>{"Sets:   "}{workout[0].day[0].exercise.sets}{"      "}</Text>
@@ -65,13 +67,13 @@ const WorkoutDetail = ({ route, navigation }) => {
 
                     <TouchableOpacity onPress={async () => {
                         try {
-                            const res = await axios.get('http://localhost:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
+                            const res = await axios.get('http://192.168.1.101:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
                             // .then(response => {
                             console.log(res);
 
                             if (res.data.schedulee[0].id) {
                                 setScheduleId(res.data.schedulee[0].id)
-                                axios.put('http://localhost:3021/api-gateway/current-user/schedulee/object/' + res.data.schedulee[0].id + "/" + workout.param.item.sameExercise, { document: document }, { withCredentials: true })
+                                axios.put('http://192.168.1.101:3021/api-gateway/current-user/schedulee/object/' + res.data.schedulee[0].id + "/" + workout.param.item.sameExercise, { document: document }, { withCredentials: true })
                                     .then(response => {
                                         // navigation.navigate('Search');
                                         console.log(response);

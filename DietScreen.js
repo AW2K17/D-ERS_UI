@@ -18,7 +18,9 @@ import Minicard from './Minicard copy';
 import DietDayScreen from './DietDay';
 import { Card } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import Modal from 'modal-react-native-web';
+// import Modal from 'modal-react-native-web';
+import Modal from 'react-native-modal';
+
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -52,69 +54,71 @@ const Diet = ({ navigation }) => {
     var diets;
     var dates;
 
-    useEffect(async () => {
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const res = await axios.get('http://192.168.1.101:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+                // .then(response => {
+                console.log(res)
+                if (res.data.schedulenf[0]) {
 
-        try {
-            const res = await axios.get('http://localhost:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
-            // .then(response => {
-            console.log(res)
-            if (res.data.schedulenf[0]) {
+                    setScheduleId(res.data.schedulenf[0].id)
+                    axios.get('http://192.168.1.101:3031/api-gateway/current-user/schedulenf/' + res.data.schedulenf[0].id, { withCredentials: true })
+                        .then((response) => {
+                            console.log(response)
+                            dates = response.data.schedule.document.map((e) => {
+                                return e.sameDay;
+                            });
+                            // setWorkouts(res.data.schedule.document[2].day[0].exercise.photos);
+                            // setExe(res.data.schedule.document[2].day[0].exercise);
+                            // console.log(res.data.schedule.document)
+                            function byDate(a, b) {
+                                const aa = new Date(a.sameDay)
+                                const bb = new Date(b.sameDay)
 
-                setScheduleId(res.data.schedulenf[0].id)
-                axios.get('http://localhost:3031/api-gateway/current-user/schedulenf/' + res.data.schedulenf[0].id, { withCredentials: true })
-                    .then((response) => {
-                        console.log(response)
-                        dates = response.data.schedule.document.map((e) => {
-                            return e.sameDay;
-                        });
-                        // setWorkouts(res.data.schedule.document[2].day[0].exercise.photos);
-                        // setExe(res.data.schedule.document[2].day[0].exercise);
-                        // console.log(res.data.schedule.document)
-                        function byDate(a, b) {
-                            const aa = new Date(a.sameDay)
-                            const bb = new Date(b.sameDay)
-
-                            if (aa < bb) return -1;
-                            if (aa > bb) return 1;
-                            return 0;
-                        }
-                        function filterDate(a) {
-                            const aa = new Date(a.sameDay).toISOString().substring(0, 10)
-                            var bb = new Date().toISOString().substring(0, 10);
-                            var datt = new Date(bb).toISOString().substring(0, 10)
-                            // console.log(aa);
-                            // console.log(bb);
-                            // console.log(datt);
-                            if (aa >= datt) {
-                                return aa
+                                if (aa < bb) return -1;
+                                if (aa > bb) return 1;
+                                return 0;
                             }
-                            return 0;
-                        }
-                        var dat = response.data.schedule.document.sort(byDate)
-                        var datt2 = dat.filter(filterDate)
-                        console.log(datt2)
-                        if (datt2 != null) {
-                            diets = datt2
-                            console.log(diets)
-                            setDiet(diets)
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error)
-                    })
+                            function filterDate(a) {
+                                const aa = new Date(a.sameDay).toISOString().substring(0, 10)
+                                var bb = new Date().toISOString().substring(0, 10);
+                                var datt = new Date(bb).toISOString().substring(0, 10)
+                                // console.log(aa);
+                                // console.log(bb);
+                                // console.log(datt);
+                                if (aa >= datt) {
+                                    return aa
+                                }
+                                return 0;
+                            }
+                            var dat = response.data.schedule.document.sort(byDate)
+                            var datt2 = dat.filter(filterDate)
+                            console.log(datt2)
+                            if (datt2 != null) {
+                                diets = datt2
+                                console.log(diets)
+                                setDiet(diets)
+                            }
+                        })
+                        .catch(error => {
+                            console.log(error)
+                        })
+                }
+                // console.log(response);
+                // setExe(response.data.schedulee[0].document[1].day[0].exercise);
             }
-            // console.log(response);
-            // setExe(response.data.schedulee[0].document[1].day[0].exercise);
+            catch (err) {
+                console.log(err);
+            }
         }
-        catch (err) {
-            console.log(err);
-        }
+        fetchData();
     }, []);
 
 
     function deleteSchedule(d) {
         var dt = d.replace("-", "").replace("-", "");
-        axios.delete('http://localhost:3031/api-gateway/current-user/schedulenf/day/' + scheduleId + '/' + dt, { withCredentials: true })
+        axios.delete('http://192.168.1.101:3031/api-gateway/current-user/schedulenf/day/' + scheduleId + '/' + dt, { withCredentials: true })
             .then(response => {
                 console.log('Schedule deleted');
                 console.log(response);
@@ -125,9 +129,9 @@ const Diet = ({ navigation }) => {
     }
 
 
-    function deleteAllSchedules () {
+    function deleteAllSchedules() {
         try {
-            axios.delete('http://localhost:3031/api-gateway/current-user/schedulenf/' + scheduleId, { withCredentials: true })
+            axios.delete('http://192.168.1.101:3031/api-gateway/current-user/schedulenf/' + scheduleId, { withCredentials: true })
                 .then(res => {
                     console.log(res);
                 })
@@ -163,34 +167,35 @@ const Diet = ({ navigation }) => {
     // <View style={styles.container}>
     // <ScrollView>
     // console.log(diet)
-    if (diet == null) {
+    // if (diet == null) {
 
-        return (
-            <View>
-                <Text>No Diet Plan</Text>
-            </View>
-        );
-    }
-    else {
+    //     return (
+    //         <View>
+    //             <Text>No Diet Plan</Text>
+    //         </View>
+    //     );
+    // }
+    // else {
         return (
             <View style={styles.centeredView}>
 
                 <TouchableOpacity style={{ flexDirection: 'row', padding: 12, backgroundColor: '#BF243D', marginLeft: 10, width: 200, borderRadius: 20, height: 45 }}
                     onPress={() => {
                         try {
-                            axios.get('http://localhost:3032/api-gateway/current-user/nutrition-schedule/reschedule/' + scheduleId, { withCredentials: true })
+                            axios.get('http://192.168.1.101:3032/api-gateway/current-user/nutrition-schedule/reschedule/' + scheduleId, { withCredentials: true })
                                 .then(res => {
                                     console.log(res);
+                                    console.log('I am running try')
                                 })
                                 .catch(error => {
-                                    console.log(error);
+                                    console.log('Reschedule ', error);
                                 })
                         }
                         catch (err) {
                             console.log(err);
                         }
                     }} >
-                        <MaterialIcons name={'replay'} style={{ color: 'white' }} size={20} />
+                    <MaterialIcons name={'replay'} style={{ color: 'white' }} size={20} />
                     <Text style={{ fontSize: 15, color: 'white', marginLeft: 10 }}>Reschedule diets</Text>
                 </TouchableOpacity>
 
@@ -199,7 +204,7 @@ const Diet = ({ navigation }) => {
                     onPress={() => {
                         setModalVisible(true);
                     }} >
-                        <MaterialIcons name={'delete'} style={{ color: 'white' }} size={20} />
+                    <MaterialIcons name={'delete'} style={{ color: 'white' }} size={20} />
                     <Text style={{ fontSize: 15, color: 'white', marginLeft: 10 }}>Delete all schedules</Text>
                 </TouchableOpacity>
 
@@ -211,10 +216,10 @@ const Diet = ({ navigation }) => {
                         <Minicard>
                             {/* <Image source={{ uri: item.day[0].time[0].nutrition.photos[0] }} style={{ width: 100, height: 80, marginLeft: 7 }} /> */}
 
-                            <Text style={{ fontSize: 18, marginLeft: 20, marginTop: 5 }}>Scheduled Diet for {item.sameDay}</Text>
+                            <Text style={{ fontSize: 28, marginLeft: 20, marginTop: 5 }}>{item.sameDay}</Text>
 
                             <TouchableOpacity onPress={() => navigation.navigate('DietDay', { screen: 'DietDay', params: { item } })}
-                                style={{ padding: 5, backgroundColor: '#BF243D', marginLeft: 60, width: 68, borderRadius: 20, height: 30 }}
+                                style={{ padding: 5, backgroundColor: '#BF243D', marginLeft: 60, marginTop: 8, width: 68, borderRadius: 20, height: 30 }}
                             >
                                 <Text style={{ color: 'white', marginLeft: 10 }}>View</Text>
 
@@ -225,7 +230,7 @@ const Diet = ({ navigation }) => {
                                 console.log(item.sameDay);
                                 // setModalVisible(true);
                             }}
-                                style={{ padding: 5, backgroundColor: '#BF243D', marginLeft: 60, width: 75, borderRadius: 20, height: 30 }}
+                                style={{ padding: 5, backgroundColor: '#BF243D', marginLeft: 60, marginTop: 8, width: 75, borderRadius: 20, height: 30 }}
                             >
                                 <Text style={{ color: 'white', marginLeft: 10 }}>Delete</Text>
                             </TouchableOpacity>
@@ -313,7 +318,7 @@ const Diet = ({ navigation }) => {
                 </Modal>
             </View>
         );
-    }
+    // }
 
     {/*
             <Text>{"\n"}</Text>

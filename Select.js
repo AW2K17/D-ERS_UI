@@ -1,7 +1,8 @@
-import React from 'react';
-import { StyleSheet, TouchableOpacity, Text } from 'react-native';
-import { IndexPath, Layout, Select, SelectGroup, SelectItem } from '@ui-kitten/components';
+import React, { useState } from 'react';
+import { StyleSheet, TouchableOpacity, Text, View } from 'react-native';
+import { IndexPath, Datepicker, Layout, Select, SelectGroup, SelectItem } from '@ui-kitten/components';
 import axios from 'axios';
+
 
 
 const data = [
@@ -12,12 +13,13 @@ const data = [
 const SelectDayTime = ({ item }) => {
 
     const [selectedIndex, setSelectedIndex] = React.useState(new IndexPath(0));
-
+    const [date, setDate] = useState(new Date());
     const displayValue = data[selectedIndex.row];
 
     item[0].day[0].dayTime = displayValue;
+    item[0].sameDay = date.toISOString().substring(0, 10);
     console.log(item[0].day[0].dayTime)
-
+    console.log(item[0].sameDay);
 
     const renderOption = (title) => (
         <SelectItem title={title} />
@@ -25,7 +27,7 @@ const SelectDayTime = ({ item }) => {
 
 
     return (
-        <Layout style={styles.container}>
+        <View style={styles.container}>
 
             <Select
                 style={styles.select}
@@ -36,6 +38,15 @@ const SelectDayTime = ({ item }) => {
                 {data.map(renderOption)}
             </Select>
 
+            <Text style={{ fontSize: 17, fontWeight: 'bold', marginTop: 64 }}>Select Date</Text>
+            <Layout level='1' style={{ flexDirection: 'row', marginRight: 24, marginTop: 13 }}>
+
+                <Datepicker
+                    date={date}
+                    onSelect={nextDate => setDate(nextDate)}
+                />
+            </Layout>
+
             <TouchableOpacity style={{ marginTop: 30, width: 270, height: 40, backgroundColor: '#BF243D', borderRadius: 30 }}
                 onPress={async () => {
 
@@ -45,10 +56,10 @@ const SelectDayTime = ({ item }) => {
                         // navigation.navigate('Search');
                         // console.log(response);
 
-                        const res = await axios.get('http://localhost:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+                        const res = await axios.get('http://192.168.1.101:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
                         console.log(res);
-                        if (res.data.schedulenf) {
-                            axios.put('http://localhost:3031/api-gateway/current-user/schedulenf/' + res.data.schedulenf[0].id, { document: item }, { withCredentials: true })
+                        if (res.data.schedulenf.length) {
+                            axios.put('http://192.168.1.101:3031/api-gateway/current-user/schedulenf/' + res.data.schedulenf[0].id, { document: item }, { withCredentials: true })
                                 .then(response => {
                                     // navigation.navigate('Search');
                                     console.log(response);
@@ -58,7 +69,7 @@ const SelectDayTime = ({ item }) => {
 
                         }
                         else {
-                            axios.post('http://localhost:3031/api-gateway/current-user/nutritionschedule', { document: item }, { withCredentials: true })
+                            axios.post('http://192.168.1.101:3031/api-gateway/current-user/nutritionschedule', { document: item }, { withCredentials: true })
                                 .then(response => {
                                     // navigation.navigate('Search');
                                     console.log(response);
@@ -68,13 +79,13 @@ const SelectDayTime = ({ item }) => {
                         }
                     }
                     catch (er) {
-                        axios.post('http://localhost:3031/api-gateway/current-user/nutritionschedule', { document: item }, { withCredentials: true })
-                            .then(response => {
-                                // navigation.navigate('Search');
-                                console.log(response);
-                            }).catch(error => {
-                                console.log(error);
-                            })
+                        // axios.post('http://192.168.1.101:3031/api-gateway/current-user/nutritionschedule', { document: item }, { withCredentials: true })
+                        //     .then(response => {
+                        //         // navigation.navigate('Search');
+                        //         console.log(response);
+                        //     }).catch(error => {
+                        //         console.log(error);
+                        //     })
                         console.log(er);
                     }
 
@@ -88,7 +99,7 @@ const SelectDayTime = ({ item }) => {
                 <Text style={{ color: 'white', fontSize: 19, marginLeft: 49, marginTop: 5 }}>CONFIRM CHANGES</Text>
             </TouchableOpacity>
 
-        </Layout>
+        </View>
     );
 };
 

@@ -47,7 +47,7 @@ const SearchD = ({ navigation }) => {
     var add = ['nutritionCategory=Dairy', 'nutritionCategory=Vegetable', 'nutritionCategory=Fruit', 'nutritionCategory=Nuts', 'nutritionCategory=Meat'];
 
 
-    var link = 'http://localhost:3030/api-gateway/current-user/nutritionFact/?' + result;
+    var link = 'http://192.168.1.101:3030/api-gateway/current-user/nutritionFact/?' + result;
     const link1 = 'https://jsonplaceholder.typicode.com/photos?q=' + result;
     const link2 = link1 + '&title=' + title;
 
@@ -173,6 +173,7 @@ const SearchD = ({ navigation }) => {
     }
 
     return (
+        <ScrollView>
         <View style={{ marginTop: Constant.statusBarHeight }}>
             <View style={{ flexDirection: 'row' }}>
                 <Ionicons name="arrow-back" size={30} color="black"
@@ -181,14 +182,14 @@ const SearchD = ({ navigation }) => {
                 />
                 <TextInput
                     value={result}
-                    style={{ backgroundColor: 'silver', width: 280, height: 29, marginLeft: 9, marginTop: 5, padding: 10 }}
+                    style={{borderRadius: 20, backgroundColor: 'silver', width: 280, height: 29, marginLeft: 9, marginTop: 5, padding: 10 }}
                     placeholder={'Search Here'}
                     onChangeText={(text) => setResult(text)}
                 />
-                <MaterialCommunityIcons name="send" size={30} style={{ marginTop: 3, marginLeft: 12 }} color="black" onPress={fetchData} />
+                <Ionicons name="search" size={30} style={{ marginTop: 4, marginLeft: 12 }} color="black" onPress={fetchData} />
             </View>
 
-            <View style={{ marginTop: 10, marginLeft: 50, flexDirection: 'row' }}>
+            <View style={{ marginTop: 10, marginLeft: 30, flexDirection: 'row' }}>
                 <Text>Dairy</Text>
                 <TouchableOpacity onPress={Check1}>
                     <MaterialIcons name={disp1 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
@@ -223,7 +224,6 @@ const SearchD = ({ navigation }) => {
 
             {/* <Button title="Go back" onPress={() => navigation.goBack()} /> */}
 
-            <ScrollView>
                 <FlatList
 
                     data={d}
@@ -240,8 +240,8 @@ const SearchD = ({ navigation }) => {
                         </Minicard>
                     )}
                 />
-            </ScrollView>
         </View>
+            </ScrollView>
 
     );
 }

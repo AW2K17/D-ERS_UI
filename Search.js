@@ -48,7 +48,7 @@ const Search = ({ navigation }) => {
 
 
 
-    var link = 'http://localhost:3020/api-gateway/current-user/exercise/?' + result;
+    var link = 'http://192.168.1.101:3020/api-gateway/current-user/exercise/?' + result;
     const link1 = 'https://jsonplaceholder.typicode.com/photos?q=' + result;
     const link2 = link1 + '&title=' + title;
 
@@ -161,6 +161,8 @@ const Search = ({ navigation }) => {
     }
 
     return (
+        <ScrollView>
+
         <View style={{ marginTop: Constant.statusBarHeight }}>
             <View style={{ flexDirection: 'row' }}>
                 <Ionicons name="arrow-back" size={30} color="black"
@@ -169,11 +171,11 @@ const Search = ({ navigation }) => {
                 />
                 <TextInput
                     value={result}
-                    style={{ backgroundColor: 'silver', width: 280, height: 29, marginLeft: 9, marginTop: 5, padding: 10 }}
+                    style={{ borderRadius: 20, backgroundColor: 'silver', width: 280, height: 29, marginLeft: 9, marginTop: 5, padding: 10 }}
                     placeholder={'Search Here'}
                     onChangeText={(text) => setResult(text)}
                 />
-                <MaterialCommunityIcons name="send" size={30} style={{ marginTop: 3, marginLeft: 12 }} color="black" onPress={fetchData} />
+                <Ionicons name="search" size={30} style={{ marginTop: 4, marginLeft: 12 }} color="black" onPress={fetchData} />
             </View>
 
             <View style={{ marginTop: 10, marginLeft: 50, flexDirection: 'row' }}>
@@ -210,7 +212,6 @@ const Search = ({ navigation }) => {
 
                 data={d}
                 renderItem={({ item }) => (
-                    <ScrollView>
                     <Minicard>
                         <Image source={{ uri: item.photos.mainPhoto }} style={{ width: 100, height: 80, marginLeft: 7 }} />
 
@@ -222,12 +223,12 @@ const Search = ({ navigation }) => {
                             <Text style={{ fontSize: 15, color: 'white' }}>Add</Text>
                         </TouchableOpacity>
                     </Minicard>
-                    </ScrollView>
 
                 )}
             />
 
         </View>
+        </ScrollView>
 
     );
 }
