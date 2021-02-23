@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, Button, View, TextInput, Text, FlatList, TouchableOpacity } from 'react-native';
+import { Image, Button, View, TextInput, Text, FlatList, TouchableOpacity, ScrollView } from 'react-native';
 import Constant from 'expo-constants';
 import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
@@ -9,12 +9,12 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import AddExercise from './AddExercise';
-import { ScrollView } from 'react-native-gesture-handler';
+import AddDiet from './AddDiet';
+
 
 const Stack = createStackNavigator();
 
-const Search = ({ navigation }) => {
+const SearchD = ({ navigation }) => {
 
     const [d, setD] = useState([]);
     const [result, setResult] = useState('');
@@ -34,21 +34,20 @@ const Search = ({ navigation }) => {
     const [show4, setShow4] = useState('false');
     const [disp4, setDisp4] = useState('false');
 
+    const [show5, setShow5] = useState('false');
+    const [disp5, setDisp5] = useState('false');
 
 
     const [check, setCheck] = useState('false');
 
 
     const [title, setTitle] = useState('');
-    const [albumId, setAlbumId] = useState('&albumId=3');
 
-    var filters = [disp1, disp2, disp3, disp4];
-    var add = ['exerciseCategory=Biceps', 'exerciseCategory=Triceps', 'exerciseCategory=Lats', 'exerciseCategory=Chest'];
-
+    var filters = [disp1, disp2, disp3, disp4, disp5];
+    var add = ['nutritionCategory=Dairy', 'nutritionCategory=Vegetable', 'nutritionCategory=Fruit', 'nutritionCategory=Nuts', 'nutritionCategory=Meat'];
 
 
-
-    var link = 'http://192.168.1.101:3020/api-gateway/current-user/exercise/?' + result;
+    var link = 'http://192.168.1.101:3030/api-gateway/current-user/nutritionFact/?' + result;
     const link1 = 'https://jsonplaceholder.typicode.com/photos?q=' + result;
     const link2 = link1 + '&title=' + title;
 
@@ -115,11 +114,24 @@ const Search = ({ navigation }) => {
         }
     }
 
+    function Check5() {
+
+        if (disp5 == 'false') {
+            setDisp5('true');
+            setShow5('true');
+
+        }
+
+        else if (disp5 == 'true') {
+            setDisp5('false');
+            setShow5('false');
+
+        }
+    }
 
     function fetchData() {
 
-
-        for (var i = 0; i < 4; i++) {
+        for (var i = 0; i < 5; i++) {
             if (filters[i] === 'true') {
                 link = link + add[i];
             }
@@ -133,7 +145,7 @@ const Search = ({ navigation }) => {
             .then(data => {
                 console.log(data)
                 setMiniCard(data)
-                setD(data.exercise)
+                setD(data.nutrition)
                 console.log(miniCard)
                 console.log(d)
             }).catch((error) => {
@@ -162,7 +174,6 @@ const Search = ({ navigation }) => {
 
     return (
         <ScrollView>
-
         <View style={{ marginTop: Constant.statusBarHeight }}>
             <View style={{ flexDirection: 'row' }}>
                 <Ionicons name="arrow-back" size={30} color="black"
@@ -171,64 +182,66 @@ const Search = ({ navigation }) => {
                 />
                 <TextInput
                     value={result}
-                    style={{ borderRadius: 20, backgroundColor: 'silver', width: 260, height: 36, marginLeft: 9, marginTop: 5, padding: 10 }}
+                    style={{borderRadius: 20, backgroundColor: 'silver', width: 260, height: 29, marginLeft: 9, marginTop: 5, padding: 10 }}
                     placeholder={'Search Here'}
                     onChangeText={(text) => setResult(text)}
                 />
                 <Ionicons name="search" size={30} style={{ marginTop: 4, marginLeft: 12 }} color="black" onPress={fetchData} />
             </View>
 
-            <View style={{ marginTop: 10, marginLeft: 50, flexDirection: 'row' }}>
-                <Text>Biceps</Text>
+            <View style={{ marginTop: 10, marginLeft: 30, flexDirection: 'row' }}>
+                <Text>Dairy</Text>
                 <TouchableOpacity onPress={Check1}>
                     <MaterialIcons name={disp1 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
                 </TouchableOpacity>
 
-                <Text style={{ marginLeft: 8 }}>Triceps</Text>
+                <Text style={{ marginLeft: 8 }}>Vegetable</Text>
                 <TouchableOpacity onPress={Check2}>
                     <MaterialIcons name={disp2 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
                 </TouchableOpacity>
 
-                <Text style={{ marginLeft: 8 }}>Lats</Text>
+                <Text style={{ marginLeft: 8 }}>Fruit</Text>
                 <TouchableOpacity onPress={Check3}>
                     <MaterialIcons name={disp3 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
                 </TouchableOpacity>
 
-                <Text style={{ marginLeft: 8 }}>Chest</Text>
+                <Text style={{ marginLeft: 8 }}>Nuts</Text>
                 <TouchableOpacity onPress={Check4}>
                     <MaterialIcons name={disp4 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
                 </TouchableOpacity>
 
-            </View>
+                <Text style={{ marginLeft: 8 }}>Meat</Text>
+                <TouchableOpacity onPress={Check5}>
+                    <MaterialIcons name={disp5 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
+                </TouchableOpacity>
 
+            </View>
 
             {/* <Minicard/>
             <Minicard/>
             <Minicard/> */}
             {/* <Text>{show}</Text> */}
 
+            {/* <Button title="Go back" onPress={() => navigation.goBack()} /> */}
 
-            <FlatList
+                <FlatList
 
-                data={d}
-                renderItem={({ item }) => (
-                    <Minicard>
-                        <Image source={{ uri: item.photos.mainPhoto }} style={{ width: 100, height: 80, marginLeft: 7 }} />
+                    data={d}
+                    renderItem={({ item }) => (
+                        <Minicard>
+                            <Image source={{ uri: item.photos.mainPhoto }} style={{ width: 100, height: 80, marginLeft: 7 }} />
 
-                        <Text style={{ fontSize: 15, marginLeft: 20 }}>{item.exerciseName}</Text>
-                        <TouchableOpacity onPress={() => navigation.navigate('AddExercise', item)}
-                            style={{ flexDirection: 'row', padding: 10, backgroundColor: '#BF243D', marginLeft: 60, width: 100, borderRadius: 20, height: 42 }}
-                        >
-                            <MaterialIcons name={'add'} style={{ marginRight: 10, color: 'white' }} size={22} />
-                            <Text style={{ fontSize: 15, color: 'white' }}>Add</Text>
-                        </TouchableOpacity>
-                    </Minicard>
-
-                )}
-            />
-
+                            <Text style={{ fontSize: 15, marginLeft: 20 }}>{item.nutritionName}</Text>
+                            <TouchableOpacity onPress={() => navigation.navigate('AddDiet', item)}
+                                style={{ flexDirection: 'row', padding: 10, backgroundColor: '#BF243D', marginLeft: 60, width: 100, borderRadius: 20, height: 42 }}>
+                                <MaterialIcons name={'add'} style={{ marginRight: 10, color: 'white' }} size={22} />
+                                <Text style={{ fontSize: 15, color: 'white' }}>Add</Text>
+                            </TouchableOpacity>
+                        </Minicard>
+                    )}
+                />
         </View>
-        </ScrollView>
+            </ScrollView>
 
     );
 }
@@ -240,12 +253,12 @@ export const SearchScreen = ({ navigation }) => {
         <Stack.Navigator initialRouteName="Search">
             <Stack.Screen
                 name="Search"
-                component={Search}
+                component={SearchD}
                 options={{ headerShown: false }}
             />
             <Stack.Screen
-                name="AddExercise"
-                component={AddExercise}
+                name="AddDiet"
+                component={AddDiet}
                 options={{ headerShown: false }}
             />
         </Stack.Navigator>

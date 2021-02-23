@@ -22,7 +22,7 @@ const Minicard = (props) => {
             {/* <Card style={{ paddingTop: 35, paddingBottom: 35, width: windowWidth, marginTop: 42 }}> */}
             <View style={{ flexDirection: 'row' }}>
 
-                <Text style={{ fontSize: 12, marginLeft: 35, fontWeight: 'bold' }}>{props.title}{"\n"}</Text>
+                {/* <Text style={{ fontSize: 12, marginLeft: 35, fontWeight: 'bold' }}>{props.title}{"\n"}</Text> */}
 
 
                 {/* <TouchableOpacity style={{ width: 74, height: 34, backgroundColor: '#7A0D0D', marginLeft: 274, borderRadius: 20 }}

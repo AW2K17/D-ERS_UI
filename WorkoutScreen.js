@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { Plan } from './PlanScreen';
+import { PlanScreen } from './PlanScreen';
 import { HistoryScreen } from './HistoryScreen';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -32,7 +32,7 @@ function HistoryStackScreen() {
 export const WorkoutScreen = () => {
     return (
         <Tab.Navigator>
-            <Tab.Screen name="Plan" component={Plan} />
+            <Tab.Screen name="Plan" component={PlanScreen} />
             <Tab.Screen name="History" component={HistoryStackScreen} />
         </Tab.Navigator>
     );

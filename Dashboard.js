@@ -1,10 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image,Button } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Image, Button } from 'react-native';
 import axios from 'axios';
 import { HomeScreen } from './HomeScreen';
 import { WorkoutScreen } from './WorkoutScreen';
-import { Diet } from './DietScreen';
+import { DietScreen } from './DietScreen';
 import { ProgressScreen } from './ProgressScreen';
 import { UsersScreen } from './UsersScreen';
 import { WorkoutsScreen } from './WorkoutsScreen';
@@ -12,11 +12,16 @@ import { MealsScreen } from './MealsScreen';
 import { SettingsScreen } from './SettingsScreen';
 import { LogoutScreen } from './LogoutScreen';
 import Signin from './Login';
+import LoginScreen from './Login';
+import PlanScreen from './Plan';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 // import MyTabs from './BottomTab';
+
+import FlashMessage from "react-native-flash-message";
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 import { NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -65,7 +70,7 @@ const getHeaderTitle = (route) => {
 const HomeStackScreen = ({ navigation }) => {
   return (
     <HomeStack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
-      <HomeStack.Screen name="Home" component={HomeScreen} options={({ route }) => ({
+      <HomeStack.Screen name="Home" component={PlanScreen} options={({ route }) => ({
         headerTitle: getHeaderTitle(route),
         headerLeft: () => (
           <NavigationDrawerStructure
@@ -97,7 +102,7 @@ const DietStackScreen = ({ navigation }) => {
       ),
       headerTitleAlign: 'center'
     }}>
-      <DietStack.Screen name="Diet" component={Diet} />
+      <DietStack.Screen name="Diet" component={DietScreen} />
     </DietStack.Navigator>
   );
 }
@@ -147,29 +152,29 @@ function SettingsStackScreen() {
   );
 }
 
-function Signout(){
+function Signout() {
 
 
 
-  axios.post('http://localhost:3010/api-gateway/sign-out/user').then(response =>{
-                
-                console.log(response);
-                navigation.navigate('Signin');
-                
-            }).catch(error => {
-                console.log(error);
-                }
-            )
+  axios.post('http://localhost:3010/api-gateway/sign-out/user').then(response => {
+
+    console.log(response);
+    // navigation.navigate('Login');
+
+  }).catch(error => {
+    console.log(error);
+  }
+  )
 
 
 }
 
 function LogoutStackScreen() {
   return (
-<LogoutStack.Navigator headerMode="none" >
-      <LogoutStack.Screen name="Logout" component={Signin}  />
+    <LogoutStack.Navigator headerMode="none" >
+      <LogoutStack.Screen name="Logout" component={LogoutScreen} />
     </LogoutStack.Navigator>
-    
+
   );
 }
 
@@ -233,18 +238,97 @@ const Drawer = createDrawerNavigator();
 
 export const Dashboard = ({ navigation }) => {
 
-  return (
-    
-      <Drawer.Navigator initialRouteName="Home" options={{ headerShown: false }}>
-        <Drawer.Screen name="Home" component={TabsScreen} options={{ headerShown: false }} />
-        <Drawer.Screen name="Users" component={UsersStackScreen} />
-        <Drawer.Screen name="Meals" component={MealsScreen} />
-        <Drawer.Screen name="Workouts" component={WorkoutsStackScreen} />
-        <Drawer.Screen name="Settings" component={SettingsStackScreen} />
-        <Drawer.Screen name="Log Out" component={LogoutStackScreen} onPress={Signout} options={{headerShown: false}} />
-      </Drawer.Navigator>
+  var intervalId = null;
+  var varCounter = 0;
 
+  var intervalId2 = null;
+  var varCounter2 = 1;
+  // var d = ['20-12-2020', '22-12-2020', '25-12-2020', '27-12-2020'];
+  var count1 = 0;
+  var count2 = 0;
+
+  const [dates, setDates] = useState([]);
+  // var dates
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       axios.get('http://localhost:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+  //         .then((res) => {
+  //           axios.get('http://localhost:3032/api-gateway/current-user/nutrition-schedule/reminder/' + res.data.schedulenf[0].id, { withCredentials: true })
+  //             .then((res) => {
+  //               dates = res.data.map((e) => {
+  //                 console.log(e.sameDay)
+  //                 return e.sameDay;
+  //               })
+  //               // setDates(res.data)
+  //             })
+  //         })
+  //         .catch((error) => {
+  //           console.log(error.response)
+  //         })
+
+  //       // console.log(response.data.schedulenf[0].id)
+
+
+  //     }
+  //     catch (err) {
+  //       console.log(err)
+  //     }
+  //   }
+  //   fetchData();
+  // }, [])
+
+
+
+  // console.log(dates)
+
+
+
+
+  
+
+
+
+
+
+
+  // function stopDiet() {
+  //   useEffect(() => {
+  //     intervalId = setInterval(varName, 20000);
+  //   }, []);
     
+  // };
+
+
+
+  // function stopDiet() {
+  //   intervalId = setInterval(varName, 3000);
+  // };
+
+
+  // function stopExercise() {
+  //   intervalId2 = setInterval(varName2, 3000);
+  // };
+
+
+
+
+  // stopDiet();
+  // stopExercise();
+
+
+  return (
+
+    <Drawer.Navigator initialRouteName="Home" options={{ headerShown: false }} independent={true}>
+      <Drawer.Screen name="Home" component={TabsScreen} options={{ headerShown: false }} />
+      <Drawer.Screen name="Users" component={UsersStackScreen} />
+      <Drawer.Screen name="Meals" component={MealsScreen} />
+      <Drawer.Screen name="Workouts" component={WorkoutsStackScreen} />
+      <Drawer.Screen name="Settings" component={SettingsStackScreen} />
+      <Drawer.Screen name="Log Out" component={LogoutStackScreen} options={{ headerShown: false }} />
+    </Drawer.Navigator>
+
+
 
   );
   // <View style={styles.container}>

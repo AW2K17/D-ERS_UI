@@ -15,8 +15,9 @@ const pic3 = { uri: 'https://media-cdn.tripadvisor.com/media/photo-s/12/4e/29/14
 
 const Stack = createStackNavigator();
 
-const BreakfastScreen = () => {
+const BreakfastScreen = ({ route, navigation }) => {
 
+    console.log(route.params)
     const [workouts, setWorkouts] = useState([
         pic1,
         pic2,
@@ -48,7 +49,9 @@ const BreakfastScreen = () => {
                     <Text style={{ marginTop: 30, marginLeft: 15, fontSize: 25 }}>{"    "}Calories{"                    "}100g</Text>
 
                 </View>
-
+                <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 10, marginTop: 30, width: 270, height: 40, backgroundColor: '#BF243D', borderRadius: 30 }}>
+                    <Text style={{ color: 'white', fontSize: 19, marginLeft: 70, marginTop: 5 }}>GO BACK</Text>
+                </TouchableOpacity>
                 {/*
             <Text>{"\n"}</Text>
 
