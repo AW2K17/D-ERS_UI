@@ -12,6 +12,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import axios from 'axios';
 import { Button, Card, Modal, Text } from '@ui-kitten/components';
 import Signin from './Signin';
+import { NetworkInfo } from "react-native-network-info";
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -40,10 +41,17 @@ const Login = ({ navigation }) => {
   const [visible3, setVisible3] = React.useState('');
 
   useEffect(() => {
+    // async function getIP() {
+    //   NetworkInfo.getIPV4Address().then(ipv4Address => {
+    //     console.log(ipv4Address);
+    //     this._continuePayment(ipv4Address);
+    //   });
+    // }
+    // getIP();
     async function fetchData() {
       try {
         console.log('I am running')
-        axios.get('http://192.168.1.101:3010/api-gateway/current-user/user', { withCredentials: true })
+        axios.get('http://172.16.64.119:3010/api-gateway/current-user/user', { withCredentials: true })
           .then((res) => {
             console.log(res);
             console.log('inside')
@@ -95,7 +103,7 @@ const Login = ({ navigation }) => {
 
         </View>
 
-        <Button style={styles.Btn} onPress={() => {
+        <TouchableOpacity style={styles.Btn} onPress={() => {
           const ran = {
 
             email: email,
@@ -107,27 +115,29 @@ const Login = ({ navigation }) => {
           console.log(ran);
           try {
             console.log('Login running')
-            axios.post('http://192.168.1.101:3010/api-gateway/sign-in/user', ran, { withCredentials: true })
-            .then(response => {
-              console.log('Login inside')
-              console.log(response);
-              setVisible1(false)
-              navigation.navigate('Dashboard');
-  
-            }).catch(error => {
-              if (error) {
-                console.log("Inside", error)
-                setVisible1(true);
-                // setError(error);
-                setError("Email Or Password Not Correct, Make Sure You're Registered!");
-              }
-            })
+            axios.post('http://172.16.64.119:3010/api-gateway/sign-in/user', ran, { withCredentials: true })
+              .then(response => {
+                console.log('Login inside')
+                console.log(response);
+                setVisible1(false)
+                navigation.navigate('Dashboard');
+
+              }).catch(error => {
+                if (error) {
+                  console.log("Inside", error)
+                  setVisible1(true);
+                  // setError(error);
+                  setError("Email Or Password Not Correct, Make Sure You're Registered!");
+                }
+              })
           }
           catch (error) {
             console.log(error);
           }
         }}
-        >Login</Button>
+        >
+          <Text style={{ color: 'white' }}>Login</Text>
+        </TouchableOpacity>
 
         {/* <Text style={{color:'red'}}>{error}</Text> */}
         <Modal

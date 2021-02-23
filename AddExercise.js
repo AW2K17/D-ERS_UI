@@ -32,7 +32,7 @@ const AddExercise = ({ route, navigation }) => {
         const res = await axios.get('http://192.168.1.101:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
         console.log(res);
 
-        if (res.data.schedulee) {
+        if (res.data.schedulee && res.data.schedulee.length) {
           // setSc(res.data.schedulee);
           // console.log(sc);
           axios.get('http://192.168.1.101:3022/api-gateway/current-user/exercise-schedule/count/' + res.data.schedulee[0].id, { withCredentials: true })
@@ -131,13 +131,13 @@ const AddExercise = ({ route, navigation }) => {
 
               const res = await axios.get('http://192.168.1.101:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
               console.log(res);
-              if (res.data.schedulee) {
+              if (res.data.schedulee && res.data.schedulee.length) {
                 axios.put('http://192.168.1.101:3021/api-gateway/current-user/schedulee/' + res.data.schedulee[0].id, { document: document }, { withCredentials: true })
                   .then(response => {
                     // navigation.navigate('Search');
                     console.log(response);
                   }).catch(error => {
-                    console.log(error);
+                    console.log("Inside put catch ", error);
                   })
 
               }
@@ -147,18 +147,18 @@ const AddExercise = ({ route, navigation }) => {
                     // navigation.navigate('Search');
                     console.log(response);
                   }).catch(error => {
-                    console.log(error);
+                    console.log("Inside put catch ", error);
                   })
               }
             }
             catch (er) {
-              axios.post('http://192.168.1.101:3021/api-gateway/current-user/exerciseschedule', { document: document }, { withCredentials: true })
-                .then(response => {
-                  // navigation.navigate('Search');
-                  console.log(response);
-                }).catch(error => {
-                  console.log(error);
-                })
+              // axios.post('http://192.168.1.101:3021/api-gateway/current-user/exerciseschedule', { document: document }, { withCredentials: true })
+              //   .then(response => {
+              //     // navigation.navigate('Search');
+              //     console.log(response);
+              //   }).catch(error => {
+              //     console.log(error);
+              //   })
               console.log(er);
             }
 

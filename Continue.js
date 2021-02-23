@@ -154,7 +154,7 @@ const Continue = ({ navigation, route }) => {
 
             console.log(ran);
             try{
-                axios.post('http://localhost:3010/api-gateway/sign-up/user', ran, { withCredentials: true })
+                axios.post('http://192.168.1.101:3010/api-gateway/sign-up/user', ran, { withCredentials: true })
                 .then(response => {
                     console.log(response.data);
                     navigation.navigate('Dashboard')
@@ -502,7 +502,7 @@ const styles = StyleSheet.create({
     },
     select: {
 
-
+        marginLeft: 20,
         marginTop: 20,
         width: 120
     }

@@ -12,12 +12,12 @@ export const Logout = ({ navigation }) => {
     useEffect(() => {
         function Signout() {
 
-            axios.post('http://localhost:3010/api-gateway/sign-out/user', { withCredentials: true })
+            axios.post('http://172.16.64.119:3010/api-gateway/sign-out/user', { withCredentials: true })
                 .then(response => {
-                    console.log(document.cookie)
+                    // console.log(document.cookie)
                     // var c = document.cookie.getCookie('express:sess')
-                    document.cookie =
-                        'express:sess=cookieremove; expires=Thu, 22 Dec 2019 20:47:11 UTC; path=/'
+                    // document.cookie =
+                    //     'express:sess=cookieremove; expires=Thu, 22 Dec 2019 20:47:11 UTC; path=/'
                     // response.clearCookie('express:sess')
                     console.log(response);
                     // console.log(document.cookie)

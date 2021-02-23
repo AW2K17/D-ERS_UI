@@ -171,7 +171,7 @@ const Search = ({ navigation }) => {
                 />
                 <TextInput
                     value={result}
-                    style={{ borderRadius: 20, backgroundColor: 'silver', width: 280, height: 29, marginLeft: 9, marginTop: 5, padding: 10 }}
+                    style={{ borderRadius: 20, backgroundColor: 'silver', width: 260, height: 36, marginLeft: 9, marginTop: 5, padding: 10 }}
                     placeholder={'Search Here'}
                     onChangeText={(text) => setResult(text)}
                 />

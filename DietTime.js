@@ -6,58 +6,57 @@ import Constants from 'expo-constants';
 import { useNavigation } from '@react-navigation/native';
 import Minicard from './Minicard copy';
 import DietDetail from './DietDetail';
-import WorkoutDetail from './WorkoutDetail';
 import axios from 'axios';
+import { initialWindowMetrics } from 'react-native-safe-area-context';
 
 const Stack = createStackNavigator();
 
 
-const WorkoutDay = ({ route, navigation }) => {
+const DietTime = ({ route, navigation }) => {
 
-    // const [date, setDate] = useState('');
     const {item} = route.params;
+    // const {scheduleId} = route.params;
+    const {sameDay} = route.params;
     const {scheduleId} = route.params;
-    const {sameDay} = item;
-
     console.log(route.params);
-    // console.log(item.item.sameDay);
-    // setDate(item.item.sameDay)
+    const dayTime = item.dayTime;
+    // console.log(navigation);
     // const random = route.params;
 
     return (
         <View style={styles.container}>
             <ScrollView>
                 <FlatList
-                    data={item.day}
+                    data={item.time}
                     //             keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => (
                         <Minicard>
                             {/* <Image source={{ uri: item.day[0].time[0].nutrition.photos[0] }} style={{ width: 100, height: 80, marginLeft: 7 }} /> */}
 
-                            {/* <Text style={{ marginLeft: 20 }}>Date : {item.sameDay}</Text> */}
-                            <Text style={{ fontSize: 18, marginLeft: 20, marginTop: 5 }}>{item.exercise.exerciseName}</Text>
+                            {/* <Text style={{ fontSize: 18, marginLeft: 20, marginTop: 5 }}>{item.dayTime}</Text> */}
+                            <Text style={{ fontSize: 18, marginLeft: 20, marginTop: 5 }}>{item.nutrition.nutritionName}</Text>
 
-                            <TouchableOpacity onPress={() => navigation.navigate('WorkoutDetail', {screen: 'WorkoutDetail', param: {item, sameDay}})}
-                                style={{ padding: 5, backgroundColor: '#BF243D', marginLeft: 30, width: 68, borderRadius: 20, height: 30 }}
+                            <TouchableOpacity onPress={() => navigation.navigate('DietDetail', {screen: 'DietDetail', params: {item, dayTime, sameDay, scheduleId}})}
+                                style={{ padding: 5, backgroundColor: '#BF243D', marginLeft: 40, width: 68, borderRadius: 20, height: 30 }}
                             >
                                 <Text style={{ color: 'white', marginLeft: 10 }}>View</Text>
 
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => {
                                 try{
-                                    axios.delete('http://192.168.1.101:3021/api-gateway/current-user/schedulee/object/' + scheduleId + '/' + item.sameExercise + '/' + sameDay.replace("-", "").replace("-", ""))
+                                    axios.delete('http://192.168.1.101:3031/api-gateway/current-user/schedulenf/object/' + scheduleId + '/' + item.sameNutrition + '/' + sameDay.replace("-", "").replace("-", "") + '/' + dayTime, { withCredentials: true })
                                     .then(res => {
                                         console.log(res);
                                     })
                                     .catch(err => {
-                                        console.log(err);
-                                    })
+                                        console.log("Error: ",err);
+                                    });
                                 }
-                                catch(error){
-                                    console.log(error)
+                                catch(error) {
+                                    console.log(error);
                                 }
                             }}
-                                style={{ padding: 5, backgroundColor: '#BF243D', marginLeft: 30, width: 75, borderRadius: 20, height: 30 }}
+                                style={{ padding: 5, backgroundColor: '#BF243D', marginLeft: 20, width: 75, borderRadius: 20, height: 30 }}
                             >
                                 <Text style={{ color: 'white', marginLeft: 10 }}>Delete</Text>
                             </TouchableOpacity>
@@ -76,17 +75,17 @@ const WorkoutDay = ({ route, navigation }) => {
 
 
 
-export const WorkoutDayScreen = ({ navigation }) => {
+export const DietTimeScreen = ({ navigation }) => {
     return (
-        <Stack.Navigator initialRouteName="WorkoutDay">
+        <Stack.Navigator initialRouteName="DietTime">
             <Stack.Screen
-                name="WorkoutDay"
-                component={WorkoutDay}
+                name="DietTime"
+                component={DietTime}
                 options={{ headerShown: false }}
             />
             <Stack.Screen
-                name="WorkoutDetail"
-                component={WorkoutDetail}
+                name="DietDetail"
+                component={DietDetail}
                 options={{ headerShown: false }}
             />
             {/*
@@ -105,7 +104,7 @@ export const WorkoutDayScreen = ({ navigation }) => {
     );
 }
 
-export default WorkoutDayScreen;
+export default DietTimeScreen;
 
 const styles = StyleSheet.create({
     container: {

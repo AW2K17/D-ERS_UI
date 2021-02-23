@@ -200,7 +200,7 @@ const Register = ({ navigation }) => {
                     <Card disabled={true}>
                         <Text>{err1}</Text>
                         <Button onPress={() => setVisible1(false)} style={{ width: 127, backgroundColor: 'red', marginLeft: 100, marginTop: 10, borderRadius: 20 }}>
-                            OKfn
+                            OK
                 </Button>
                     </Card>
                 </Modal>
@@ -220,7 +220,7 @@ const Register = ({ navigation }) => {
                     <Card disabled={true}>
                         <Text>{err2}</Text>
                         <Button onPress={() => setVisible2(false)} style={{ width: 127, backgroundColor: 'red', marginLeft: 100, marginTop: 10, borderRadius: 20 }}>
-                            OKln
+                            OK
                 </Button>
                     </Card>
                 </Modal>
@@ -240,7 +240,7 @@ const Register = ({ navigation }) => {
                     <Card disabled={true}>
                         <Text>{err3}</Text>
                         <Button onPress={() => setVisible3(false)} style={{ width: 127, backgroundColor: 'red', marginLeft: 100, marginTop: 10, borderRadius: 20 }}>
-                            OKe
+                            OK
                 </Button>
                     </Card>
                 </Modal>
@@ -249,9 +249,9 @@ const Register = ({ navigation }) => {
                 <View>
                     <View style={styles.inputField2}>
                         <FontAwesome style={styles.passwordIcon} name="lock" />
-                        <TextInput maxLength={15} style={{ marginLeft: 10, color: 'white', marginTop: 22 }} placeholder="Password"
+                        <TextInput maxLength={15} style={{ width: 165, marginLeft: 10, color: 'white', marginTop: 22 }} placeholder="Password"
                             secureTextEntry={visible} value={password} onChangeText={setPassword} placeholderTextColor="#EDDDDF" />
-                        <TouchableOpacity style={{ marginLeft: 90, marginTop: 30 }} onPress={() => { setShow(!show), setVisible(!visible) }}>
+                        <TouchableOpacity style={{ marginTop: 30 }} onPress={() => { setShow(!show), setVisible(!visible) }}>
                             <MaterialCommunityIcons name={show === false ? 'eye-outline' : 'eye-off-outline'} size={26} color={'white'} />
                         </TouchableOpacity>
                     </View>
@@ -274,7 +274,7 @@ const Register = ({ navigation }) => {
                     <Card disabled={true}>
                         <Text>{err4}</Text>
                         <Button onPress={() => setVisible4(false)} style={{ width: 127, backgroundColor: 'red', marginLeft: 100, marginTop: 10, borderRadius: 20 }}>
-                            OKp
+                            OK
                 </Button>
                     </Card>
                 </Modal>
@@ -322,7 +322,7 @@ const Register = ({ navigation }) => {
                 </TouchableOpacity>
             </View>
             <Text style={{ color: 'white', fontSize: 14, marginTop: 22 }}>Already Have An Account?
-            <Text style={{ fontWeight: 'bold' }} onPress={() => navigation.navigate('Signin')}>  Login Here</Text>
+            <Text style={{ fontWeight: 'bold', color: 'white' }} onPress={() => navigation.navigate('Signin')}>  Login Here</Text>
             </Text>
 
         </ImageBackground>

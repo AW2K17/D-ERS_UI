@@ -58,7 +58,7 @@ const SelectDayTime = ({ item }) => {
 
                         const res = await axios.get('http://192.168.1.101:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
                         console.log(res);
-                        if (res.data.schedulenf.length) {
+                        if (res.data.schedulenf && res.data.schedulenf.length) {
                             axios.put('http://192.168.1.101:3031/api-gateway/current-user/schedulenf/' + res.data.schedulenf[0].id, { document: item }, { withCredentials: true })
                                 .then(response => {
                                     // navigation.navigate('Search');

@@ -172,10 +172,10 @@ export function Plan({ navigation }) {
                         <Minicard date={item.sameDay}>
                             {/* <Image source={{ uri: item.day[0].time[0].nutrition.photos[0] }} style={{ width: 100, height: 80, marginLeft: 7 }} /> */}
 
-                            <Text style={{ fontSize: 28, marginLeft: 20, marginTop: 5 }}>{item.sameDay}</Text>
+                            <Text style={{ fontSize: 25, marginTop: 5 }}>{item.sameDay}</Text>
 
-                            <TouchableOpacity onPress={() => navigation.navigate('WorkoutDay', { screen: 'WorkoutDay', params: { item } })}
-                                style={{ padding: 5, backgroundColor: '#BF243D', marginLeft: 60, marginTop: 8, width: 68, borderRadius: 20, height: 30 }}
+                            <TouchableOpacity onPress={() => navigation.navigate('WorkoutDay', { screen: 'WorkoutDay', params: { item, scheduleId } })}
+                                style={{ padding: 5, backgroundColor: '#BF243D', marginLeft: 30, marginTop: 8, width: 68, borderRadius: 20, height: 30 }}
                             >
                                 <Text style={{ color: 'white', marginLeft: 10 }}>View</Text>
 
@@ -186,7 +186,7 @@ export function Plan({ navigation }) {
                                 deleteSchedule(item.sameDay)
                                 // setModalVisible(true);
                             }}
-                                style={{ padding: 5, backgroundColor: '#BF243D', marginLeft: 60, marginTop: 8, width: 75, borderRadius: 20, height: 30 }}
+                                style={{ padding: 5, backgroundColor: '#BF243D', marginLeft: 30, marginTop: 8, width: 75, borderRadius: 20, height: 30 }}
                             >
                                 <Text style={{ color: 'white', marginLeft: 10 }}>Delete</Text>
                             </TouchableOpacity>

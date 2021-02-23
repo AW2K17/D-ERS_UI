@@ -29,10 +29,10 @@ const Plans = ({ navigation }) => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await axios.get('http://localhost:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
-
-        if (res.data.schedulenf[0]) {
-          axios.get('http://localhost:3032/api-gateway/current-user/nutrition-schedule/reminder/' + res.data.schedulenf[0].id, { withCredentials: true })
+        const res = await axios.get('http://192.168.1.101:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+        console.log(res)
+        if (res.data.schedulenf != null) {
+          axios.get('http://192.168.1.101:3032/api-gateway/current-user/nutrition-schedule/reminder/' + res.data.schedulenf[0].id, { withCredentials: true })
             .then((res) => {
               console.log(res)
               if (res.data != 'No-Date') {
@@ -63,10 +63,10 @@ const Plans = ({ navigation }) => {
 
     async function fetchExerciseData() {
       try {
-        const res = await axios.get('http://localhost:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
+        const res = await axios.get('http://192.168.1.101:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
 
         if (res.data.schedulee[0]) {
-          axios.get('http://localhost:3022/api-gateway/current-user/exercise-schedule/reminder/' + res.data.schedulee[0].id, { withCredentials: true })
+          axios.get('http://192.168.1.101:3022/api-gateway/current-user/exercise-schedule/reminder/' + res.data.schedulee[0].id, { withCredentials: true })
             .then((res) => {
               console.log(res)
               if (res.data != 'No-Date') {

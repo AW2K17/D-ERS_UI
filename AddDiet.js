@@ -25,7 +25,7 @@ const AddDiet = ({ route, navigation }) => {
         const res = await axios.get('http://192.168.1.101:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
         console.log(res);
 
-        if (res.data.schedulenf) {
+        if (res.data.schedulenf && res.data.schedulenf.length) {
           // setSc(res.data.schedulee);
           // console.log(sc);
           axios.get('http://192.168.1.101:3032/api-gateway/current-user/nutrition-schedule/count/' + res.data.schedulenf[0].id, { withCredentials: true })

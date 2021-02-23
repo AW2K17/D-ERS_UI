@@ -9,41 +9,43 @@ const windowHeight = Dimensions.get('window').height;
 const DietDetail = ({ route, navigation }) => {
 
     
-    const nutrition = route.params;
-    console.log(nutrition)
-    const image = { uri: nutrition.param.item.time[0].nutrition.photos[0] };
+    const {dayTime} = route.params;
+    const item = route.params;
+    const {sameDay} = route.params;
+    console.log(item)
+    const image = { uri: item.params.item.nutrition.photos[0] };
     const [scheduleId, setScheduleId] = useState();
 
-    const [calories, setCalories] = useState(nutrition.param.item.time[0].nutrition.calories);
-    const [carbohydrates, setCarbohydrates] = useState(nutrition.param.item.time[0].nutrition.carbohydrates);
-    const [fats, setFats] = useState(nutrition.param.item.time[0].nutrition.fats);
-    const [proteins, setProteins] = useState(nutrition.param.item.time[0].nutrition.protein);
+    const [calories, setCalories] = useState(item.params.item.nutrition.calories);
+    const [carbohydrates, setCarbohydrates] = useState(item.params.item.nutrition.carbohydrates);
+    const [fats, setFats] = useState(item.params.item.nutrition.fats);
+    const [proteins, setProteins] = useState(item.params.item.nutrition.protein);
 
 
     const diet = {
-        nutritionName: nutrition.param.item.time[0].nutrition.nutritionName,
-        nutritionCategory: nutrition.param.item.time[0].nutrition.nutritionCategory,
+        nutritionName: item.params.item.nutrition.nutritionName,
+        nutritionCategory: item.params.item.nutrition.nutritionCategory,
         fats: fats,
         carbohydrates: carbohydrates,
         protein: proteins,
         calories: calories,
-        discription:  nutrition.param.item.time[0].nutrition.description,
-        photos: nutrition.param.item.time[0].nutrition.photos[0]
+        discription: item.params.item.nutrition.description,
+        photos: item.params.item.nutrition.photos[0]
     
       }
       const time = [{
-        sameNutrition:  nutrition.param.item.time[0].sameNutrition,
+        sameNutrition: item.params.item.sameNutrition,
         nutrition: diet
       }]
       const day = [{
-        dayTime:  nutrition.param.item.dayTime,
+        dayTime: dayTime,
         time: time,
     
     
     
       }]
       const document = [{
-        sameDay: nutrition.param.sameDay,
+        sameDay: sameDay,
         day: day
     
       }];
@@ -53,7 +55,7 @@ const DietDetail = ({ route, navigation }) => {
         <View style={styles.container}>
             <ScrollView>
                 <View style={styles.today}>
-                    <Text style={styles.h1}>Today's {nutrition.param.item.dayTime}</Text>
+                    <Text style={styles.h1}>Today's {dayTime}</Text>
                     <ImageBackground source={image} style={styles.workoutPic}>
 
                     </ImageBackground>
@@ -85,7 +87,7 @@ const DietDetail = ({ route, navigation }) => {
                         if (res.data.schedulenf[0].id) {
                             setScheduleId(res.data.schedulenf[0].id)
 
-                            axios.put('http://192.168.1.101:3031/api-gateway/current-user/schedulenf/object/' + res.data.schedulenf[0].id + '/' + nutrition.param.item.time[0].sameNutrition, { document: document }, { withCredentials: true })
+                            axios.put('http://192.168.1.101:3031/api-gateway/current-user/schedulenf/object/' + res.data.schedulenf[0].id + '/' + nutrition.param.sameNutrition, { document: document }, { withCredentials: true })
                                 .then(response => {
                                     // navigation.navigate('Search');
                                     console.log(response);

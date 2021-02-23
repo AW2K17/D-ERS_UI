@@ -60,9 +60,10 @@ const Diet = ({ navigation }) => {
                 const res = await axios.get('http://192.168.1.101:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
                 // .then(response => {
                 console.log(res)
-                if (res.data.schedulenf[0]) {
+                if (res.data.schedulenf != null) {
 
                     setScheduleId(res.data.schedulenf[0].id)
+                    console.log(res.data.schedulenf[0])
                     axios.get('http://192.168.1.101:3031/api-gateway/current-user/schedulenf/' + res.data.schedulenf[0].id, { withCredentials: true })
                         .then((response) => {
                             console.log(response)
@@ -102,14 +103,14 @@ const Diet = ({ navigation }) => {
                             }
                         })
                         .catch(error => {
-                            console.log(error)
+                            console.log("Inside catch", error)
                         })
                 }
                 // console.log(response);
                 // setExe(response.data.schedulee[0].document[1].day[0].exercise);
             }
             catch (err) {
-                console.log(err);
+                console.log("Outside catch", err);
             }
         }
         fetchData();
@@ -216,10 +217,10 @@ const Diet = ({ navigation }) => {
                         <Minicard>
                             {/* <Image source={{ uri: item.day[0].time[0].nutrition.photos[0] }} style={{ width: 100, height: 80, marginLeft: 7 }} /> */}
 
-                            <Text style={{ fontSize: 28, marginLeft: 20, marginTop: 5 }}>{item.sameDay}</Text>
+                            <Text style={{ fontSize: 25, marginLeft: 20, marginTop: 5 }}>{item.sameDay}</Text>
 
-                            <TouchableOpacity onPress={() => navigation.navigate('DietDay', { screen: 'DietDay', params: { item } })}
-                                style={{ padding: 5, backgroundColor: '#BF243D', marginLeft: 60, marginTop: 8, width: 68, borderRadius: 20, height: 30 }}
+                            <TouchableOpacity onPress={() => navigation.navigate('DietDay', { screen: 'DietDay', params: { item, scheduleId } })}
+                                style={{ padding: 5, backgroundColor: '#BF243D', marginLeft: 30, marginTop: 8, width: 68, borderRadius: 20, height: 30 }}
                             >
                                 <Text style={{ color: 'white', marginLeft: 10 }}>View</Text>
 
@@ -230,7 +231,7 @@ const Diet = ({ navigation }) => {
                                 console.log(item.sameDay);
                                 // setModalVisible(true);
                             }}
-                                style={{ padding: 5, backgroundColor: '#BF243D', marginLeft: 60, marginTop: 8, width: 75, borderRadius: 20, height: 30 }}
+                                style={{ padding: 5, backgroundColor: '#BF243D', marginLeft: 30, marginTop: 8, width: 75, borderRadius: 20, height: 30 }}
                             >
                                 <Text style={{ color: 'white', marginLeft: 10 }}>Delete</Text>
                             </TouchableOpacity>
