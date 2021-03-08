@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import { StyleSheet, SafeAreaView, Text, View, TextInput,Button, Platform, Dimensions, TouchableOpacity, ImageBackground, KeyboardAvoidingView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, SafeAreaView, View, TextInput, Platform, Dimensions, TouchableOpacity, ImageBackground, KeyboardAvoidingView } from 'react-native';
 import Constants from 'expo-constants';
 import { FontAwesome } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
@@ -8,8 +8,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { AntDesign } from '@expo/vector-icons';
 import SignUpScreen from './SignUpScreen';
 import Dashboard from './Dashboard';
-import {MaterialCommunityIcons} from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import axios from 'axios';
+import { Button, Card, Modal, Text } from '@ui-kitten/components';
+import Signin from './Signin';
+import { NetworkInfo } from "react-native-network-info";
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -18,14 +21,65 @@ const pic = { uri: 'https://www.linkpicture.com/q/log2.jfif' };
 
 const Stack = createStackNavigator();
 
+console.log(windowWidth);
+
+
+
+const MAX_LEN = 15,
+  MIN_LEN = 6,
+  PASS_LABELS = ["Too Short", "Weak", "Normal", "Strong", "Secure"];
+
+
 const Login = ({ navigation }) => {
 
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error,setError]=useState('');
-  const [show,setShow]=useState('false');
-  const [visible,setVisible]=useState('true');
+  const [error, setError] = useState('');
+  const [show, setShow] = useState('false');
+  const [visible, setVisible] = useState(true);
+  const [visible1, setVisible1] = React.useState('');
+  const [visible2, setVisible2] = React.useState('');
+  const [visible3, setVisible3] = React.useState('');
+
+  useEffect(() => {
+    // async function getIP() {
+    //   NetworkInfo.getIPV4Address().then(ipv4Address => {
+    //     console.log(ipv4Address);
+    //     this._continuePayment(ipv4Address);
+    //   });
+    // }
+    // getIP();
+    async function fetchData() {
+      try {
+        console.log('I am running')
+        axios.get('http://192.168.43.126:3010/api-gateway/current-user/user', { withCredentials: true })
+          .then((res) => {
+            console.log(res);
+            console.log('inside')
+            if (res.status == '401') {
+              navigation.navigate('Login')
+            }
+            else {
+              navigation.navigate('Dashboard')
+            }
+          }).catch((error) => {
+            navigation.navigate('Login')
+            console.log('Error', error)
+          })
+
+
+      }
+      catch (err) {
+        // navigation.navigate('Signin')
+        console.log(err);
+      }
+    }
+    fetchData();
+  }, []);
+
+
+
 
 
 
@@ -37,45 +91,70 @@ const Login = ({ navigation }) => {
       <ImageBackground style={styles.header} source={pic}>
         <Text style={{ fontSize: 50, marginTop: 100, fontWeight: 'bold', color: 'white' }}>D&ERS</Text>
 
-        <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#EDDDDF' }}>
+        <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#EDDDDF',width:windowWidth*0.6198 }}>
           <FontAwesome name="user-o" size={24} color="#EDDDDF" style={{ marginTop: 70 }} />
           <TextInput placeholder='Email' placeholderTextColor="#EDDDDF" style={styles.inner1} onChangeText={setEmail} />
         </View>
 
-        <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#EDDDDF' }}>
+        <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#EDDDDF',width:windowWidth*0.6298 }}>
           <Feather name="lock" size={24} color="#EDDDDF" style={{ marginTop: 70 }} />
-          <TextInput placeholder='Password' placeholderTextColor="#EDDDDF" secureTextEntry={visible} style={styles.inner2} onChangeText={setPassword} />
-          <TouchableOpacity style={{marginTop:70}} onPress={()=>{setShow(!show),setVisible(!visible)}}>
-            <MaterialCommunityIcons name={show===false ? 'eye-outline' : 'eye-off-outline'} size={26} color={'white'}/>
+          <TextInput placeholder='Password' placeholderTextColor="#EDDDDF" keyboardType="default" secureTextEntry={visible} style={styles.inner2} onChangeText={setPassword} />
+          <TouchableOpacity style={{ marginTop: 70 }} onPress={() => { setShow(!show), setVisible(!visible) }}>
+            <MaterialCommunityIcons name={show === false ? 'eye-outline' : 'eye-off-outline'} size={26} color={'white'} />
           </TouchableOpacity>
+
         </View>
 
-        <Button title={'Login'} style={styles.Btn}  onPress={()=>{ 
-            const ran={
-                
-                email: email,
-                password: password
-            
-            }
+        <TouchableOpacity style={styles.Btn} onPress={() => {
+          const ran = {
+
+            email: email,
+            password: password
+
+          }
 
 
-            console.log(ran);
-            
-            axios.post('http://localhost:3010/api-gateway/sign-in/user',ran,{withCredentials : true}).then(response =>{
-                console.log(navigation);
-                
-                navigation.navigate('dash');
-                
-            }).catch(error => {
-                if(error){
+          console.log(ran);
+          try {
+            console.log('Login running')
+            axios.post('http://192.168.43.126:3010/api-gateway/sign-in/user', ran, { withCredentials: true })
+              .then(response => {
+                console.log('Login inside')
+                console.log(response);
+                setVisible1(false)
+                navigation.navigate('Dashboard');
+
+              }).catch(error => {
+                if (error) {
+                  console.log("Inside", error)
+                  setVisible1(true);
+                  // setError(error);
                   setError("Email Or Password Not Correct, Make Sure You're Registered!");
                 }
-            })
+              })
+          }
+          catch (error) {
+            console.log(error);
+          }
         }}
-           />
-           <Text style={{color:'red'}}>{error}</Text>
+        >
+          <Text style={{ color: 'white' }}>Login</Text>
+        </TouchableOpacity>
 
-          
+        {/* <Text style={{color:'red'}}>{error}</Text> */}
+        <Modal
+          visible={visible1}
+          backdropStyle={styles.backdrop}
+          onBackdropPress={() => setVisible1(false)}>
+          <Card disabled={true}>
+            <Text>{error}</Text>
+            <Button onPress={() => setVisible1(false)} style={{ width: 127, backgroundColor: 'red', marginLeft: 100, marginTop: 10, borderRadius: 20 }}>
+              OK
+            </Button>
+          </Card>
+        </Modal>
+
+
 
         <Text style={{ color: 'white', fontSize: 18, marginTop: 30 }}>Or Join With</Text>
 
@@ -93,12 +172,42 @@ const Login = ({ navigation }) => {
         </View>
 
         <Text style={{ color: 'white', fontSize: 14, marginTop: 22 }}>Don't Have An Account?
-          <Text style={{ fontWeight: 'bold' }} onPress={() => navigation.navigate('signup')} >  Create Here</Text>
+          <Text style={{ fontWeight: 'bold', color: 'white' }} onPress={() => navigation.navigate('Signup')} >  Create Here</Text>
         </Text>
       </ImageBackground>
 
     </SafeAreaView>
-  )
+  );
+}
+
+export const LoginScreen = ({ navigation }) => {
+
+  return (
+    <NavigationContainer independent={true}>
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen independent={true}
+          name="Dashboard"
+          component={Dashboard}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen independent={true}
+          name="Signup"
+          component={SignUpScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen independent={true}
+          name="Signin"
+          component={Signin}
+          options={{ headerShown: false }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
 
 
@@ -131,7 +240,7 @@ const styles = StyleSheet.create({
 
 
     marginTop: 70,
-    width: 203,
+    width: windowWidth*0.493,
     marginLeft: 10,
     color: 'white'
   },
@@ -141,7 +250,7 @@ const styles = StyleSheet.create({
 
 
     marginTop: 70,
-    width: 203,
+    width: windowWidth*0.493,
     marginLeft: 10,
     color: 'white',
 
@@ -182,4 +291,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default Login;
+export default LoginScreen;

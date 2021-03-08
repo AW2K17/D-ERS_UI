@@ -14,6 +14,7 @@ import { LogoutScreen } from './LogoutScreen';
 import Signin from './Login';
 import LoginScreen from './Login';
 import PlanScreen from './Plan';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -86,8 +87,10 @@ const WorkoutStackScreen = ({ navigation }) => {
     <WorkoutStack.Navigator screenOptions={{
       headerLeft: () => (
         <NavigationDrawerStructure navigationProps={navigation} />
+       
       ),
-      headerTitleAlign: 'center'
+          
+      headerTitleAlign: "center"
     }}>
       <WorkoutStack.Screen name="Workout" component={WorkoutScreen} />
     </WorkoutStack.Navigator>
@@ -156,7 +159,7 @@ function Signout() {
 
 
 
-  axios.post('http://localhost:3010/api-gateway/sign-out/user').then(response => {
+  axios.post('http://192.168.43.126:3010/api-gateway/sign-out/user').then(response => {
 
     console.log(response);
     // navigation.navigate('Login');
@@ -232,213 +235,78 @@ function TabsScreen() {
 }
 
 
-function byDate(a, b) {
-  const aa = new Date(a)
-  const bb = new Date(b)
-
-  if (aa < bb) return -1;
-  if (aa > bb) return 1;
-  return 0;
-}
-function filterDate(a) {
-  const aa = new Date(a).toISOString().substring(0, 10)
-  console.log(aa)
-  var bb = new Date().toISOString().substring(0, 10);
-  var datt = new Date(bb).toISOString().substring(0, 10)
-  // console.log(aa);
-  // console.log(bb);
-  // console.log(datt);
-  if (aa == datt) {
-      return aa
-  }
-  return 0;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 const Drawer = createDrawerNavigator();
 
 
 export const Dashboard = ({ navigation }) => {
 
-  
-   var intervalId = null;
-   var varCounter = 0;
+  var intervalId = null;
+  var varCounter = 0;
 
-  // var intervalId2 = null;
-  // var varCounter2 = 1;
-  // // var d = ['20-12-2020', '22-12-2020', '25-12-2020', '27-12-2020'];
-   var count1 = 0;
-  // var count2 = 0;
+  var intervalId2 = null;
+  var varCounter2 = 1;
+  // var d = ['20-12-2020', '22-12-2020', '25-12-2020', '27-12-2020'];
+  var count1 = 0;
+  var count2 = 0;
 
-   const [dates, setDates] = useState('');
-  //var dates
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        axios.get('http://localhost:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
-          .then((res) => {
-            axios.get('http://localhost:3032/api-gateway/current-user/nutrition-schedule/reminder/' + res.data.schedulenf[0].id, { withCredentials: true })
-              .then((res) => {
-                dates =res.data.map((e) => {
-                  
-                  return e.sameDay;
-                  
-                })
-                console.log(dates)
+  const [dates, setDates] = useState([]);
+  // var dates
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       axios.get('http://localhost:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+  //         .then((res) => {
+  //           axios.get('http://localhost:3032/api-gateway/current-user/nutrition-schedule/reminder/' + res.data.schedulenf[0].id, { withCredentials: true })
+  //             .then((res) => {
+  //               dates = res.data.map((e) => {
+  //                 console.log(e.sameDay)
+  //                 return e.sameDay;
+  //               })
+  //               // setDates(res.data)
+  //             })
+  //         })
+  //         .catch((error) => {
+  //           console.log(error.response)
+  //         })
 
-                var dat = dates.sort(byDate)
-                console.log(dat);
-                var datt2 = dat.filter(filterDate)
-                console.log("Aaj waali"+datt2)
-              })
-          })
-          .catch((error) => {
-            console.log(error)
-          })
-
-        // console.log(response.data.schedulenf[0].id)
+  //       // console.log(response.data.schedulenf[0].id)
 
 
-      }
-      catch (err) {
-        console.log(err)
-      }
-    }
-    fetchData();
-  }, [])
-
-
-
-   //console.log(dates[0])
-
-
-
-   var varName = function () {
-
-     var dateFormat = require("dateformat");
-     var now = new Date();
-     var currentDate = dateFormat(now, "yyyy-mm-dd");
-
-
-     if (varCounter < 3) {
-
-       if (currentDate == dates[count1]) {
-
-         setTimeout(() => {
-           showMessage({
-             message: 'Its Time for Breakfast! ', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
-             color: "black", backgroundColor: '#F5FAFA'
-           })
-         }, 3000);
-
-        setTimeout(() => {
-          showMessage({
-            message: 'Its Time For Lunch! ', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
-            color: "black", backgroundColor: '#F5FAFA'
-          })
-        }, 7000);
-
-
-        setTimeout(() => {
-          showMessage({
-            message: 'Its Time For Dinner! ', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
-            color: "black", backgroundColor: '#F5FAFA'
-          })
-        }, 10000);
-
-
-        count1++;
-        
-      }
-  else if (currentDate != dates[count1]) {
-  
-  showMessage({
-    message:'cant show',type:'info',color: "white",type:'warning',icon: { icon: "auto", position: "left" },
-    color: "#606060"})
-    
-  }
- 
-  count1++;
-  varCounter++;
-  console.log("Limit: "+varCounter);
-
-    } else {
-      clearInterval(intervalId);
-    }
-  };
-
-
-
-
-  // var varName2 = function () {
-
-  //   var dateFormat = require("dateformat");
-  //   var now = new Date();
-  //   var currentDate = dateFormat(now, "d-m-yyyy");
-
-
-  //   if (varCounter2 <= 4) {
-
-  //     if (currentDate == d[count2]) {
-  //       showMessage({
-  //         message: 'Its Time for Workout! ', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
-  //         color: "black", backgroundColor: '#F5FAFA'
-  //       })
-
-  //       count2++;
-  //       varCounter2++;
   //     }
-  //     else if (currentDate != d[count2]) {
-  //       /*
-  //       showMessage({
-  //         message:'cant show',type:'info',color: "white",type:'warning',icon: { icon: "auto", position: "left" },
-  //         color: "#606060"})
-  //         varCounter++;*/
+  //     catch (err) {
+  //       console.log(err)
   //     }
-
-  //   } else {
-  //     clearInterval(intervalId2);
   //   }
+  //   fetchData();
+  // }, [])
+
+
+
+  // console.log(dates)
+
+
+
+
+  
+
+
+
+
+
+
+  // function stopDiet() {
+  //   useEffect(() => {
+  //     intervalId = setInterval(varName, 20000);
+  //   }, []);
+    
   // };
 
 
 
-
-
-
-  function stopDiet() {
-    useEffect(() => {
-      intervalId = setInterval(varName, 20000);
-    }, []);
-    
-  };
+  // function stopDiet() {
+  //   intervalId = setInterval(varName, 3000);
+  // };
 
 
   // function stopExercise() {
@@ -448,7 +316,7 @@ export const Dashboard = ({ navigation }) => {
 
 
 
-  stopDiet();
+  // stopDiet();
   // stopExercise();
 
 

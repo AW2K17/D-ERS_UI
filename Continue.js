@@ -25,7 +25,7 @@ const Stack = createStackNavigator();
 
 const Continue = ({ navigation, route }) => {
 
-    const { fn, ln, eml, pwd, bm } = route.params.ran;
+    const { fn, ln, eml, pwd } = route.params.ran;
     //console.log(fn);
 
 
@@ -35,7 +35,7 @@ const Continue = ({ navigation, route }) => {
     const [height, setHeight] = useState('');
     const [selectedIndex, setSelectedIndex] = React.useState(new IndexPath(0));
     const [selectedIndex2, setSelectedIndex2] = React.useState(new IndexPath(0));
-    const [inch,setInch]=useState('');
+    const [inch, setInch] = useState('');
     const [age, setAge] = useState('');
     const [err1, setErr1] = useState('');
     const [err2, setErr2] = useState('');
@@ -47,23 +47,23 @@ const Continue = ({ navigation, route }) => {
     const data1 = [
         'Kg',
         'Pounds',
-      ];
-      
-      const data2 = [
+    ];
+
+    const data2 = [
         "FeetInches",
         'Meter',
-      ];
-      
-      
+    ];
+
+
 
 
     const displayValue = data1[selectedIndex.row];
     const displayValue2 = data2[selectedIndex2.row];
 
     const renderOption = (title) => (
-        <SelectItem title={title}/>
-      );
-    
+        <SelectItem title={title} />
+    );
+
 
 
 
@@ -129,7 +129,7 @@ const Continue = ({ navigation, route }) => {
                 lastName: ln,
                 email: eml,
                 password: pwd,
-                bmi: weight/Math.pow(height+inch,2),
+                bmi: weight / Math.pow(height + inch, 2),
                 weight: weight,
                 height: height,
                 age: age,
@@ -138,13 +138,13 @@ const Continue = ({ navigation, route }) => {
             }
 
 
-            axios.get('http://localhost:3010/api-gateway/current-user/user', { withCredentials: true })
-                .then(response => {
-                    console.log(response.data)
-                })
-                .catch(error => {
-                    console.log(error)
-                })
+            // axios.get('http://localhost:3010/api-gateway/current-user/user', { withCredentials: true })
+            //     .then(response => {
+            //         console.log(response.data)
+            //     })
+            //     .catch(error => {
+            //         console.log(error)
+            //     })
 
 
 
@@ -153,7 +153,8 @@ const Continue = ({ navigation, route }) => {
 
 
             console.log(ran);
-            axios.post('http://localhost:3010/api-gateway/sign-up/user', ran, { withCredentials: true })
+            try{
+                axios.post('http://192.168.43.126:3010/api-gateway/sign-up/user', ran, { withCredentials: true })
                 .then(response => {
                     console.log(response.data);
                     navigation.navigate('Dashboard')
@@ -161,87 +162,90 @@ const Continue = ({ navigation, route }) => {
                 .catch(error => {
                     console.log(error);
                 })
+            
+            }
+            catch (error) {
+                console.log(error);
+            }
         }
 
     }
 
 
-    const handleHeighttF=(e)=>{
+    const handleHeighttF = (e) => {
         console.log(displayValue2);
-        
-        
-        if(displayValue2 ==="FeetInches"){
+
+
+        if (displayValue2 === "FeetInches") {
 
             const i = e.toString().split(".")
-            setHeight(parseFloat(i[0])*0.3048)
+            setHeight(parseFloat(i[0]) * 0.3048)
             handleHeighttI(i[1]);
         }
-        else{
-            
+        else {
+
             handleHeighttM(e)
         }
         console.log(height)
         console.log(inch)
 
-      
-      }
-      const handleHeighttM=(e)=>{
+
+    }
+    const handleHeighttM = (e) => {
         setHeight(parseFloat(e))
-      }
-      const handleHeighttI=(e)=>{
-        if(displayValue2 ==="FeetInches")
-        {
-          setInch(parseFloat(e)*0.0254)
+    }
+    const handleHeighttI = (e) => {
+        if (displayValue2 === "FeetInches") {
+            setInch(parseFloat(e) * 0.0254)
         }
-       
-      }
+
+    }
 
 
 
 
-      const handleWeightOptions=(e)=>{
+    const handleWeightOptions = (e) => {
 
 
 
         setSelectedIndex(e);
 
-        if(e===1)
-        handleWeight(weight);
+        if (e === 1)
+            handleWeight(weight);
 
-      }
+    }
 
-      const handleHeightOptions=(e)=>{
+    const handleHeightOptions = (e) => {
 
         setSelectedIndex2(e);
 
-        if(e===0){
+        if (e === 0) {
             handleHeight(height);
         }
-      }
+    }
 
 
 
 
-      const handleWeight=(e)=>{
-         
-        if(displayValue ==="Pounds")
-        {
-            if(e)
-          setWeight(parseFloat((parseFloat(e)*0.453592).toFixed(2)))
-          
-    
+    const handleWeight = (e) => {
+
+        if (displayValue === "Pounds") {
+            if (e)
+                setWeight(parseFloat((parseFloat(e) * 0.453592).toFixed(2)))
+
+
         }
-        else{
-            if(e)
-            setWeight(parseFloat((parseFloat(e)).toFixed(2)))
+        else {
+            if (e)
+                setWeight(parseFloat((parseFloat(e)).toFixed(2)))
         }
         console.log(e);
         console.log(displayValue);
         console.log(weight);
-       
-      }
 
-    
+    }
+
+
 
 
 
@@ -258,15 +262,14 @@ const Continue = ({ navigation, route }) => {
                     <View style={styles.inputField}>
                         <FontAwesome5 name="weight-hanging" color="#EDDDDF" style={styles.icon} />
                         <TextInput style={styles.textInput1} placeholder="Weight"
-                             onChangeText={handleWeight} placeholderTextColor="#EDDDDF" keyboardType={'numeric'} />
-                        
+                            onChangeText={handleWeight} placeholderTextColor="#EDDDDF" keyboardType={'numeric'} />
+
                         {/*<RNPickerSelect
                             placeholder={{
                                 label: 'Select Unit',
                                 value: null,
                                 color: 'red',
                             }}
-
                             style={{
                                 inputAndroid: {
                                     fontSize: 34,
@@ -274,33 +277,25 @@ const Continue = ({ navigation, route }) => {
                                     backgroundColor: 'transparent',
                                     width: 120,
                                     marginLeft: 10
-
                                 }
                             }}
                             placeholderColor='white'
-
-
-
                            
-
                             items={[
                                 { label: 'Kg', value: 'wgt1' },
                                 { label: 'lbs', value: 'wgt2' },
-
                             ]}
-
-
                         />*/}
-                        
+
                         <Select level='1'
-                             style={styles.select}
-                             placeholder='Default'
-                             value={displayValue}
+                            style={styles.select}
+                            placeholder='Default'
+                            value={displayValue}
                             selectedIndex={selectedIndex}
                             onSelect={index => handleWeightOptions(index)}>
                             {data1.map(renderOption)}
                         </Select>
-                       
+
 
                     </View>
 
@@ -324,14 +319,13 @@ const Continue = ({ navigation, route }) => {
                     <View style={styles.inputField}>
                         <MaterialCommunityIcons name="human-male" style={styles.heightIcon} color="#EDDDDF" />
                         <TextInput style={styles.textInput2} placeholder="Height"
-                           onChangeText={handleHeighttF} placeholderTextColor="#EDDDDF" keyboardType={'numeric'} />
+                            onChangeText={handleHeighttF} placeholderTextColor="#EDDDDF" keyboardType={'numeric'} />
                         {/*<RNPickerSelect
                             placeholder={{
                                 label: 'Select Unit',
                                 value: null,
                                 color: 'red',
                             }}
-
                             style={{
                                 inputAndroid: {
                                     fontSize: 19,
@@ -339,23 +333,17 @@ const Continue = ({ navigation, route }) => {
                                     backgroundColor: 'transparent',
                                     width: 120,
                                     marginLeft: 10
-
                                 }
                             }}
                             placeholderColor='white'
-
-
-
                             onValueChange={(value) => console.log(value)}
-
                             items={[
                                 { label: 'Foot', value: 'ht1' },
                                 { label: 'Meter', value: 'ht2' },
-
                             ]}
                         />*/}
 
-                        
+
                         <Select level='1'
                             style={styles.select}
                             placeholder='Default'
@@ -364,7 +352,7 @@ const Continue = ({ navigation, route }) => {
                             onSelect={index => handleHeightOptions(index)}>
                             {data2.map(renderOption)}
                         </Select>
-                        
+
                     </View>
                     {/*<Text style={{color: 'red'}}>{err2}</Text>*/}
 
@@ -513,9 +501,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#BF243D',
     },
     select: {
-       
-       
-       marginTop:20,
-        width:120
-      }
+
+        marginLeft: 20,
+        marginTop: 20,
+        width: 120
+    }
 })

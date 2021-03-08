@@ -12,13 +12,13 @@ const PlanStack = createStackNavigator();
 const HistoryStack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
 
-function PlanStackScreen() {
-    return (
-        <PlanStack.Navigator headerMode="none">
-            <PlanStack.Screen name="Plan" component={PlanScreen} />
-        </PlanStack.Navigator>
-    );
-}
+// function PlanStackScreen() {
+//     return (
+//         <PlanStack.Navigator headerMode="none">
+//             <PlanStack.Screen name="Plan" component={PlanScreen} />
+//         </PlanStack.Navigator>
+//     );
+// }
 
 function HistoryStackScreen() {
     return (
@@ -31,12 +31,10 @@ function HistoryStackScreen() {
 
 export const WorkoutScreen = () => {
     return (
-        <NavigationContainer independent={true}>
-            <Tab.Navigator>
-                <Tab.Screen name="Plan" component={PlanStackScreen} />
-                <Tab.Screen name="History" component={HistoryStackScreen} />
-            </Tab.Navigator>
-        </NavigationContainer>
+        <Tab.Navigator>
+            <Tab.Screen name="Plan" component={PlanScreen} />
+            <Tab.Screen name="History" component={HistoryStackScreen} />
+        </Tab.Navigator>
     );
 }
 

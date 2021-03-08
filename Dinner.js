@@ -3,6 +3,8 @@ import { StyleSheet,Text, View,Dimensions, ImageBackground,Image,TouchableOpacit
 
 import Constants from 'expo-constants';
 import { FlatList } from 'react-native-gesture-handler';
+import { createStackNavigator } from '@react-navigation/stack';
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -11,7 +13,9 @@ const pic1={uri:'https://realhousemoms.com/wp-content/uploads/Eggs-in-a-Basket-I
 const pic2={uri:'https://thestayathomechef.com/wp-content/uploads/2020/04/Grilled-Chicken-2-scaled.jpg'}
 const pic3={uri:'https://media-cdn.tripadvisor.com/media/photo-s/12/4e/29/14/500g-t-bone-steak-with.jpg'}
 
-const Dinner = () => {
+const Stack = createStackNavigator();
+
+const DinnerScreen = () => {
 
     const [workouts,setWorkouts]=useState([
         pic1,
@@ -47,7 +51,6 @@ const Dinner = () => {
             
             {/*
             <Text>{"\n"}</Text>
-
             <View style={styles.today2}>
                 <Text style={styles.h1}>Today's Lunch</Text>
                 <ImageBackground source={pic2} style={styles.workoutPic}>
@@ -76,6 +79,18 @@ const Dinner = () => {
 
        
     );
+}
+
+export const Dinner = () => {
+    return (
+        <Stack.Navigator>
+            <Stack.Screen
+                name="Dinner"
+                component={DinnerScreen}
+                options={{ headerShown: false }} />
+        </Stack.Navigator>
+    )
+
 }
 
 export default Dinner;
