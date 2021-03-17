@@ -21,6 +21,8 @@ const pic = { uri: 'https://www.linkpicture.com/q/log2.jfif' };
 
 const Stack = createStackNavigator();
 
+console.log(windowWidth);
+
 
 
 const MAX_LEN = 15,
@@ -51,7 +53,7 @@ const Login = ({ navigation }) => {
     async function fetchData() {
       try {
         console.log('I am running')
-        axios.get('http://172.16.64.119:3010/api-gateway/current-user/user', { withCredentials: true })
+        axios.get('http://192.168.1.101:3010/api-gateway/current-user/user', { withCredentials: true })
           .then((res) => {
             console.log(res);
             console.log('inside')
@@ -89,12 +91,12 @@ const Login = ({ navigation }) => {
       <ImageBackground style={styles.header} source={pic}>
         <Text style={{ fontSize: 50, marginTop: 100, fontWeight: 'bold', color: 'white' }}>D&ERS</Text>
 
-        <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#EDDDDF' }}>
+        <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#EDDDDF',width:windowWidth*0.6198 }}>
           <FontAwesome name="user-o" size={24} color="#EDDDDF" style={{ marginTop: 70 }} />
           <TextInput placeholder='Email' placeholderTextColor="#EDDDDF" style={styles.inner1} onChangeText={setEmail} />
         </View>
 
-        <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#EDDDDF' }}>
+        <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#EDDDDF',width:windowWidth*0.6298 }}>
           <Feather name="lock" size={24} color="#EDDDDF" style={{ marginTop: 70 }} />
           <TextInput placeholder='Password' placeholderTextColor="#EDDDDF" keyboardType="default" secureTextEntry={visible} style={styles.inner2} onChangeText={setPassword} />
           <TouchableOpacity style={{ marginTop: 70 }} onPress={() => { setShow(!show), setVisible(!visible) }}>
@@ -115,7 +117,7 @@ const Login = ({ navigation }) => {
           console.log(ran);
           try {
             console.log('Login running')
-            axios.post('http://172.16.64.119:3010/api-gateway/sign-in/user', ran, { withCredentials: true })
+            axios.post('http://192.168.1.101:3010/api-gateway/sign-in/user', ran, { withCredentials: true })
               .then(response => {
                 console.log('Login inside')
                 console.log(response);
@@ -238,7 +240,7 @@ const styles = StyleSheet.create({
 
 
     marginTop: 70,
-    width: 203,
+    width: windowWidth*0.493,
     marginLeft: 10,
     color: 'white'
   },
@@ -248,7 +250,7 @@ const styles = StyleSheet.create({
 
 
     marginTop: 70,
-    width: 203,
+    width: windowWidth*0.493,
     marginLeft: 10,
     color: 'white',
 

@@ -33,7 +33,7 @@ const Minicard = (props) => {
                 </TouchableOpacity> */}
 
                 {/* </Card> */}
-                <View style={{ paddingTop: 35, paddingBottom: 35, width: windowWidth, marginTop: 42, flexDirection: 'row' }}>
+                <View style={{ paddingTop: 35, paddingBottom: 35, width: windowWidth, marginTop: windowWidth*0.0532, flexDirection: 'row',backgroundColor:'white' }}>
                     {props.children}
                 </View>
             </View>

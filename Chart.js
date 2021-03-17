@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import { PieChart } from 'react-native-svg-charts'
-import { Button, View, ScrollView, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { Button, View, ScrollView, TextInput, StyleSheet, TouchableOpacity,Dimensions } from 'react-native';
 import { Text } from 'react-native-svg';
 import { IndexPath, Datepicker, Layout, Select, SelectItem } from '@ui-kitten/components';
 import Constants from 'expo-constants';
 // import { TouchableOpacity } from 'react-native-gesture-handler';
 import SelectDayTime from './Select';
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 
 // 3 values leni hain : protein, carbohydrates , fats, jo nutrition se arahi hain values ,woh pass krni hain
@@ -264,8 +266,9 @@ const Chart = ({ item }) => {
     return (
         <View>
 
+            
             <PieChart
-                style={{ height: 200, marginTop: 15, marginRight: 75 }}
+                style={{ height: 200, marginTop: 15, marginRight: 2 }}
                 valueAccessor={({ item }) => item.amount}
                 data={data}
                 spacing={0}
@@ -279,13 +282,17 @@ const Chart = ({ item }) => {
                 <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{displayValue}: {data[0].amount}</Text>
                 <Text style={{ fontSize: 18, fontWeight: 'bold', marginLeft: 8 }}>{check[0]}:{data[1].amount}</Text>
                 <Text style={{ fontSize: 18, fontWeight: 'bold', marginLeft: 8 }}>{check[1]}: {data[2].amount}</Text>
-                <TouchableOpacity style={{ margin: 20, padding: 10, borderRadius: 15, backgroundColor: '#BF243D', color: 'white' }}
+                {/* <TouchableOpacity style={{ margin: 20, padding: 10, borderRadius: 15, backgroundColor: '#BF243D', color: 'white' }}
                     onPress={change} >
                     <Text>UPDATE</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
+                <View style={{marginLeft:windowWidth*0.080,marginTop:20}}> 
+                <Button title="UPDATE" color="#BF243D" onPress={change}/>
+                </View>
+
 
             </View>
-            <View style={{ flexDirection: 'row', marginTop: 33 }}>
+            <View style={{ flexDirection: 'row', marginTop: 33,alignItems:'center' }}>
                 <Select
                     style={styles.select}
                     placeholder='Default'
@@ -295,7 +302,7 @@ const Chart = ({ item }) => {
                     {data2.map(renderOption)}
                 </Select>
 
-                <TextInput style={{ backgroundColor: 'silver', width: 120, marginLeft: 6 }} placeholder={'Enter Quantity'} onChangeText={setQuantity}></TextInput>
+                <TextInput style={{ backgroundColor: 'silver', width: windowWidth*0.274, marginLeft: 6 ,padding:5}} placeholder={'Enter Quantity'} onChangeText={setQuantity}></TextInput>
 
             </View>
 
@@ -325,5 +332,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
 
-    },
+    }
+    ,
+    select:{ 
+
+        width:windowWidth*0.4281,
+        marginLeft:windowWidth*0.0733
+    }
 });

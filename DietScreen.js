@@ -3,10 +3,14 @@ import { Alert, StyleSheet, Text, View, Dimensions, ImageBackground, Image, Touc
 
 import Constants from 'expo-constants';
 import { FlatList } from 'react-native-gesture-handler';
-
+import { showMessage, hideMessage } from "react-native-flash-message";
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
+import Screen1 from './Screen1';
+import Screen2 from './Screen2';
+import DietForm from './DietForm';
+
 
 
 import axios from 'axios';
@@ -20,6 +24,7 @@ import { Card } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 // import Modal from 'modal-react-native-web';
 import Modal from 'react-native-modal';
+import { REMINDERS } from 'expo-permissions';
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -54,72 +59,234 @@ const Diet = ({ navigation }) => {
     var diets;
     var dates;
 
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const res = await axios.get('http://192.168.1.101:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
-                // .then(response => {
-                console.log(res)
-                if (res.data.schedulenf != null) {
 
-                    setScheduleId(res.data.schedulenf[0].id)
-                    console.log(res.data.schedulenf[0])
-                    axios.get('http://192.168.1.101:3031/api-gateway/current-user/schedulenf/' + res.data.schedulenf[0].id, { withCredentials: true })
-                        .then((response) => {
-                            console.log(response)
-                            dates = response.data.schedule.document.map((e) => {
-                                return e.sameDay;
-                            });
-                            // setWorkouts(res.data.schedule.document[2].day[0].exercise.photos);
-                            // setExe(res.data.schedule.document[2].day[0].exercise);
-                            // console.log(res.data.schedule.document)
-                            function byDate(a, b) {
-                                const aa = new Date(a.sameDay)
-                                const bb = new Date(b.sameDay)
+    async function fetchData2() {
+        try {
+            const res = await axios.get('http://192.168.0.103:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+            // .then(response => {
+            console.log("Yahan Hai: ");
+            console.log(res.data.schedulenf[1])
+            if (res.data.schedulenf != null) {
 
-                                if (aa < bb) return -1;
-                                if (aa > bb) return 1;
-                                return 0;
+                setScheduleId(res.data.schedulenf[0].id)
+                //console.log(res.data.schedulenf[0])
+                axios.get('http://192.168.0.103:3031/api-gateway/current-user/schedulenf/' + res.data.schedulenf[0].id, { withCredentials: true })
+                    .then((response) => {
+                        //console.log(response)
+                        dates = response.data.schedule.document.map((e) => {
+                            return e.sameDay;
+                        });
+                        // setWorkouts(res.data.schedule.document[2].day[0].exercise.photos);
+                        // setExe(res.data.schedule.document[2].day[0].exercise);
+                        // console.log(res.data.schedule.document)
+                        function byDate(a, b) {
+                            const aa = new Date(a.sameDay)
+                            const bb = new Date(b.sameDay)
+
+                            if (aa < bb) return -1;
+                            if (aa > bb) return 1;
+                            return 0;
+                        }
+                        function filterDate(a) {
+                            const aa = new Date(a.sameDay).toISOString().substring(0, 10)
+                            var bb = new Date().toISOString().substring(0, 10);
+                            var datt = new Date(bb).toISOString().substring(0, 10)
+                            // console.log(aa);
+                            // console.log(bb);
+                            // console.log(datt);
+                            if (aa >= datt) {
+                                return aa
                             }
-                            function filterDate(a) {
-                                const aa = new Date(a.sameDay).toISOString().substring(0, 10)
-                                var bb = new Date().toISOString().substring(0, 10);
-                                var datt = new Date(bb).toISOString().substring(0, 10)
-                                // console.log(aa);
-                                // console.log(bb);
-                                // console.log(datt);
-                                if (aa >= datt) {
-                                    return aa
-                                }
-                                return 0;
-                            }
-                            var dat = response.data.schedule.document.sort(byDate)
-                            var datt2 = dat.filter(filterDate)
-                            console.log(datt2)
-                            if (datt2 != null) {
-                                diets = datt2
-                                console.log(diets)
-                                setDiet(diets)
-                            }
-                        })
-                        .catch(error => {
-                            console.log("Inside catch", error)
-                        })
-                }
-                // console.log(response);
-                // setExe(response.data.schedulee[0].document[1].day[0].exercise);
+                            return 0;
+                        }
+                        var dat = response.data.schedule.document.sort(byDate)
+                        var datt2 = dat.filter(filterDate)
+                        //console.log(datt2)
+                        if (datt2 != null) {
+                            diets = datt2
+                            console.log(diets)
+                            setDiet(diets)
+                        }
+                    })
+                    .catch(error => {
+                        console.log("Inside catch", error)
+                    })
             }
-            catch (err) {
-                console.log("Outside catch", err);
-            }
+            // console.log(response);
+            // setExe(response.data.schedulee[0].document[1].day[0].exercise);
         }
-        fetchData();
+        catch (err) {
+            console.log("Outside catch", err);
+        }
+    }
+
+    useEffect(() => {
+        
+        fetchData2();
     }, []);
 
+        
+
+        
+        
+        
+
+
+
+    async function fetchData(){
+        let i,j;
+
+
+        let times=[];
+        let naashta=[];
+        let lunch=[];
+        let dinner=[];
+        
+        let tareekh=new Date();
+        let x=tareekh.toISOString();
+        let ran=x.slice(0,10);
+        let obj={};
+        let waqt=[];
+        
+        
+
+        console.log("Chalraha: ");
+
+        try{
+            const res = await axios.get('http://192.168.0.103:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+            .then(res=>{
+                //console.log(res.data.schedulenf[0].document[3].sameDay);
+                for(i=0;i<(res.data.schedulenf[0].document.length);i++){
+                    if(ran===res.data.schedulenf[0].document[i].sameDay){
+                    //console.log('yes');
+                console.log(res.data.schedulenf[0].document[i].sameDay);
+                for(j=0;j<(res.data.schedulenf[0].document[i].day.length);j++){
+
+                    //workouts.push(res.data.schedulee[0].document[i].day[j].exercise.exerciseName);
+                    waqt.push(res.data.schedulenf[0].document[i].day[j].dayTime);
+                    Object.assign(obj,{id:j+1,wo:res.data.schedulenf[0].document[i].day[j].dayTime})
+                    //console.log(obj);
+                    times.push(obj);
+                    obj={};
+
+                    for(let k=0;k<(res.data.schedulenf[0].document[i].day[j].time.length);k++){
+
+                        if(res.data.schedulenf[0].document[i].day[j].dayTime==="Breakfast"){
+
+                            Object.assign(obj,{id:k+1,
+                                khana:res.data.schedulenf[0].document[i].day[j].time[k].nutrition.nutritionName,
+                                f:res.data.schedulenf[0].document[i].day[j].time[k].nutrition.fats,
+                                c:res.data.schedulenf[0].document[i].day[j].time[k].nutrition.carbohydrates,
+                                p:res.data.schedulenf[0].document[i].day[j].time[k].nutrition.protein,
+                                cal:res.data.schedulenf[0].document[i].day[j].time[k].nutrition.calories})
+                    
+                            naashta.push(obj);
+                            obj={};
+                        }
+                        else if(res.data.schedulenf[0].document[i].day[j].dayTime==="Lunch"){
+                            Object.assign(obj,{id:k+1,
+                                khana:res.data.schedulenf[0].document[i].day[j].time[k].nutrition.nutritionName,
+                                f:res.data.schedulenf[0].document[i].day[j].time[k].nutrition.fats,
+                                c:res.data.schedulenf[0].document[i].day[j].time[k].nutrition.carbohydrates,
+                                p:res.data.schedulenf[0].document[i].day[j].time[k].nutrition.protein,
+                                cal:res.data.schedulenf[0].document[i].day[j].time[k].nutrition.calories})
+                    
+                            lunch.push(obj);
+                            obj={};
+                        
+                        }
+                        else if(res.data.schedulenf[0].document[i].day[j].dayTime==="Dinner"){
+                                Object.assign(obj,{id:k+1,
+                                khana:res.data.schedulenf[0].document[i].day[j].time[k].nutrition.nutritionName,
+                                f:res.data.schedulenf[0].document[i].day[j].time[k].nutrition.fats,
+                                c:res.data.schedulenf[0].document[i].day[j].time[k].nutrition.carbohydrates,
+                                p:res.data.schedulenf[0].document[i].day[j].time[k].nutrition.protein,
+                                cal:res.data.schedulenf[0].document[i].day[j].time[k].nutrition.calories})
+                    
+                            dinner.push(obj);
+                            obj={};
+                        }
+
+                        
+
+                    }
+                
+                }
+            }
+                else{
+                    console.log("No");
+                }
+
+            }
+            console.log(naashta);
+            console.log(lunch);
+            console.log(dinner);
+            console.log(waqt);
+            
+            
+            
+        })
+        }
+        catch(error){
+            console.log(error)
+        }
+
+        let samaan={
+            times:times,
+            naashta:naashta,
+            lunch:lunch,
+            dinner:dinner,
+        };
+
+        showMessage({
+            message: 'Hi User, Tell Us About Your Meal', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
+            color: "white", backgroundColor: 'black',
+            onPress: () => {
+                navigation.navigate( 'Screen1',samaan);
+               }
+          })         
+        
+    
+    }
+
+    // function Remind1(){
+
+
+    //     showMessage({
+    //         message: 'Time To Eat Something! ', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
+    //         color: "black", backgroundColor: '#F5FAFA'
+    //       })
+
+    //     setTimeout(() => {  Remind2() }, 4000);
+    // }
+    function Remind2(){
+
+
+        showMessage({
+            message: 'Hi User, Tell Us About Your Meal', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
+            color: "black", backgroundColor: '#F5FAFA',
+            onPress: () => {
+                navigation.navigate( 'Screen1',times,naashta);
+               }
+          })
+
+     //     setTimeout(() => {  Remind2() }, 4000);
+    }
+    
+
+    
+    const deleteItem=(id)=>{
+
+
+        setDiet(
+    
+          prevItems=>{return prevItems.filter(item=>item.id!=id);
+          });
+      }
 
     function deleteSchedule(d) {
         var dt = d.replace("-", "").replace("-", "");
-        axios.delete('http://192.168.1.101:3031/api-gateway/current-user/schedulenf/day/' + scheduleId + '/' + dt, { withCredentials: true })
+        axios.delete('http://192.168.0.103:3031/api-gateway/current-user/schedulenf/day/' + scheduleId + '/' + dt, { withCredentials: true })
             .then(response => {
                 console.log('Schedule deleted');
                 console.log(response);
@@ -132,7 +299,7 @@ const Diet = ({ navigation }) => {
 
     function deleteAllSchedules() {
         try {
-            axios.delete('http://192.168.1.101:3031/api-gateway/current-user/schedulenf/' + scheduleId, { withCredentials: true })
+            axios.delete('http://192.168.0.103:3031/api-gateway/current-user/schedulenf/' + scheduleId, { withCredentials: true })
                 .then(res => {
                     console.log(res);
                 })
@@ -143,6 +310,8 @@ const Diet = ({ navigation }) => {
         catch (err) {
             console.log(err);
         }
+
+        setDiet([]);
     }
     // function settter() {
 
@@ -180,13 +349,15 @@ const Diet = ({ navigation }) => {
         return (
             <View style={styles.centeredView}>
 
-                <TouchableOpacity style={{ flexDirection: 'row', padding: 12, backgroundColor: '#BF243D', marginLeft: 10, width: 200, borderRadius: 20, height: 45 }}
+
+                <View style={{flexDirection: 'row'}}>
+                <TouchableOpacity style={{ flexDirection: 'row', padding: 12, backgroundColor: '#BF243D',marginRight:10, marginTop: 40, width: windowWidth*0.386,alignItems:'center', borderRadius: 20, height: windowHeight*0.057 }}
                     onPress={() => {
                         try {
-                            axios.get('http://192.168.1.101:3032/api-gateway/current-user/nutrition-schedule/reschedule/' + scheduleId, { withCredentials: true })
+                            axios.get('http://192.168.0.103:3032/api-gateway/current-user/nutrition-schedule/reschedule/' + scheduleId, { withCredentials: true })
                                 .then(res => {
-                                    console.log(res);
-                                    console.log('I am running try')
+                                    //console.log(res);
+                                    //console.log('I am running try')
                                 })
                                 .catch(error => {
                                     console.log('Reschedule ', error);
@@ -197,17 +368,38 @@ const Diet = ({ navigation }) => {
                         }
                     }} >
                     <MaterialIcons name={'replay'} style={{ color: 'white' }} size={20} />
-                    <Text style={{ fontSize: 15, color: 'white', marginLeft: 10 }}>Reschedule diets</Text>
+                    <Text style={{ fontSize: 15, color: 'white', marginLeft: 10 }}>Reschedule</Text>
                 </TouchableOpacity>
 
 
-                <TouchableOpacity style={{ flexDirection: 'row', padding: 12, backgroundColor: '#BF243D', marginLeft: 10, marginTop: 40, width: 185, borderRadius: 20, height: 45 }}
+                {/* <TouchableOpacity style={{ flexDirection: 'row',alignItems: 'center',padding: 9, backgroundColor: '#BF243D', marginLeft: 10, marginTop: 40, width: windowWidth*0.386, borderRadius: 20, height: windowHeight*0.057 }}
                     onPress={() => {
                         setModalVisible(true);
                     }} >
                     <MaterialIcons name={'delete'} style={{ color: 'white' }} size={20} />
-                    <Text style={{ fontSize: 15, color: 'white', marginLeft: 10 }}>Delete all schedules</Text>
+                    <Text style={{ fontSize: 15, color: 'white' }}>Delete all</Text>
+                </TouchableOpacity> */}
+
+                <TouchableOpacity style={{ flexDirection: 'row', padding: 14, backgroundColor: '#BF243D',marginRight:5, marginTop: 40,alignItems: 'center',width: windowWidth*0.366, borderRadius: 20, height: windowHeight*0.057 }}
+                    onPress={() => {
+                        setModalVisible(true);
+                    }} >
+                    <MaterialIcons name={'delete'} style={{ color: 'white' }} size={20} />
+                    <Text style={{ fontSize: 15, color: 'white', marginLeft:windowWidth*0.024}}>Delete All</Text>
                 </TouchableOpacity>
+                <TouchableOpacity style={{ flexDirection: 'row', padding: 18, backgroundColor: '#BF243D', marginLeft: 2, marginTop: 40,alignItems: 'center',width: windowWidth*0.146, borderRadius: 50, height: windowHeight*0.057 }}
+                    onPress={() => {
+                        fetchData();
+                        fetchData2();
+                        
+                        //Remind1();
+                    }} >
+                    <MaterialIcons name={'replay'} style={{ color: 'white' }} size={20} />
+                    
+                </TouchableOpacity>
+               
+
+                </View>
 
 
                 <FlatList
@@ -228,6 +420,7 @@ const Diet = ({ navigation }) => {
                             <TouchableOpacity onPress={() => {
                                 setDeleteDay(item.sameDay);
                                 deleteSchedule(item.sameDay);
+                                deleteItem(item.id);
                                 console.log(item.sameDay);
                                 // setModalVisible(true);
                             }}
@@ -408,6 +601,22 @@ export const DietScreen = ({ navigation }) => {
                 component={Dinner}
                 options={{ headerShown: false }}
             /> */}
+            <Stack.Screen
+                name="Screen1"
+                component={Screen1}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="Screen2"
+                component={Screen2}
+                options={{ headerShown: false }}
+            />
+             <Stack.Screen
+                name="DietForm"
+                component={DietForm}
+                options={{ headerShown: false }}
+            />
+            
         </Stack.Navigator>
 
     );

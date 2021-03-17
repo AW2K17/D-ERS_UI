@@ -1,21 +1,30 @@
 import React, { PureComponent, useState, useEffect } from 'react';
-import { Alert, StyleSheet, Text, View, Dimensions, ImageBackground, Image, TouchableOpacity, ScrollView, TouchableHighlight } from 'react-native';
+import { Alert, StyleSheet, Text, View, Dimensions, ImageBackground,Button, Image, TouchableOpacity, ScrollView, TouchableHighlight } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+// import * as Notifications from 'expo-notifications'; 
+// import * as Permissions from 'expo-permissions';
+
 
 import Constants from 'expo-constants';
 import { FlatList } from 'react-native-gesture-handler';
 import WorkoutDetail from './WorkoutDetail';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
+import { showMessage, hideMessage } from "react-native-flash-message";
 import axios from 'axios';
-import Minicard from './Minicard';
+import MinicardWorkout from './MinicardWorkout';
 import WorkoutDay from './WorkoutDay';
-// import Modal from 'modal-react-native-web';
+ //import Modal from 'modal-react-native-web';
 import Modal from 'react-native-modal';
+
 // import fetchData from './fetch';
+import NewScreen from './NewScreen';
+import WorkoutForm from './WorkoutForm';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+
+console.log(windowHeight);
 
 
 const pic1 = { uri: 'https://www.dymatize.com/wp-content/uploads/2017/08/brandan-fokkens-best-chest-workout-header-v2-DYMATIZE-830x467.jpg' }
@@ -37,70 +46,210 @@ export function Plan({ navigation }) {
     const [deleteDate, setDeleteDate] = useState();
 
     const [exercise, setExercise] = useState([]);
+    const [wrk,setWrk]=useState([]);
 
     var exercises;
     var dates;
+    let workouts=[];
+
+    //global.workOut=item.exerciseName;
+
+
+    // async function fetchData() {
+    //     try {
+    //         const res = await axios.get('http://192.168.0.103:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
+    //          .then(response => {
+    //         //console.log(Object.values(res));
+    //         console.log("If: ");
+    //         console.log(response.data.schedulee[1]);
+    //          })
+    //         if (res.data.schedulee[0].id) {
+    //             setScheduleId(res.data.schedulee[0].id)
+    //             // setExe(response.data.schedulee[0].document[1].day[0].exercise);
+    //             axios.get('http://192.168.0.103:3021/api-gateway/current-user/schedulee/' + res.data.schedulee[0].id, { withCredentials: true })
+    //                 .then((res) => {
+    //                     // setWorkouts(res.data.schedule.document[2].day[0].exercise.photos);
+    //                     // setExe(res.data.schedule.document[2].day[0].exercise);
+    //                     //console.log(res.data.schedule.document)
+    //                     dates = res.data.schedule.document.map((e) => {
+    //                         return e.sameDay;
+    //                     })
+    //                     function byDate(a, b) {
+    //                         const aa = new Date(a.sameDay)
+    //                         const bb = new Date(b.sameDay)
+
+    //                         if (aa < bb) return -1;
+    //                         if (aa > bb) return 1;
+    //                         return 0;
+    //                     }
+    //                     function filterDate(a) {
+    //                         const aa = new Date(a.sameDay).toISOString().substring(0, 10)
+    //                         var bb = new Date().toISOString().substring(0, 10);
+    //                         var datt = new Date(bb).toISOString().substring(0, 10)
+    //                         // console.log(aa);
+    //                         // console.log(bb);
+    //                         // console.log(datt);
+    //                         if (aa >= datt) {
+    //                             return aa
+    //                         }
+    //                         return 0;
+    //                     }
+    //                     var dat = res.data.schedule.document.sort(byDate)
+    //                     var datt2 = dat.filter(filterDate)
+    //                    // console.log(datt2);
+    //                     if (datt2) {
+    //                         exercises = datt2
+    //                         setExercise(exercises)
+    //                     }
+    //                 })
+    //                 .catch(error => {
+    //                     //console.log(error.response)
+    //                 })
+    //         }
+
+    //     }
+
+    //     catch (err) {
+    //         console.log(err);
+    //     }
+    // }
+
+
+    function Remind1(){
+
+
+        showMessage({
+            message: 'Its Time For Workout! ', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
+            color: "white", backgroundColor: 'black'
+          })
+
+          setTimeout(() => {  Remind2() }, 4000);
+    }
+
+    function Remind2(){
+
+
+        showMessage({
+            message: 'Hi,Tell us about your workout today! ', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
+            color: "white", backgroundColor: 'black',
+            onPress: () => {
+               navigation.navigate( 'NewScreen', {workouts});
+              }
+          })
+    }
+
+    async function fetchData() {
+        try {
+            const res = await axios.get('http://192.168.0.103:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
+            // .then(response => {
+            //console.log(Object.values(res));
+            //console.log(JSON.stringify(res));
+            if (res.data.schedulee[0].id) {
+                setScheduleId(res.data.schedulee[0].id)
+                // setExe(response.data.schedulee[0].document[1].day[0].exercise);
+                axios.get('http://192.168.0.103:3021/api-gateway/current-user/schedulee/' + res.data.schedulee[0].id, { withCredentials: true })
+                    .then((res) => {
+                        // setWorkouts(res.data.schedule.document[2].day[0].exercise.photos);
+                        // setExe(res.data.schedule.document[2].day[0].exercise);
+                        //console.log("Is: "+res.data.schedule.document)
+                        dates = res.data.schedule.document.map((e) => {
+                            return e.sameDay;
+                        })
+                        function byDate(a, b) {
+                            const aa = new Date(a.sameDay)
+                            const bb = new Date(b.sameDay)
+
+                            if (aa < bb) return -1;
+                            if (aa > bb) return 1;
+                            return 0;
+                        }
+                        function filterDate(a) {
+                            const aa = new Date(a.sameDay).toISOString().substring(0, 10)
+                            var bb = new Date().toISOString().substring(0, 10);
+                            var datt = new Date(bb).toISOString().substring(0, 10)
+                            // console.log(aa);
+                            // console.log(bb);
+                            // console.log(datt);
+                            if (aa >= datt) {
+                                return aa
+                            }
+                            return 0;
+                        }
+                        var dat = res.data.schedule.document.sort(byDate)
+                        var datt2 = dat.filter(filterDate)
+                        console.log(datt2);
+                        if (datt2) {
+                            exercises = datt2
+                            setExercise(exercises)
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error.response)
+                    })
+            }
+
+        }
+
+        catch (err) {
+            console.log(err);
+        }
+    }
+
+    //console.log("Yeh lo: "+exercise.exerciseName);
+
+
 
     useEffect(() => {
-
-        async function fetchData() {
-            try {
-                const res = await axios.get('http://192.168.1.101:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
-                // .then(response => {
-                console.log(res);
-
-                if (res.data.schedulee[0].id) {
-                    setScheduleId(res.data.schedulee[0].id)
-                    // setExe(response.data.schedulee[0].document[1].day[0].exercise);
-                    axios.get('http://192.168.1.101:3021/api-gateway/current-user/schedulee/' + res.data.schedulee[0].id, { withCredentials: true })
-                        .then((res) => {
-                            // setWorkouts(res.data.schedule.document[2].day[0].exercise.photos);
-                            // setExe(res.data.schedule.document[2].day[0].exercise);
-                            console.log(res.data.schedule.document)
-                            dates = res.data.schedule.document.map((e) => {
-                                return e.sameDay;
-                            })
-                            function byDate(a, b) {
-                                const aa = new Date(a.sameDay)
-                                const bb = new Date(b.sameDay)
-
-                                if (aa < bb) return -1;
-                                if (aa > bb) return 1;
-                                return 0;
-                            }
-                            function filterDate(a) {
-                                const aa = new Date(a.sameDay).toISOString().substring(0, 10)
-                                var bb = new Date().toISOString().substring(0, 10);
-                                var datt = new Date(bb).toISOString().substring(0, 10)
-                                // console.log(aa);
-                                // console.log(bb);
-                                // console.log(datt);
-                                if (aa >= datt) {
-                                    return aa
-                                }
-                                return 0;
-                            }
-                            var dat = res.data.schedule.document.sort(byDate)
-                            var datt2 = dat.filter(filterDate)
-                            console.log(datt2)
-                            if (datt2) {
-                                exercises = datt2
-                                setExercise(exercises)
-                            }
-                        })
-                        .catch(error => {
-                            console.log(error.response)
-                        })
-                }
-
-            }
-
-            catch (err) {
-                console.log(err);
-            }
-        }
-        fetchData();
+            fetchData();
     }, []);
+    
+    async function fetchExData(){
+
+        let i,j;
+        
+        let tareekh=new Date();
+        let x=tareekh.toISOString();
+        let ran=x.slice(0,10);
+        let obj={};
+        try {
+            const res = await axios.get('http://192.168.0.103:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
+            .then(response=>{
+                console.log("CheckKro ");
+                console.log(response.data.schedulee[0].document.length);
+                for(i=0;i<(response.data.schedulee[0].document.length);i++){
+                    if(ran===response.data.schedulee[0].document[i].sameDay){
+                    console.log('yes');
+                //console.log(response.data.schedulee[0].document[i].sameDay);
+                for(j=0;j<(response.data.schedulee[0].document[i].day.length);j++){
+
+                    //workouts.push(res.data.schedulee[0].document[i].day[j].exercise.exerciseName);
+                    Object.assign(obj,{id:j+1,wo:response.data.schedulee[0].document[i].day[j].exercise.exerciseName})
+                    //console.log(obj);
+                    workouts.push(obj);
+                    obj={};
+                }
+            }
+                else{
+                    console.log("No");
+                }
+            }
+            //setTimeout(() => {  Remind1() }, 4000);
+            Remind1();
+            
+            console.log(workouts);
+            })
+        }
+        catch(err){
+                console.log(err);
+        }
+        setWrk(workouts);
+    }
+
+    
+
+    // useEffect(() => {
+    //         fetchData();
+    // }, []);
     // if (res.data.schedulee) {
     //     console.log(res.data.schedulee[0].document[0].day[0].exercise.photos[0]);
     //     console.log(photoUrl);
@@ -108,9 +257,127 @@ export function Plan({ navigation }) {
 
     // console.log(exercise)
 
+
+    const deleteItem=(id)=>{
+
+
+        setExercise(
+    
+          prevItems=>{return prevItems.filter(item=>item.id!=id);
+          });
+      }
+
+
+
+      
+//   Notifications.setNotificationHandler({
+
+//     handleNotification: async()=>{
+
+//       return {
+//         shouldPlaySound:true,
+//         shouldShowAlert:true
+        
+//       }
+//     }
+//   })
+
+
+//   useEffect(()=>{
+
+//     Permissions.getAsync(Permissions.NOTIFICATION).then(statusObj=>{
+//       if(statusObj.status!=='granted'){
+//         return Permissions.askAsync(Permissions.NOTIFICATION);
+//       }
+//       return statusObj;
+//     }).then((statusObj)=>{
+//       if(statusObj.status!=='granted'){
+//         return;
+//       }
+//     });
+//   },[])
+
+
+//   useEffect(()=>{
+
+//     const subscriptionForeground=Notifications.addNotificationReceivedListener(notification=>{
+//       console.log(notification)
+//     })
+
+
+//   const subscriptionBackground=Notifications.addNotificationResponseReceivedListener(notification=>{
+//     navigation.navigate('NewScreen');
+//   });
+
+    //  const handleNotificationResponse = response => {
+    //      console.log(response);
+    //     response.navigation.navigate('NewScreen');
+    //     onPress=>{navigation.navigate('NewScreen')}5
+    //   };
+
+
+//     return()=>{
+//       subscriptionForeground.remove();
+//       //subscriptionBackground.remove();
+//       subscriptionBackground.remove();
+//     }
+//   },[]);
+
+  
+// const [value,setValue]=useState('');
+// const [load,setLoad]=useState('');
+
+
+// const triggerNotificationHandler=()=>{
+
+
+//   Notifications.scheduleNotificationAsync({
+
+//     content:{
+//       title:'Hi User, Its Time',
+//       body:'You Got This!'
+//     },
+//     trigger:{
+//       seconds:4
+//     }
+//   });
+// }
+
+
+
+
+
+// const triggerNotificationHandler2=()=>{
+
+
+//   Notifications.scheduleNotificationAsync({
+
+//     content:{
+//       title:'Hi User',
+//       body:'Give Details Of Your Meal'
+//     },
+//     trigger:{
+//       seconds:4
+//     }
+//   });
+// }
+
+
+// function Remind(){
+
+//   triggerNotificationHandler();
+//   setTimeout(() => { triggerNotificationHandler2()}, 5000);
+// }
+
+
+
+
+
+
+
     function deleteSchedule(d) {
         var dt = d.replace("-", "").replace("-", "");
-        axios.delete('http://192.168.1.101:3021/api-gateway/current-user/schedulee/day/' + scheduleId + '/' + dt, { withCredentials: true })
+        axios.delete('http://192.168.0.103:3021/api-gateway/current-user/schedulee/day/' + scheduleId + '/' + dt, { withCredentials: true })
             .then(response => {
                 console.log('Schedule deleted');
                 console.log(response);
@@ -122,7 +389,7 @@ export function Plan({ navigation }) {
 
     function deleteAllSchedules() {
         try {
-            axios.delete('http://192.168.1.101:3021/api-gateway/current-user/schedulee/' + scheduleId, { withCredentials: true })
+            axios.delete('http://192.168.0.103:3021/api-gateway/current-user/schedulee/' + scheduleId, { withCredentials: true })
                 .then(res => {
                     console.log(res);
                 })
@@ -133,15 +400,21 @@ export function Plan({ navigation }) {
         catch (err) {
             console.log(err);
         }
+        setExercise([]);
     }
+
+
+    
 
     if (typeof window !== undefined) {
         return (
             <View style={styles.centeredView}>
-                <TouchableOpacity style={{ flexDirection: 'row', padding: 12, backgroundColor: '#BF243D', marginLeft: 10, width: 200, borderRadius: 20, height: 45 }}
+
+                <View style={{flexDirection:'row'}}>
+                <TouchableOpacity style={{ flexDirection: 'row', padding: 12, backgroundColor: '#BF243D',marginRight:11,marginTop:40, width: windowWidth*0.366,alignItems: 'center',borderRadius: 20, height:  windowHeight*0.057 }}
                     onPress={() => {
                         try {
-                            axios.get('http://192.168.1.101:3022/api-gateway/current-user/exercise-schedule/reschedule/' + scheduleId, { withCredentials: true })
+                            axios.get('http://192.168.0.103:3022/api-gateway/current-user/exercise-schedule/reschedule/' + scheduleId, { withCredentials: true })
                                 .then(res => {
                                     console.log(res);
                                 })
@@ -153,52 +426,70 @@ export function Plan({ navigation }) {
                             console.log(err);
                         }
                     }} >
-                    <MaterialIcons name={'replay'} style={{ color: 'white' }} size={20} />
-                    <Text style={{ fontSize: 15, color: 'white', marginLeft: 10 }}>Reschedule workouts</Text>
+                    <MaterialIcons name="schedule" size={20} color="white" />
+                    <Text style={{ fontSize: 15, color: 'white',marginLeft:windowWidth*0.024}}>Reschedule</Text>
                 </TouchableOpacity>
 
 
-                <TouchableOpacity style={{ flexDirection: 'row', padding: 12, backgroundColor: '#BF243D', marginLeft: 10, marginTop: 40, width: 185, borderRadius: 20, height: 45 }}
+                <TouchableOpacity style={{ flexDirection: 'row', padding: 14, backgroundColor: '#BF243D', marginLeft: 2,marginRight:11, marginTop: 40,alignItems: 'center',width: windowWidth*0.366, borderRadius: 20, height: windowHeight*0.057 }}
                     onPress={() => {
                         setModalVisible(true);
                     }} >
                     <MaterialIcons name={'delete'} style={{ color: 'white' }} size={20} />
-                    <Text style={{ fontSize: 15, color: 'white', marginLeft: 10 }}>Delete all schedules</Text>
+                    <Text style={{ fontSize: 15, color: 'white', marginLeft:windowWidth*0.024}}>Delete All</Text>
                 </TouchableOpacity>
+                
+                <TouchableOpacity style={{ flexDirection: 'row', padding: 18, backgroundColor: '#BF243D', marginLeft: 2, marginTop: 40,alignItems: 'center',width: windowWidth*0.146, borderRadius: 50, height: windowHeight*0.057 }}
+                    onPress={() => {
+                        fetchData();
+                        //Remind();
+                        fetchExData();
+                    }} >
+                    <MaterialIcons name={'replay'} style={{ color: 'white' }} size={20} />
+                    
+                </TouchableOpacity>
+                
+
+                
+                </View>
+               
                 <FlatList
-                    data={exercise}
-                    // keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item }) => (
-                        <Minicard date={item.sameDay}>
-                            {/* <Image source={{ uri: item.day[0].time[0].nutrition.photos[0] }} style={{ width: 100, height: 80, marginLeft: 7 }} /> */}
+   data={exercise}
+   // keyExtractor={(item, index) => index.toString()}
+   renderItem={({ item }) => (
+       <MinicardWorkout date={item.sameDay}>
+           {/* <Image source={{ uri: item.day[0].time[0].nutrition.photos[0] }} style={{ width: 100, height: 80, marginLeft: 7 }} /> */}
 
-                            <Text style={{ fontSize: 25, marginTop: 5 }}>{item.sameDay}</Text>
+           <Text style={{ fontSize: 28, marginTop: 5 }}>{item.sameDay}</Text>
 
-                            <TouchableOpacity onPress={() => navigation.navigate('WorkoutDay', { screen: 'WorkoutDay', params: { item, scheduleId } })}
-                                style={{ padding: 5, backgroundColor: '#BF243D', marginLeft: 30, marginTop: 8, width: 68, borderRadius: 20, height: 30 }}
-                            >
-                                <Text style={{ color: 'white', marginLeft: 10 }}>View</Text>
+           <TouchableOpacity onPress={() => navigation.navigate('WorkoutDay', { screen: 'WorkoutDay', params: { item, scheduleId } })}
+               style={{ padding: 5, backgroundColor: '#BF243D', marginLeft: 30, marginTop: 8, width: 68, borderRadius: 20, height: 30 }}
+           >
+               <Text style={{ color: 'white', marginLeft: 10 }}>View</Text>
 
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => {
-                                setDeleteDate(item.sameDay)
-                                console.log(item.sameDay)
-                                deleteSchedule(item.sameDay)
-                                // setModalVisible(true);
-                            }}
-                                style={{ padding: 5, backgroundColor: '#BF243D', marginLeft: 30, marginTop: 8, width: 75, borderRadius: 20, height: 30 }}
-                            >
-                                <Text style={{ color: 'white', marginLeft: 10 }}>Delete</Text>
-                            </TouchableOpacity>
-
-
-                        </Minicard>
+           </TouchableOpacity>
+           <TouchableOpacity onPress={() => {
+               setDeleteDate(item.sameDay)
+               console.log(item.sameDay)
+               deleteSchedule(item.sameDay)
+               deleteItem(item.id);
+               // setModalVisible(true);
+           }}
+               style={{ padding: 5, backgroundColor: '#BF243D', marginLeft: 24, marginTop: 8, width: 75, borderRadius: 20, height: 30 }}
+           >
+               <Text style={{ color: 'white', marginLeft: 10 }}>Delete</Text>
+           </TouchableOpacity>
 
 
-                    )}
-                />
+       </MinicardWorkout>
 
-                <Modal
+
+   )}
+/>
+
+        
+               
+                               <Modal
                     animationType="slide"
                     transparent={false}
                     visible={modalVisible}
@@ -258,6 +549,7 @@ export function Plan({ navigation }) {
                                     style={styles.openButton}
                                     onPress={() => {
                                         deleteAllSchedules();
+
                                         setModalVisible2(!modalVisible2);
                                     }}
                                 >
@@ -345,6 +637,16 @@ export const PlanScreen = ({ navigation }) => {
             <Stack.Screen
                 name="WorkoutDetail"
                 component={WorkoutDetail}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="NewScreen"
+                component={NewScreen}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="WorkoutForm"
+                component={WorkoutForm}
                 options={{ headerShown: false }}
             />
         </Stack.Navigator>

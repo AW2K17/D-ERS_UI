@@ -25,6 +25,9 @@ const DietDay = ({ route, navigation }) => {
     return (
         <View style={styles.container}>
             <ScrollView>
+            <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 10, marginTop: 30, width: 90, height: 40, backgroundColor: '#BF243D', borderRadius: 30 }}>
+                    <Text style={{ color: 'white', fontSize: 19,textAlign:'center', marginTop: 5 }}>Back</Text>
+                </TouchableOpacity>
                 <FlatList
                     data={item.day}
                     //             keyExtractor={(item, index) => index.toString()}
@@ -36,14 +39,14 @@ const DietDay = ({ route, navigation }) => {
                             {/* <Text style={{ fontSize: 18, marginLeft: 20, marginTop: 5 }}>{item.time[0].nutrition.nutritionName}</Text> */}
 
                             <TouchableOpacity onPress={() => navigation.navigate('DietTime', {screen: 'DietTime', params: {item, sameDay, scheduleId}})}
-                                style={{ padding: 5, backgroundColor: '#BF243D', marginLeft: 40, width: 68, borderRadius: 20, height: 30 }}
+                                style={{ padding: 5, backgroundColor: '#BF243D', marginLeft: 80, width: 68, borderRadius: 20, height: 30 }}
                             >
                                 <Text style={{ color: 'white', marginLeft: 10 }}>View</Text>
 
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => {
                                 try{
-                                    axios.delete('http://192.168.1.101:3031/api-gateway/current-user/schedulenf/day/' + scheduleId + '/' + sameDay.replace("-", "").replace("-", "") + '/' + item.dayTime, { withCredentials: true })
+                                    axios.delete('http://192.168.0.103:3031/api-gateway/current-user/schedulenf/day/' + scheduleId + '/' + sameDay.replace("-", "").replace("-", "") + '/' + item.dayTime, { withCredentials: true })
                                     .then(res => {
                                         console.log(res);
                                     })
@@ -63,9 +66,7 @@ const DietDay = ({ route, navigation }) => {
                     )}
                 />
                 {/* <Text>{item.item.sameDay}</Text> */}
-                <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 10, marginTop: 30, width: 270, height: 40, backgroundColor: '#BF243D', borderRadius: 30 }}>
-                    <Text style={{ color: 'white', fontSize: 19, marginLeft: 70, marginTop: 5 }}>GO BACK</Text>
-                </TouchableOpacity>
+              
             </ScrollView>
         </View>
     );
@@ -110,7 +111,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'white',
+        backgroundColor: '#F2F2F2',
         paddingTop: Constants.statusBarHeight,
     },
 })

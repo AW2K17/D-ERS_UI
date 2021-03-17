@@ -154,7 +154,7 @@ const Continue = ({ navigation, route }) => {
 
             console.log(ran);
             try{
-                axios.post('http://192.168.1.101:3010/api-gateway/sign-up/user', ran, { withCredentials: true })
+                axios.post('http://192.168.0.102:3010/api-gateway/sign-up/user', ran, { withCredentials: true })
                 .then(response => {
                     console.log(response.data);
                     navigation.navigate('Dashboard')

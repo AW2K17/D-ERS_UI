@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Button, View, TextInput, Image, Text, StyleSheet, Dimensions, TouchableOpacity, ImageBackground } from 'react-native';
+import { Button, View, TextInput, Image, Text, StyleSheet,ScrollView, Dimensions, TouchableOpacity, ImageBackground } from 'react-native';
 import Constants from 'expo-constants';
 import Carousel, { Pagination } from 'react-native-x-carousel';
 import { IndexPath, Datepicker, Layout, Select, SelectItem } from '@ui-kitten/components';
 import axios from 'axios';
-
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -29,13 +29,13 @@ const AddExercise = ({ route, navigation }) => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await axios.get('http://192.168.1.101:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
+        const res = await axios.get('http://192.168.0.103:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
         console.log(res);
 
         if (res.data.schedulee && res.data.schedulee.length) {
           // setSc(res.data.schedulee);
           // console.log(sc);
-          axios.get('http://192.168.1.101:3022/api-gateway/current-user/exercise-schedule/count/' + res.data.schedulee[0].id, { withCredentials: true })
+          axios.get('http://192.168.0.103:3022/api-gateway/current-user/exercise-schedule/count/' + res.data.schedulee[0].id, { withCredentials: true })
             .then(response => {
               console.log(response.data.limit);
               setLimit(response.data.limit);
@@ -93,10 +93,10 @@ const AddExercise = ({ route, navigation }) => {
 
   return (
 
+    <ScrollView >
     <View style={styles.container}>
-      <View style={{ marginTop: -260 }}>
-        <Text style={{ fontSize: 40, fontWeight: 'bold', paddingLeft: 10, margin: 30, textAlign: 'center' }}>{item.exerciseName}</Text>
-        <Text style={{ fontSize: 24, fontWeight: 'bold', paddingBottom: 10, margin: 30, textAlign: 'center' }}>Days Limit Left: {limit}</Text>
+      <View >
+        <Text style={{ fontSize: 24, fontWeight: 'bold', paddingBottom: 10, margin: 20, textAlign: 'center' }}>Days Limit Left: {limit}</Text>
         <Carousel
           pagination={Pagination}
           renderItem={renderItem}
@@ -104,11 +104,14 @@ const AddExercise = ({ route, navigation }) => {
 
         />
 
+
       </View>
+      <Text style={{ fontSize: 30, fontWeight: 'bold', paddingLeft: 10, margin: 20,marginLeft:12, textAlign: 'center' }}>{item.exerciseName}</Text>
+        
       {/* <Text>{title}</Text> */}
-      <View style={{ flexDirection: 'row', marginTop: 33 }}>
-        <TextInput placeholder='Enter Sets' style={{ width: 130, backgroundColor: 'silver', height: 24, marginRight: 6 }} onChangeText={setSets} />
-        <TextInput placeholder='Enter Reps' style={{ width: 130, backgroundColor: 'silver', height: 24, marginLeft: 6 }} onChangeText={setReps} />
+      <View style={{ flexDirection: 'row',alignItems: 'center'}}>
+        <TextInput placeholder='Enter Sets' style={{ width:windowWidth*0.2647, backgroundColor: 'silver', height: 34, marginRight: 6,paddingTop:8,paddingBottom:8,paddingLeft:8 }} onChangeText={setSets} />
+        <TextInput placeholder='Enter Reps' style={{ width:windowWidth*0.2647, backgroundColor: 'silver', height: 34, marginLeft: 6,paddingTop:8,paddingBottom:8,paddingLeft:8}} onChangeText={setReps} />
       </View>
 
       <Text style={{ fontSize: 17, fontWeight: 'bold', marginRight: 24, marginTop: 34 }}>Select Date</Text>
@@ -119,8 +122,8 @@ const AddExercise = ({ route, navigation }) => {
           onSelect={nextDate => setDate(nextDate)}
         />
       </Layout>
-      <View style={{ flexDirection: 'row' }}>
-        <TouchableOpacity style={{ marginTop: 30, width: 270, height: 40, backgroundColor: '#BF243D', borderRadius: 30 }}
+      <View style={{ flexDirection: 'row',paddingBottom:170 }}>
+        <TouchableOpacity style={{ marginTop: 30, width:windowWidth*0.3647, height: 40, backgroundColor: '#BF243D', borderRadius: 30 }}
           onPress={async () => {
 
             try {
@@ -129,10 +132,10 @@ const AddExercise = ({ route, navigation }) => {
               // navigation.navigate('Search');
               // console.log(response);
 
-              const res = await axios.get('http://192.168.1.101:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
+              const res = await axios.get('http://192.168.0.103:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
               console.log(res);
               if (res.data.schedulee && res.data.schedulee.length) {
-                axios.put('http://192.168.1.101:3021/api-gateway/current-user/schedulee/' + res.data.schedulee[0].id, { document: document }, { withCredentials: true })
+                axios.put('http://192.168.0.103:3021/api-gateway/current-user/schedulee/' + res.data.schedulee[0].id, { document: document }, { withCredentials: true })
                   .then(response => {
                     // navigation.navigate('Search');
                     console.log(response);
@@ -142,7 +145,7 @@ const AddExercise = ({ route, navigation }) => {
 
               }
               else {
-                axios.post('http://192.168.1.101:3021/api-gateway/current-user/exerciseschedule', { document: document }, { withCredentials: true })
+                axios.post('http://192.168.0.103:3021/api-gateway/current-user/exerciseschedule', { document: document }, { withCredentials: true })
                   .then(response => {
                     // navigation.navigate('Search');
                     console.log(response);
@@ -165,18 +168,22 @@ const AddExercise = ({ route, navigation }) => {
             // }).catch(error => {
             //   console.log(error);
             // })
-
+            showMessage({
+              message: "Added Successfully, Please Refresh",
+              type: "success",
+            });
 
           }}
         >
-          <Text style={{ color: 'white', fontSize: 19, marginLeft: 49, marginTop: 5 }}>CONFIRM CHANGES</Text>
+          <Text style={{ color: 'white', fontSize: 19, marginTop: 5,textAlign:'center'}}>CONFIRM</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 10, marginTop: 30, width: 270, height: 40, backgroundColor: '#BF243D', borderRadius: 30 }}>
-          <Text style={{ color: 'white', fontSize: 19, marginLeft: 70, marginTop: 5 }}>GO BACK</Text>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 10, marginTop: 30, width:windowWidth*0.3647, height: 40, backgroundColor: '#BF243D', borderRadius: 30 }}>
+          <Text style={{ color: 'white', fontSize: 19,  marginTop: 5,textAlign: 'center' }}>BACK</Text>
         </TouchableOpacity>
       </View>
     </View>
+    </ScrollView>
 
 
   );
@@ -195,8 +202,8 @@ const styles = StyleSheet.create({
     marginTop: Constants.statusBarHeight
   },
   item: {
-    width: 330,
-    height: 200,
+    width: windowWidth*0.9182,
+    height: windowHeight*0.3534,
     alignItems: 'center',
     justifyContent: 'center',
 

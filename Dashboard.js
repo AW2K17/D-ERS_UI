@@ -14,6 +14,7 @@ import { LogoutScreen } from './LogoutScreen';
 import Signin from './Login';
 import LoginScreen from './Login';
 import PlanScreen from './Plan';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -86,8 +87,10 @@ const WorkoutStackScreen = ({ navigation }) => {
     <WorkoutStack.Navigator screenOptions={{
       headerLeft: () => (
         <NavigationDrawerStructure navigationProps={navigation} />
+       
       ),
-      headerTitleAlign: 'center'
+          
+      headerTitleAlign: "center"
     }}>
       <WorkoutStack.Screen name="Workout" component={WorkoutScreen} />
     </WorkoutStack.Navigator>
@@ -156,7 +159,7 @@ function Signout() {
 
 
 
-  axios.post('http://localhost:3010/api-gateway/sign-out/user').then(response => {
+  axios.post('http://192.168.43.126:3010/api-gateway/sign-out/user').then(response => {
 
     console.log(response);
     // navigation.navigate('Login');

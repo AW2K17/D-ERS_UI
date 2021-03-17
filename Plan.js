@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Button, Text, View, TextInput, Platform, TouchableOpacity } from 'react-native';
+import { StyleSheet, Button, Text, View, TextInput, Platform, TouchableOpacity,Dimensions } from 'react-native';
 import Constants from 'expo-constants';
 import Search from './Search';
 import SearchD from './Search copy';
+import NewScreen from './NewScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { showMessage, hideMessage } from "react-native-flash-message";
+import * as Notifications from 'expo-notifications'; 
+import * as Permissions from 'expo-permissions';
 import axios from 'axios';
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
 
 const Stack = createStackNavigator();
 
@@ -26,13 +33,92 @@ const Plans = ({ navigation }) => {
   var dates = [];
   var datesE = [];
 
+
+  // Notifications.setNotificationHandler({
+
+  //   handleNotification: async()=>{
+
+  //     return {
+  //       shouldPlaySound:true,
+  //       shouldShowAlert:true
+        
+  //     }
+  //   }
+  // })
+
+
+
+
+
+  // useEffect(()=>{
+
+  //   Permissions.getAsync(Permissions.NOTIFICATION).then(statusObj=>{
+  //     if(statusObj.status!=='granted'){
+  //       return Permissions.askAsync(Permissions.NOTIFICATION);
+  //     }
+  //     return statusObj;
+  //   }).then((statusObj)=>{
+  //     if(statusObj.status!=='granted'){
+  //       return;
+  //     }
+  //   });
+  // },[])
+
+
+
+  // const triggerNotificationHandler=()=>{
+
+
+  //   Notifications.scheduleNotificationAsync({
+  
+  //     content:{
+  //       title:'Hi User',
+  //       body:'Its Time'
+  //     }
+  //   });
+  // }
+
+
+
+  
+  // useEffect(()=>{
+
+  //   const subscriptionForeground=Notifications.addNotificationReceivedListener(notification=>{
+  //     console.log(notification)
+  //   })
+
+
+  // const subscriptionBackground=Notifications.addNotificationResponseReceivedListener(notification=>{
+  //   navigation.navigate('NewScreen');
+  // });
+
+  //   //  const handleNotificationResponse = response => {
+  //   //      console.log(response);
+  //   //     response.navigation.navigate('NewScreen');
+  //   //     //onPress=>{navigation.navigate('NewScreen')}
+  //   //   };
+
+
+  //   return()=>{
+  //     subscriptionForeground.remove();
+  //     //subscriptionBackground.remove();
+  //     subscriptionBackground.remove();
+  //   }
+  // },[]);
+
+
+
+
+
+
+
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await axios.get('http://192.168.1.101:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+        const res = await axios.get('http://192.168.0.103:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
         console.log(res)
         if (res.data.schedulenf != null) {
-          axios.get('http://192.168.1.101:3032/api-gateway/current-user/nutrition-schedule/reminder/' + res.data.schedulenf[0].id, { withCredentials: true })
+          axios.get('http://192.168.0.103:3032/api-gateway/current-user/nutrition-schedule/reminder/' + res.data.schedulenf[0].id, { withCredentials: true })
             .then((res) => {
               console.log(res)
               if (res.data != 'No-Date') {
@@ -63,10 +149,10 @@ const Plans = ({ navigation }) => {
 
     async function fetchExerciseData() {
       try {
-        const res = await axios.get('http://192.168.1.101:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
+        const res = await axios.get('http://192.168.0.103:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
 
         if (res.data.schedulee[0]) {
-          axios.get('http://192.168.1.101:3022/api-gateway/current-user/exercise-schedule/reminder/' + res.data.schedulee[0].id, { withCredentials: true })
+          axios.get('http://192.168.0.103:3022/api-gateway/current-user/exercise-schedule/reminder/' + res.data.schedulee[0].id, { withCredentials: true })
             .then((res) => {
               console.log(res)
               if (res.data != 'No-Date') {
@@ -108,6 +194,9 @@ const Plans = ({ navigation }) => {
 
       if (currentDate == dates[count1]) {
 
+        console.log("Yeh "+dates[count1]);
+
+
         setTimeout(() => {
           showMessage({
             message: 'Its Time for Breakfast! ', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
@@ -116,31 +205,38 @@ const Plans = ({ navigation }) => {
         }, 3000);
 
         setTimeout(() => {
+          //triggerNotificationHandler();
           showMessage({
-            message: 'Its Time For Lunch! ', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
-            color: "black", backgroundColor: '#F5FAFA'
+            message: 'Tell us about your meal ', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
+            color: "black", backgroundColor: '#F5FAFA',
+            onPress: () => {
+              navigation.navigate('NewScreen');
+            }
           })
         }, 7000);
 
 
-        setTimeout(() => {
-          showMessage({
-            message: 'Its Time For Dinner! ', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
-            color: "black", backgroundColor: '#F5FAFA'
-          })
-        }, 10000);
+        // setTimeout(() => {
+        //   showMessage({
+        //     message: 'Its Time For Dinner! ', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
+        //     color: "black", backgroundColor: '#F5FAFA'
+        //   })
+        // }, 10000);
 
 
         count1++;
         varCounter++;
       }
-      // else if (currentDate != dates[count1]) {
+      else if (currentDate != dates[count1]) {
 
-      //   showMessage({
-      //     message: 'cant show', type: 'info', color: "white", type: 'warning', icon: { icon: "auto", position: "left" },
-      //     color: "#606060"
-      //   })
-      // }
+        console.log(dates[count1]);
+        
+
+        // showMessage({
+        //   message: 'cant show', type: 'info', color: "white", type: 'warning', icon: { icon: "auto", position: "left" },
+        //   color: "#606060"
+        // })
+      }
       varCounter++;
       count1++;
       // console.log("Limit: " + varCounter);
@@ -157,13 +253,16 @@ const Plans = ({ navigation }) => {
     var currentDate = dateFormat(now, "yyyy-mm-dd");
 
 
-    if (varCounter2 < 3) {
+    if (varCounter2 < 4) {
 
       if (currentDate == datesE[count2]) {
+        console.log(datesE[count2]);
         showMessage({
           message: 'Its Time for Workout! ', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
           color: "white", backgroundColor: '#dc3545'
         })
+
+        //triggerNotificationHandler();
 
 
       }
@@ -203,10 +302,14 @@ const Plans = ({ navigation }) => {
 
   stopExercise();
 
+  //triggerNotificationHandler();
+
   return (
     <View style={styles.container}>
       <Text style={styles.Qus}>Choose Your Plan</Text>
+      
 
+      <View >
       <TouchableOpacity onPress={() => navigation.navigate('SearchD')}>
         <View style={styles.option}>
           <Text style={styles.choice}>Custom Diet</Text>
@@ -225,11 +328,11 @@ const Plans = ({ navigation }) => {
         </View>
       </TouchableOpacity>
       <TouchableOpacity>
-        <View style={styles.option3}>
+        <View style={styles.option4}>
           <Text style={styles.choice}>Recommended Exercise</Text>
         </View>
       </TouchableOpacity>
-
+      </View>
 
     </View>
   )
@@ -255,6 +358,11 @@ export const PlanScreen = ({ navigation }) => {
         component={SearchD}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="NewScreen"
+        component={NewScreen}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
 
   );
@@ -272,9 +380,9 @@ const styles = StyleSheet.create({
 
   Qus: {
 
-    marginTop: 100,
+    marginTop: windowWidth*0.170,
     fontSize: 32,
-    margin: 30
+    margin: windowWidth*0.0380
   },
 
 
@@ -285,7 +393,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     borderRadius: 19,
     padding: 12,
-    marginTop: 90,
+    marginTop: windowWidth*0.11406,
     alignItems: 'center',
 
   },
@@ -295,7 +403,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     borderRadius: 19,
     padding: 12,
-    marginTop: 60,
+    marginTop: windowWidth*0.11406,
     alignItems: 'center',
 
   },
@@ -306,10 +414,24 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     borderRadius: 19,
     padding: 12,
-    marginTop: 60,
+    marginTop: windowWidth*0.11406,
     alignItems: 'center',
 
   },
+
+  
+  option4:
+  {
+    width: 290,
+    backgroundColor: 'black',
+    borderRadius: 19,
+    padding: 12,
+    marginTop: windowWidth*0.11406,
+    alignItems: 'center',
+    
+
+  },
+
 
   choice: {
 

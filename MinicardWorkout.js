@@ -13,7 +13,7 @@ const windowHeight = Dimensions.get('window').height;
 // const Stack = createStackNavigator();
 
 
-const Minicard = (props) => {
+const MinicardWorkout = (props) => {
     // const navigation = useNavigation();
     return (
         <View style={styles.container}>
@@ -22,7 +22,7 @@ const Minicard = (props) => {
             {/* <Card style={{ paddingTop: 35, paddingBottom: 35, width: windowWidth, marginTop: 42 }}> */}
             <View style={{ flexDirection: 'row' }}>
 
-                <Text style={{ fontSize: 12, fontWeight: 'bold' }}>{props.title}{"\n"}</Text>
+                <Text style={{ fontSize: 12,marginLeft:3, fontWeight: 'bold' }}>{props.title}{"\n"}</Text>
 
 
                 {/* <TouchableOpacity style={{ width: 74, height: 34, backgroundColor: '#7A0D0D', marginLeft: 274, borderRadius: 20 }}
@@ -33,7 +33,7 @@ const Minicard = (props) => {
                 </TouchableOpacity> */}
 
                 {/* </Card> */}
-                <View style={{ paddingTop: 35,marginRight:windowWidth*0.02297,paddingBottom: 35, width: windowWidth, marginTop: windowWidth*0.0532, flexDirection: 'row' ,backgroundColor:'white'}}>
+                <View style={{ paddingTop: 35,paddingLeft:10,marginRight:windowWidth*0.03297,paddingBottom: 35, width: windowWidth, marginTop: windowWidth*0.0532, flexDirection: 'row' ,backgroundColor:'white'}}>
                     {props.children}
                 </View>
             </View>
@@ -64,7 +64,7 @@ const Minicard = (props) => {
 // }
 
 
-export default Minicard;
+export default MinicardWorkout;
 
 
 const styles = StyleSheet.create({

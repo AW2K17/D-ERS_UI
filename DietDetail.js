@@ -5,6 +5,7 @@ import axios from 'axios';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 const DietDetail = ({ route, navigation }) => {
 
@@ -55,21 +56,22 @@ const DietDetail = ({ route, navigation }) => {
         <View style={styles.container}>
             <ScrollView>
                 <View style={styles.today}>
-                    <Text style={styles.h1}>Today's {dayTime}</Text>
+                    <Text style={styles.h1}>Diet Details {dayTime}</Text>
                     <ImageBackground source={image} style={styles.workoutPic}>
 
                     </ImageBackground>
                 </View>
 
-                <View>
-                    <Text>Calories: </Text>
-                    <TextInput style={{ padding: 10, marginTop: 30, marginLeft: 23, fontSize: 25, fontWeight: 'bold' }} value={calories.toString()} onChangeText={(text) => setCalories(text)}/>
-                    <Text>Carbohydrates: </Text>
-                    <TextInput style={{ padding: 10, marginTop: 30, marginLeft: 23, fontSize: 25, fontWeight: 'bold' }} value={carbohydrates.toString()} onChangeText={(text) => setCarbohydrates(text)}/>
-                    <Text>Fats: </Text>
-                    <TextInput style={{ padding: 10, marginTop: 30, marginLeft: 23, fontSize: 25, fontWeight: 'bold' }} value={fats.toString()} onChangeText={(text) => setFats(text)}/>
-                    <Text>Proteins: </Text>
-                    <TextInput style={{ padding: 10, marginTop: 30, marginLeft: 23, fontSize: 25, fontWeight: 'bold' }} value={proteins.toString()} onChangeText={(text) => setProteins(text)}/>
+                <View style={{flexDirection:'row',marginLeft:10}}>
+                    
+                    <TextInput style={{ padding: 10, marginTop: 30, marginLeft: 23, fontSize: 15 ,backgroundColor:'#E0DCDC' }} placeholder="Enter Calories" value={calories.toString()} onChangeText={(text) => setCalories(text)}/>
+                   
+                    <TextInput style={{ padding: 10, marginTop: 30, marginLeft: 23, fontSize: 15,backgroundColor:'#E0DCDC' }} placeholder="Enter Carbohydrates" value={carbohydrates.toString()} onChangeText={(text) => setCarbohydrates(text)}/>
+                   </View>
+                   <View style={{flexDirection: 'row',marginLeft:10}}>
+                    <TextInput style={{ padding: 10,paddingRight:36, marginTop: 30, marginLeft: 23, fontSize: 15,backgroundColor:'#E0DCDC' }} placeholder="Enter Fats" value={fats.toString()} onChangeText={(text) => setFats(text)}/>
+                    
+                    <TextInput style={{ padding: 10, marginTop: 30,paddingRight:49, marginLeft: 22, fontSize: 15,backgroundColor:'#E0DCDC' }} placeholder="Enter Proteins" value={proteins.toString()} onChangeText={(text) => setProteins(text)}/>
                     {/* 
                     <Text style={{ marginTop: 30, marginLeft: 15, fontSize: 25 }}>{"    "}Fats{"                           "}11g</Text>
                     <Text style={{ marginTop: 30, marginLeft: 15, fontSize: 25 }}>{"    "}Proteins{"                    "}13g</Text>
@@ -77,17 +79,18 @@ const DietDetail = ({ route, navigation }) => {
 
                 </View>
 
+                <View style={{flexDirection:'row',marginLeft:windowWidth*0.092,marginBottom:55,marginTop:30}}>
                 <TouchableOpacity onPress={async () => {
 
                     try{
-                        const res = await axios.get('http://192.168.1.101:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+                        const res = await axios.get('http://192.168.0.103:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
                         // .then(response => {
                         console.log(res);
 
                         if (res.data.schedulenf[0].id) {
                             setScheduleId(res.data.schedulenf[0].id)
 
-                            axios.put('http://192.168.1.101:3031/api-gateway/current-user/schedulenf/object/' + res.data.schedulenf[0].id + '/' + nutrition.param.sameNutrition, { document: document }, { withCredentials: true })
+                            axios.put('http://192.168.0.103:3031/api-gateway/current-user/schedulenf/object/' + res.data.schedulenf[0].id + '/' + nutrition.param.sameNutrition, { document: document }, { withCredentials: true })
                                 .then(response => {
                                     // navigation.navigate('Search');
                                     console.log(response);
@@ -99,13 +102,18 @@ const DietDetail = ({ route, navigation }) => {
                     catch(err) {
                         console.log(err);
                     }
-                }} style={{ marginLeft: 10, marginTop: 30, width: 270, height: 40, backgroundColor: '#BF243D', borderRadius: 30 }}>
-                    <Text style={{ color: 'white', fontSize: 19, marginLeft: 70, marginTop: 5 }}>UPDATE</Text>
+                    showMessage({
+              message: "Updated Successfully, Please Refresh",
+              type: "success",
+            });
+                }} style={{ marginLeft: 10, marginTop: 30, width: 120, height: 40, backgroundColor: '#BF243D', borderRadius: 30 }}>
+                    <Text style={{ color: 'white', fontSize: 19,textAlign: 'center', marginTop: 5 }}>UPDATE</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 10, marginTop: 30, width: 270, height: 40, backgroundColor: '#BF243D', borderRadius: 30 }}>
-                    <Text style={{ color: 'white', fontSize: 19, marginLeft: 70, marginTop: 5 }}>GO BACK</Text>
+                <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 33, marginTop: 30, width: 120, height: 40, backgroundColor: '#BF243D', borderRadius: 30 }}>
+                    <Text style={{ color: 'white', fontSize: 19, textAlign: 'center', marginTop: 5 }}>BACK</Text>
                 </TouchableOpacity>
+                </View>
             </ScrollView>
         </View>
     );

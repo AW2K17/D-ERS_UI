@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Button, View, TextInput, Image, StyleSheet, Dimensions, TouchableOpacity, ImageBackground, ScrollView } from 'react-native';
+import { Button, View, TextInput,Text, Image, StyleSheet, Dimensions, TouchableOpacity, ImageBackground, ScrollView } from 'react-native';
 import Constants from 'expo-constants';
 import Carousel, { Pagination } from 'react-native-x-carousel';
 import { IndexPath, Datepicker, Layout, Select, SelectItem } from '@ui-kitten/components';
 import { PieChart } from 'react-native-svg-charts'
-import { Text } from 'react-native-svg'
+//import { Text } from 'react-native-svg'
 import { MaterialIcons } from '@expo/vector-icons';
 import axios from 'axios';
 import Chart from './Chart';
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -22,13 +23,13 @@ const AddDiet = ({ route, navigation }) => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await axios.get('http://192.168.1.101:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+        const res = await axios.get('http://192.168.0.103:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
         console.log(res);
 
-        if (res.data.schedulenf && res.data.schedulenf.length) {
+        if (res.data.schedulenf) {
           // setSc(res.data.schedulee);
           // console.log(sc);
-          axios.get('http://192.168.1.101:3032/api-gateway/current-user/nutrition-schedule/count/' + res.data.schedulenf[0].id, { withCredentials: true })
+          axios.get('http://192.168.0.103:3032/api-gateway/current-user/nutrition-schedule/count/' + res.data.schedulenf[0].id, { withCredentials: true })
             .then(response => {
               console.log(response.data.limit);
               setLimit(response.data.limit);
@@ -112,7 +113,6 @@ const AddDiet = ({ route, navigation }) => {
     <ScrollView>
       <View style={styles.container}>
         <View style={{ marginTop: 10 }}>
-          <Text style={{ fontSize: 40, fontWeight: 'bold', paddingLeft: 10, margin: 30, textAlign: 'center' }}>{item.nutritionName}</Text>
           <Text style={{ fontSize: 24, fontWeight: 'bold', paddingBottom: 10, margin: 30, textAlign: 'center' }}>Days Limit Left: {limit}</Text>
           <Carousel
             pagination={Pagination}
@@ -120,7 +120,8 @@ const AddDiet = ({ route, navigation }) => {
             data={DATAX}
 
           />
-
+        <Text style={{ fontSize: 25, fontWeight: 'bold', paddingLeft: 10, margin: windowWidth*0.038, textAlign: 'center' }}>{item.nutritionName}</Text>
+          
         </View>
 
 
@@ -132,12 +133,12 @@ const AddDiet = ({ route, navigation }) => {
 
 
 
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{ flexDirection: 'row',paddingBottom:40 }}>
 
 
 
-          <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 10, marginTop: 30, width: 270, height: 40, backgroundColor: '#BF243D', borderRadius: 30 }}>
-            <Text style={{ color: 'white', fontSize: 19, marginLeft: 70, marginTop: 5 }}>GO BACK</Text>
+          <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 160, width: windowWidth*0.3187, height: 40,marginTop:-11, backgroundColor: '#BF243D', borderRadius: 30 }}>
+            <Text style={{ color: 'white', fontSize: 19,textAlign:'center',marginTop:6 }}>BACK</Text>
           </TouchableOpacity>
         </View>
 
