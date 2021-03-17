@@ -52,7 +52,7 @@ const Search = ({ navigation }) => {
 
 
 
-    var link = 'http://192.168.43.126:3020/api-gateway/current-user/exercise/?' + result;
+    var link = 'http://192.168.0.103:3020/api-gateway/current-user/exercise/?' + result;
     const link1 = 'https://jsonplaceholder.typicode.com/photos?q=' + result;
     const link2 = link1 + '&title=' + title;
 

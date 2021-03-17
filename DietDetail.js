@@ -83,14 +83,14 @@ const DietDetail = ({ route, navigation }) => {
                 <TouchableOpacity onPress={async () => {
 
                     try{
-                        const res = await axios.get('http://192.168.43.126:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+                        const res = await axios.get('http://192.168.0.103:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
                         // .then(response => {
                         console.log(res);
 
                         if (res.data.schedulenf[0].id) {
                             setScheduleId(res.data.schedulenf[0].id)
 
-                            axios.put('http://192.168.43.126:3031/api-gateway/current-user/schedulenf/object/' + res.data.schedulenf[0].id + '/' + nutrition.param.sameNutrition, { document: document }, { withCredentials: true })
+                            axios.put('http://192.168.0.103:3031/api-gateway/current-user/schedulenf/object/' + res.data.schedulenf[0].id + '/' + nutrition.param.sameNutrition, { document: document }, { withCredentials: true })
                                 .then(response => {
                                     // navigation.navigate('Search');
                                     console.log(response);

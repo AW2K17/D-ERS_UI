@@ -29,13 +29,13 @@ const AddExercise = ({ route, navigation }) => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await axios.get('http://192.168.43.126:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
+        const res = await axios.get('http://192.168.0.103:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
         console.log(res);
 
         if (res.data.schedulee && res.data.schedulee.length) {
           // setSc(res.data.schedulee);
           // console.log(sc);
-          axios.get('http://192.168.43.126:3022/api-gateway/current-user/exercise-schedule/count/' + res.data.schedulee[0].id, { withCredentials: true })
+          axios.get('http://192.168.0.103:3022/api-gateway/current-user/exercise-schedule/count/' + res.data.schedulee[0].id, { withCredentials: true })
             .then(response => {
               console.log(response.data.limit);
               setLimit(response.data.limit);
@@ -132,10 +132,10 @@ const AddExercise = ({ route, navigation }) => {
               // navigation.navigate('Search');
               // console.log(response);
 
-              const res = await axios.get('http://192.168.43.126:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
+              const res = await axios.get('http://192.168.0.103:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
               console.log(res);
               if (res.data.schedulee && res.data.schedulee.length) {
-                axios.put('http://192.168.43.126:3021/api-gateway/current-user/schedulee/' + res.data.schedulee[0].id, { document: document }, { withCredentials: true })
+                axios.put('http://192.168.0.103:3021/api-gateway/current-user/schedulee/' + res.data.schedulee[0].id, { document: document }, { withCredentials: true })
                   .then(response => {
                     // navigation.navigate('Search');
                     console.log(response);
@@ -145,7 +145,7 @@ const AddExercise = ({ route, navigation }) => {
 
               }
               else {
-                axios.post('http://192.168.43.126:3021/api-gateway/current-user/exerciseschedule', { document: document }, { withCredentials: true })
+                axios.post('http://192.168.0.103:3021/api-gateway/current-user/exerciseschedule', { document: document }, { withCredentials: true })
                   .then(response => {
                     // navigation.navigate('Search');
                     console.log(response);

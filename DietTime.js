@@ -47,7 +47,7 @@ const DietTime = ({ route, navigation }) => {
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => {
                                 try{
-                                    axios.delete('http://192.168.43.126:3031/api-gateway/current-user/schedulenf/object/' + scheduleId + '/' + item.sameNutrition + '/' + sameDay.replace("-", "").replace("-", "") + '/' + dayTime, { withCredentials: true })
+                                    axios.delete('http://192.168.0.103:3031/api-gateway/current-user/schedulenf/object/' + scheduleId + '/' + item.sameNutrition + '/' + sameDay.replace("-", "").replace("-", "") + '/' + dayTime, { withCredentials: true })
                                     .then(res => {
                                         console.log(res);
                                     })

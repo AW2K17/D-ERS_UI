@@ -51,7 +51,7 @@ const SearchD = ({ navigation }) => {
     var add = ['nutritionCategory=Dairy', 'nutritionCategory=Vegetable', 'nutritionCategory=Fruit', 'nutritionCategory=Nuts', 'nutritionCategory=Meat'];
 
 
-    var link = 'http://192.168.43.126:3030/api-gateway/current-user/nutritionFact/?' + result;
+    var link = 'http://192.168.0.103:3030/api-gateway/current-user/nutritionFact/?' + result;
     const link1 = 'https://jsonplaceholder.typicode.com/photos?q=' + result;
     const link2 = link1 + '&title=' + title;
 

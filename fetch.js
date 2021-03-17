@@ -2,14 +2,14 @@ import axios from 'axios';
 
 async function fetchData() {
     try {
-        const res = await axios.get('http://192.168.43.126:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
+        const res = await axios.get('http://192.168.0.103:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
         // .then(response => {
         console.log(res);
 
         if (res.data.schedulee[0].id) {
             setScheduleId(res.data.schedulee[0].id)
             // setExe(response.data.schedulee[0].document[1].day[0].exercise);
-            axios.get('http://192.168.43.126:3021/api-gateway/current-user/schedulee/' + res.data.schedulee[0].id, { withCredentials: true })
+            axios.get('http://192.168.0.103:3021/api-gateway/current-user/schedulee/' + res.data.schedulee[0].id, { withCredentials: true })
                 .then((res) => {
                     // setWorkouts(res.data.schedule.document[2].day[0].exercise.photos);
                     // setExe(res.data.schedule.document[2].day[0].exercise);

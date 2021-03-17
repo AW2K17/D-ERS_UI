@@ -3,6 +3,7 @@ import { StyleSheet, Button, Text, View, TextInput, Platform, TouchableOpacity,D
 import Constants from 'expo-constants';
 import Search from './Search';
 import SearchD from './Search copy';
+import NewScreen from './NewScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { showMessage, hideMessage } from "react-native-flash-message";
@@ -79,16 +80,45 @@ const Plans = ({ navigation }) => {
 
 
 
+  
+  // useEffect(()=>{
+
+  //   const subscriptionForeground=Notifications.addNotificationReceivedListener(notification=>{
+  //     console.log(notification)
+  //   })
+
+
+  // const subscriptionBackground=Notifications.addNotificationResponseReceivedListener(notification=>{
+  //   navigation.navigate('NewScreen');
+  // });
+
+  //   //  const handleNotificationResponse = response => {
+  //   //      console.log(response);
+  //   //     response.navigation.navigate('NewScreen');
+  //   //     //onPress=>{navigation.navigate('NewScreen')}
+  //   //   };
+
+
+  //   return()=>{
+  //     subscriptionForeground.remove();
+  //     //subscriptionBackground.remove();
+  //     subscriptionBackground.remove();
+  //   }
+  // },[]);
+
+
+
+
 
 
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await axios.get('http://192.168.43.126:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+        const res = await axios.get('http://192.168.0.103:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
         console.log(res)
         if (res.data.schedulenf != null) {
-          axios.get('http://192.168.43.126:3032/api-gateway/current-user/nutrition-schedule/reminder/' + res.data.schedulenf[0].id, { withCredentials: true })
+          axios.get('http://192.168.0.103:3032/api-gateway/current-user/nutrition-schedule/reminder/' + res.data.schedulenf[0].id, { withCredentials: true })
             .then((res) => {
               console.log(res)
               if (res.data != 'No-Date') {
@@ -119,10 +149,10 @@ const Plans = ({ navigation }) => {
 
     async function fetchExerciseData() {
       try {
-        const res = await axios.get('http://192.168.43.126:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
+        const res = await axios.get('http://192.168.0.103:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
 
         if (res.data.schedulee[0]) {
-          axios.get('http://192.168.43.126:3022/api-gateway/current-user/exercise-schedule/reminder/' + res.data.schedulee[0].id, { withCredentials: true })
+          axios.get('http://192.168.0.103:3022/api-gateway/current-user/exercise-schedule/reminder/' + res.data.schedulee[0].id, { withCredentials: true })
             .then((res) => {
               console.log(res)
               if (res.data != 'No-Date') {
@@ -164,7 +194,7 @@ const Plans = ({ navigation }) => {
 
       if (currentDate == dates[count1]) {
 
-        console.log(dates[count1]);
+        console.log("Yeh "+dates[count1]);
 
 
         setTimeout(() => {
@@ -175,19 +205,23 @@ const Plans = ({ navigation }) => {
         }, 3000);
 
         setTimeout(() => {
+          //triggerNotificationHandler();
           showMessage({
-            message: 'Its Time For Lunch! ', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
-            color: "black", backgroundColor: '#F5FAFA'
+            message: 'Tell us about your meal ', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
+            color: "black", backgroundColor: '#F5FAFA',
+            onPress: () => {
+              navigation.navigate('NewScreen');
+            }
           })
         }, 7000);
 
 
-        setTimeout(() => {
-          showMessage({
-            message: 'Its Time For Dinner! ', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
-            color: "black", backgroundColor: '#F5FAFA'
-          })
-        }, 10000);
+        // setTimeout(() => {
+        //   showMessage({
+        //     message: 'Its Time For Dinner! ', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
+        //     color: "black", backgroundColor: '#F5FAFA'
+        //   })
+        // }, 10000);
 
 
         count1++;
@@ -198,10 +232,10 @@ const Plans = ({ navigation }) => {
         console.log(dates[count1]);
         
 
-        showMessage({
-          message: 'cant show', type: 'info', color: "white", type: 'warning', icon: { icon: "auto", position: "left" },
-          color: "#606060"
-        })
+        // showMessage({
+        //   message: 'cant show', type: 'info', color: "white", type: 'warning', icon: { icon: "auto", position: "left" },
+        //   color: "#606060"
+        // })
       }
       varCounter++;
       count1++;
@@ -322,6 +356,11 @@ export const PlanScreen = ({ navigation }) => {
       <Stack.Screen
         name="SearchD"
         component={SearchD}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="NewScreen"
+        component={NewScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
