@@ -5,6 +5,7 @@ import Constants from 'expo-constants';
 import { FlatList } from 'react-native-gesture-handler';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 const pic1 = { uri: 'https://www.dymatize.com/wp-content/uploads/2017/08/brandan-fokkens-best-chest-workout-header-v2-DYMATIZE-830x467.jpg' }
 
@@ -53,27 +54,30 @@ const WorkoutDetail = ({ route, navigation }) => {
                     </ImageBackground>
                 </View>
 
-                <View>
-                    <Text>Sets: </Text>
-                    <TextInput style={{ padding: 10, marginTop: 30, marginLeft: 23, fontSize: 25, fontWeight: 'bold' }} value={sets.toString()}
-                        onChangeText={text => setSets(text)} />
-                    <Text>Reps: </Text>
-                    <TextInput style={{ padding: 10, marginTop: 30, marginLeft: 23, fontSize: 25, fontWeight: 'bold' }} value={workout.param.item.exercise.reps[0].toString()} />
-                    {/* <Text style={{marginTop:30,marginLeft:62,fontSize:25,fontWeight:'bold'}}>{workout[0].day[0].exercise.exerciseName}</Text>
                 
+                <View style={{flexDirection:'row',alignItems:'center',marginLeft:windowWidth*0.122}}>
+                    
+                    <TextInput style={{ padding: 10, marginTop: 30, marginLeft: 23, fontSize: 15,backgroundColor:'#B8B2B2' }} placeholder="Enter Sets" value={sets.toString()}
+                        onChangeText={text => setSets(text)} />
+                    
+                    <TextInput style={{ padding: 10, marginTop: 30, marginLeft: 23, fontSize: 15,backgroundColor:'#B8B2B2' }} placeholder="Enter Reps" value={workout.param.item.exercise.reps[0].toString()} />
+                    </View>
+                    
+                    {/* <Text style={{marginTop:30,marginLeft:62,fontSize:25,fontWeight:'bold'}}>{workout[0].day[0].exercise.exerciseName}</Text>
+                </View>
                 <Text style={{marginTop:30,marginLeft:1,fontSize:21}}>{"Sets:   "}{workout[0].day[0].exercise.sets}{"      "}</Text>
                 <Text style={{marginTop:30,marginLeft:1,fontSize:21}}>{"Reps:   "}{workout[0].day[0].exercise.reps[0]}{"     "}</Text> */}
 
-
+                <View style={{flexDirection:'row',marginLeft:windowWidth*0.092,marginBottom:55,marginTop:30}}>
                     <TouchableOpacity onPress={async () => {
                         try {
-                            const res = await axios.get('http://192.168.1.101:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
+                            const res = await axios.get('http://192.168.43.126:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
                             // .then(response => {
                             console.log(res);
 
                             if (res.data.schedulee[0].id) {
                                 setScheduleId(res.data.schedulee[0].id)
-                                axios.put('http://192.168.1.101:3021/api-gateway/current-user/schedulee/object/' + res.data.schedulee[0].id + "/" + workout.param.item.sameExercise, { document: document }, { withCredentials: true })
+                                axios.put('http://192.168.43.126:3021/api-gateway/current-user/schedulee/object/' + res.data.schedulee[0].id + "/" + workout.param.item.sameExercise, { document: document }, { withCredentials: true })
                                     .then(response => {
                                         // navigation.navigate('Search');
                                         console.log(response);
@@ -85,10 +89,14 @@ const WorkoutDetail = ({ route, navigation }) => {
                         catch (err) {
                             console.log(err);
                         }
-                    }} style={{ marginLeft: 10, marginTop: 30, width: 270, height: 40, backgroundColor: '#BF243D', borderRadius: 30 }}>
-                        <Text style={{ color: 'white', fontSize: 19, marginLeft: 70, marginTop: 5 }}>UPDATE</Text>
+                        showMessage({
+              message: "Updated Successfully, Please Refresh",
+              type: "success",
+            });
+                    }} style={{ marginLeft: 10, marginTop: 30, width: 120, height: 40, backgroundColor: '#BF243D', borderRadius: 30 }}>
+                        <Text style={{ color: 'white', fontSize: 19,textAlign: 'center', marginTop: 5 }}>UPDATE</Text>
                     </TouchableOpacity>
-                </View>
+                
 
                 {/*
             <Text>{"\n"}</Text>
@@ -115,9 +123,10 @@ const WorkoutDetail = ({ route, navigation }) => {
             
             */}
 
-                <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 10, marginTop: 30, width: 270, height: 40, backgroundColor: '#BF243D', borderRadius: 30 }}>
-                    <Text style={{ color: 'white', fontSize: 19, marginLeft: 70, marginTop: 5 }}>GO BACK</Text>
+                <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 33, marginTop: 30, width: 120, height: 40, backgroundColor: '#BF243D', borderRadius: 30 }}>
+                    <Text style={{ color: 'white', fontSize: 19,textAlign: 'center', marginTop: 5 }}>BACK</Text>
                 </TouchableOpacity>
+                </View>
 
             </ScrollView>
         </View>

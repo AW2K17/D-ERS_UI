@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, Text, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, Text, View ,Dimensions} from 'react-native';
 import { IndexPath, Datepicker, Layout, Select, SelectGroup, SelectItem } from '@ui-kitten/components';
 import axios from 'axios';
+import { showMessage, hideMessage } from "react-native-flash-message";
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 
 
@@ -29,6 +32,8 @@ const SelectDayTime = ({ item }) => {
     return (
         <View style={styles.container}>
 
+            <View style={{alignItems:'center'}}>
+            
             <Select
                 style={styles.select}
                 placeholder='Default'
@@ -37,17 +42,20 @@ const SelectDayTime = ({ item }) => {
                 onSelect={index => setSelectedIndex(index)}>
                 {data.map(renderOption)}
             </Select>
+            </View>
 
+            <View style={{alignItems: 'center'}}>
             <Text style={{ fontSize: 17, fontWeight: 'bold', marginTop: 64 }}>Select Date</Text>
-            <Layout level='1' style={{ flexDirection: 'row', marginRight: 24, marginTop: 13 }}>
+            <Layout level='1' style={{ flexDirection: 'row', marginTop: 13 }}>
 
                 <Datepicker
                     date={date}
                     onSelect={nextDate => setDate(nextDate)}
                 />
             </Layout>
+            </View>
 
-            <TouchableOpacity style={{ marginTop: 30, width: 270, height: 40, backgroundColor: '#BF243D', borderRadius: 30 }}
+            <TouchableOpacity style={{ marginTop: 30,marginLeft:14, width:windowWidth*0.3387, height: 40, backgroundColor: '#BF243D', borderRadius: 30 }}
                 onPress={async () => {
 
                     try {
@@ -56,10 +64,10 @@ const SelectDayTime = ({ item }) => {
                         // navigation.navigate('Search');
                         // console.log(response);
 
-                        const res = await axios.get('http://192.168.1.101:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+                        const res = await axios.get('http://192.168.0.103:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
                         console.log(res);
                         if (res.data.schedulenf && res.data.schedulenf.length) {
-                            axios.put('http://192.168.1.101:3031/api-gateway/current-user/schedulenf/' + res.data.schedulenf[0].id, { document: item }, { withCredentials: true })
+                            axios.put('http://192.168.0.103:3031/api-gateway/current-user/schedulenf/' + res.data.schedulenf[0].id, { document: item }, { withCredentials: true })
                                 .then(response => {
                                     // navigation.navigate('Search');
                                     console.log(response);
@@ -69,7 +77,7 @@ const SelectDayTime = ({ item }) => {
 
                         }
                         else {
-                            axios.post('http://192.168.1.101:3031/api-gateway/current-user/nutritionschedule', { document: item }, { withCredentials: true })
+                            axios.post('http://192.168.0.103:3031/api-gateway/current-user/nutritionschedule', { document: item }, { withCredentials: true })
                                 .then(response => {
                                     // navigation.navigate('Search');
                                     console.log(response);
@@ -92,11 +100,14 @@ const SelectDayTime = ({ item }) => {
                     // }).catch(error => {
                     //   console.log(error);
                     // })
-
+                    showMessage({
+              message: "Added Successfully, Please Refresh",
+              type: "success",
+            });
 
                 }}
             >
-                <Text style={{ color: 'white', fontSize: 19, marginLeft: 49, marginTop: 5 }}>CONFIRM CHANGES</Text>
+                <Text style={{ color: 'white', fontSize: 19, marginTop: 5,textAlign: 'center' }}>CONFIRM</Text>
             </TouchableOpacity>
 
         </View>
@@ -113,6 +124,10 @@ const styles = StyleSheet.create({
     },
     select: {
         flex: 1,
-        margin: 2,
+        marginTop:7,
+        width:windowWidth*0.640,
+        //marginLeft:windowWidth*0.1433,
+   
+      
     },
 });

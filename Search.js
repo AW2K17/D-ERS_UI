@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, Button, View, TextInput, Text, FlatList, TouchableOpacity } from 'react-native';
+import { Image, Button, View, TextInput, Text, FlatList, TouchableOpacity,Dimensions } from 'react-native';
 import Constant from 'expo-constants';
 import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
@@ -13,6 +13,10 @@ import AddExercise from './AddExercise';
 import { ScrollView } from 'react-native-gesture-handler';
 
 const Stack = createStackNavigator();
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
 
 const Search = ({ navigation }) => {
 
@@ -48,7 +52,7 @@ const Search = ({ navigation }) => {
 
 
 
-    var link = 'http://192.168.1.101:3020/api-gateway/current-user/exercise/?' + result;
+    var link = 'http://192.168.0.103:3020/api-gateway/current-user/exercise/?' + result;
     const link1 = 'https://jsonplaceholder.typicode.com/photos?q=' + result;
     const link2 = link1 + '&title=' + title;
 
@@ -164,21 +168,21 @@ const Search = ({ navigation }) => {
         <ScrollView>
 
         <View style={{ marginTop: Constant.statusBarHeight }}>
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: 'row',marginLeft:windowWidth*0.04562 }}>
                 <Ionicons name="arrow-back" size={30} color="black"
                     onPress={() => navigation.goBack()}
-                    style={{ marginTop: 3, marginLeft: 12 }}
+                    style={{ marginTop: 3 }}
                 />
                 <TextInput
                     value={result}
-                    style={{ borderRadius: 20, backgroundColor: 'silver', width: 260, height: 36, marginLeft: 9, marginTop: 5, padding: 10 }}
+                    style={{ borderRadius: 20, backgroundColor: 'silver', width: 260, height: 36, marginLeft: windowWidth*0.0114, marginTop: 5, padding: 10 }}
                     placeholder={'Search Here'}
                     onChangeText={(text) => setResult(text)}
                 />
-                <Ionicons name="search" size={30} style={{ marginTop: 4, marginLeft: 12 }} color="black" onPress={fetchData} />
+                <Ionicons name="search" size={30} style={{ marginTop: 4, marginLeft: windowWidth*0.01520 }} color="black" onPress={fetchData} />
             </View>
 
-            <View style={{ marginTop: 10, marginLeft: 50, flexDirection: 'row' }}>
+            <View style={{ marginTop: 10, marginLeft: windowWidth*0.127, flexDirection: 'row' }}>
                 <Text>Biceps</Text>
                 <TouchableOpacity onPress={Check1}>
                     <MaterialIcons name={disp1 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
@@ -212,10 +216,10 @@ const Search = ({ navigation }) => {
 
                 data={d}
                 renderItem={({ item }) => (
-                    <Minicard>
-                        <Image source={{ uri: item.photos.mainPhoto }} style={{ width: 100, height: 80, marginLeft: 7 }} />
+                    <Minicard style={{flex:1,width:null}}>
+                        <Image source={{ uri: item.photos.mainPhoto }} style={{ width: 90, height: 80, marginLeft: windowWidth*0.040  }} />
 
-                        <Text style={{ fontSize: 15, marginLeft: 20 }}>{item.exerciseName}</Text>
+                        <Text style={{ fontSize: 15,flex:0.81, marginLeft: 20 }}>{item.exerciseName}</Text>
                         <TouchableOpacity onPress={() => navigation.navigate('AddExercise', item)}
                             style={{ flexDirection: 'row', padding: 10, backgroundColor: '#BF243D', marginLeft: 60, width: 100, borderRadius: 20, height: 42 }}
                         >

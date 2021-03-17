@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, Button, View, TextInput, Text, FlatList, TouchableOpacity, ScrollView } from 'react-native';
+import { Image, Button, View, TextInput, Text, FlatList, TouchableOpacity, ScrollView,Dimensions } from 'react-native';
 import Constant from 'expo-constants';
 import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
@@ -10,6 +10,10 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AddDiet from './AddDiet';
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
 
 
 const Stack = createStackNavigator();
@@ -47,7 +51,7 @@ const SearchD = ({ navigation }) => {
     var add = ['nutritionCategory=Dairy', 'nutritionCategory=Vegetable', 'nutritionCategory=Fruit', 'nutritionCategory=Nuts', 'nutritionCategory=Meat'];
 
 
-    var link = 'http://192.168.1.101:3030/api-gateway/current-user/nutritionFact/?' + result;
+    var link = 'http://192.168.0.103:3030/api-gateway/current-user/nutritionFact/?' + result;
     const link1 = 'https://jsonplaceholder.typicode.com/photos?q=' + result;
     const link2 = link1 + '&title=' + title;
 
@@ -175,21 +179,21 @@ const SearchD = ({ navigation }) => {
     return (
         <ScrollView>
         <View style={{ marginTop: Constant.statusBarHeight }}>
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: 'row',marginLeft:windowWidth*0.04562 }}>
                 <Ionicons name="arrow-back" size={30} color="black"
                     onPress={() => navigation.goBack()}
                     style={{ marginTop: 3, marginLeft: 12 }}
                 />
                 <TextInput
                     value={result}
-                    style={{borderRadius: 20, backgroundColor: 'silver', width: 260, height: 29, marginLeft: 9, marginTop: 5, padding: 10 }}
+                    style={{borderRadius: 20, backgroundColor: 'silver', width: 260, height: 36, marginLeft: windowWidth*0.0114, marginTop: 5, padding: 10 }}
                     placeholder={'Search Here'}
                     onChangeText={(text) => setResult(text)}
                 />
-                <Ionicons name="search" size={30} style={{ marginTop: 4, marginLeft: 12 }} color="black" onPress={fetchData} />
+                <Ionicons name="search" size={30} style={{ marginTop: 4, marginLeft: windowWidth*0.01520 }} color="black" onPress={fetchData} />
             </View>
 
-            <View style={{ marginTop: 10, marginLeft: 30, flexDirection: 'row' }}>
+            <View style={{ marginTop: 10, marginLeft: windowWidth*0.027, flexDirection: 'row' }}>
                 <Text>Dairy</Text>
                 <TouchableOpacity onPress={Check1}>
                     <MaterialIcons name={disp1 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
@@ -228,10 +232,10 @@ const SearchD = ({ navigation }) => {
 
                     data={d}
                     renderItem={({ item }) => (
-                        <Minicard>
-                            <Image source={{ uri: item.photos.mainPhoto }} style={{ width: 100, height: 80, marginLeft: 7 }} />
+                        <Minicard style={{flex:1,width:null}}>
+                            <Image source={{ uri: item.photos.mainPhoto }} style={{ width: 90, height: 80, marginLeft: windowWidth*0.040 }} />
 
-                            <Text style={{ fontSize: 15, marginLeft: 20 }}>{item.nutritionName}</Text>
+                            <Text style={{ fontSize: 18,flex:0.81, marginLeft: windowWidth*0.0253 }}>{item.nutritionName}</Text>
                             <TouchableOpacity onPress={() => navigation.navigate('AddDiet', item)}
                                 style={{ flexDirection: 'row', padding: 10, backgroundColor: '#BF243D', marginLeft: 60, width: 100, borderRadius: 20, height: 42 }}>
                                 <MaterialIcons name={'add'} style={{ marginRight: 10, color: 'white' }} size={22} />
