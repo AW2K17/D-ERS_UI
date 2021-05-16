@@ -3,6 +3,8 @@ import { Text, View, StyleSheet,Flatlist,TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
 import { FlatList } from 'react-native-gesture-handler';
 import DietForm from './DietForm';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 //console.log(global.Waqtt);
 
@@ -15,8 +17,12 @@ import DietForm from './DietForm';
 export default function Screen2({route,navigation}) {
 
 
-    function check(t){
+    async function check(t){
 
+
+      let wqt= await AsyncStorage.getItem('@waqt');
+      console.log('time mila:');
+      console.log(wqt);
         let forForm={
             t:t,
             data:data
@@ -33,7 +39,9 @@ export default function Screen2({route,navigation}) {
    
 
     
-    //console.log(checker);
+    console.log('metha');
+    console.log(data);
+    
   return (
   
       <View style={styles.container}>
@@ -46,7 +54,7 @@ export default function Screen2({route,navigation}) {
        <View style={styles.item}>
          <Text style={styles.title}>{item.khana}</Text>
          <TouchableOpacity 
-         style={{backgroundColor:'red',padding:10,width:100,borderRadius:22,position:'absolute',left:240,top:20}}
+         style={{backgroundColor:'#8C2020',padding:10,width:100,borderRadius:22,position:'absolute',left:240,top:20}}
           onPress={()=>check(item.khana)}>
            <Text style={{color:'white',textAlign:'center'}}>View</Text>
          </TouchableOpacity>

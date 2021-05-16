@@ -57,18 +57,35 @@ const DietDetail = ({ route, navigation }) => {
             <ScrollView>
                 <View style={styles.today}>
                     <Text style={styles.h1}>Diet Details {dayTime}</Text>
-                    <ImageBackground source={image} style={styles.workoutPic}>
+                    <ImageBackground source={image} style={styles.workoutPic}
+                    imageStyle={{ borderRadius: 16}}>
+
 
                     </ImageBackground>
                 </View>
 
-                <View style={{flexDirection:'row',marginLeft:10}}>
+                <View style={{}}>
                     
-                    <TextInput style={{ padding: 10, marginTop: 30, marginLeft: 23, fontSize: 15 ,backgroundColor:'#E0DCDC' }} placeholder="Enter Calories" value={calories.toString()} onChangeText={(text) => setCalories(text)}/>
+                    <Text style={{position:'absolute',top:10,left:23,fontSize:18,fontWeight:'bold'}}>Calories</Text>
+                    <TextInput style={{ borderRadius:7,padding: 10, marginTop: 50, marginLeft: 23, fontSize: 15 ,backgroundColor:'#E0DCDC' }} placeholder="Enter Calories" value={calories.toString()} onChangeText={(text) => setCalories(text)}/>
+
+                    <Text style={{position:'absolute',top:114,left:23,fontSize:18,fontWeight:'bold'}}>Carbohydrates</Text>
+                    <TextInput style={{ borderRadius:7,padding: 10, marginTop: 50, marginLeft: 23, fontSize: 15,backgroundColor:'#E0DCDC' }} placeholder="Enter Carbohydrates" value={carbohydrates.toString()} onChangeText={(text) => setCarbohydrates(text)}/>
+                    
+                    <Text style={{position:'absolute',top:210,left:23,fontSize:18,fontWeight:'bold'}}>Proteins</Text>
+                    
+                    <TextInput style={{borderRadius:7, padding: 10,paddingRight:36, marginTop: 50, marginLeft: 23, fontSize: 15,backgroundColor:'#E0DCDC' }} placeholder="Enter Fats" value={fats.toString()} onChangeText={(text) => setFats(text)}/>
+
+                    <Text style={{position:'absolute',top:310,left:23,fontSize:18,fontWeight:'bold'}}>Fats</Text>
+                    
+                    
+                    <TextInput style={{ borderRadius:7,padding: 10, marginTop: 50,paddingRight:49, marginLeft: 22, fontSize: 15,backgroundColor:'#E0DCDC' }} placeholder="Enter Proteins" value={proteins.toString()} onChangeText={(text) => setProteins(text)}/>
                    
-                    <TextInput style={{ padding: 10, marginTop: 30, marginLeft: 23, fontSize: 15,backgroundColor:'#E0DCDC' }} placeholder="Enter Carbohydrates" value={carbohydrates.toString()} onChangeText={(text) => setCarbohydrates(text)}/>
+                   
                    </View>
-                   <View style={{flexDirection: 'row',marginLeft:10}}>
+                   {/* <View style={{}}>
+                   <Text style={{position:'absolute',top:134,left:23,fontSize:18,fontWeight:'bold'}}>Proteins</Text>
+                   
                     <TextInput style={{ padding: 10,paddingRight:36, marginTop: 30, marginLeft: 23, fontSize: 15,backgroundColor:'#E0DCDC' }} placeholder="Enter Fats" value={fats.toString()} onChangeText={(text) => setFats(text)}/>
                     
                     <TextInput style={{ padding: 10, marginTop: 30,paddingRight:49, marginLeft: 22, fontSize: 15,backgroundColor:'#E0DCDC' }} placeholder="Enter Proteins" value={proteins.toString()} onChangeText={(text) => setProteins(text)}/>
@@ -77,20 +94,20 @@ const DietDetail = ({ route, navigation }) => {
                     <Text style={{ marginTop: 30, marginLeft: 15, fontSize: 25 }}>{"    "}Proteins{"                    "}13g</Text>
                     <Text style={{ marginTop: 30, marginLeft: 15, fontSize: 25 }}>{"    "}Calories{"                    "}100g</Text> */}
 
-                </View>
+                
 
                 <View style={{flexDirection:'row',marginLeft:windowWidth*0.092,marginBottom:55,marginTop:30}}>
                 <TouchableOpacity onPress={async () => {
 
                     try{
-                        const res = await axios.get('http://192.168.0.103:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+                        const res = await axios.get('http://192.168.0.105:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
                         // .then(response => {
                         console.log(res);
 
                         if (res.data.schedulenf[0].id) {
                             setScheduleId(res.data.schedulenf[0].id)
 
-                            axios.put('http://192.168.0.103:3031/api-gateway/current-user/schedulenf/object/' + res.data.schedulenf[0].id + '/' + nutrition.param.sameNutrition, { document: document }, { withCredentials: true })
+                            axios.put('http://192.168.0.105:3031/api-gateway/current-user/schedulenf/object/' + res.data.schedulenf[0].id + '/' + nutrition.param.sameNutrition, { document: document }, { withCredentials: true })
                                 .then(response => {
                                     // navigation.navigate('Search');
                                     console.log(response);
@@ -146,11 +163,15 @@ const styles = StyleSheet.create({
     h1: {
         fontSize: 33,
         marginRight: 100,
-        marginTop: 50
+        marginTop: 5,
+        fontWeight:'bold'
 
     },
     today: {
-        marginTop: 7
+        marginTop: 7,
+        alignItems:'center', 
+        justifyContent:'center'
+
 
     },
     today2: {
@@ -167,7 +188,8 @@ const styles = StyleSheet.create({
     workoutPic: {
         width: 370,
         height: 320,
-        marginTop: 40
+        marginTop: 40, 
+        borderRadius:22
     },
     Btn: {
 
@@ -185,7 +207,7 @@ const styles = StyleSheet.create({
     },
     h2: {
         fontSize: 30,
-        marginRight: -75,
+       
         marginTop: 39,
         paddingBottom: 3
 

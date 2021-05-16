@@ -3,6 +3,7 @@ import { StyleSheet, TouchableOpacity, Text, View ,Dimensions} from 'react-nativ
 import { IndexPath, Datepicker, Layout, Select, SelectGroup, SelectItem } from '@ui-kitten/components';
 import axios from 'axios';
 import { showMessage, hideMessage } from "react-native-flash-message";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -13,6 +14,11 @@ const data = [
     'Lunch',
     'Dinner',
 ];
+
+
+
+
+
 const SelectDayTime = ({ item }) => {
 
     const [selectedIndex, setSelectedIndex] = React.useState(new IndexPath(0));
@@ -28,6 +34,37 @@ const SelectDayTime = ({ item }) => {
         <SelectItem title={title} />
     );
 
+
+
+
+    // const updateIt= async()=>{
+
+    //     let x= await AsyncStorage.getItem('@dietOne');
+    //     console.log("Cchoose:");
+    
+    //     // if(selectedIndex===0){
+    //     // console.log(JSON.parse(x).bf);
+    //     // }
+
+    //     //let change =JSON.parse(x);
+    //     if(selectedIndex.row===0){
+    //         //JSON.parse(x).bf+=1;
+    //         console.log("Barha:");
+    //         console.log(x);
+    //         //console.log()
+
+    //      AsyncStorage.setItem('@dietOne',JSON.stringify(x));
+    //     }
+    //     //console.log(selectedIndex.row);
+    //     else if(selectedIndex.row===1){
+    //         JSON.parse(x).lnh+=1;
+    //         AsyncStorage.setItem('@dietOne',JSON.stringify(x));
+    //     }
+    //     else if(selectedIndex.row===2){
+    //         JSON.parse(x).dnr+=1;
+    //         AsyncStorage.setItem('@dietOne',JSON.stringify(x));
+    //     }
+    // }
 
     return (
         <View style={styles.container}>
@@ -64,10 +101,10 @@ const SelectDayTime = ({ item }) => {
                         // navigation.navigate('Search');
                         // console.log(response);
 
-                        const res = await axios.get('http://192.168.0.103:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+                        const res = await axios.get('http://192.168.0.105:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
                         console.log(res);
                         if (res.data.schedulenf && res.data.schedulenf.length) {
-                            axios.put('http://192.168.0.103:3031/api-gateway/current-user/schedulenf/' + res.data.schedulenf[0].id, { document: item }, { withCredentials: true })
+                            axios.put('http://192.168.0.105:3031/api-gateway/current-user/schedulenf/' + res.data.schedulenf[0].id, { document: item }, { withCredentials: true })
                                 .then(response => {
                                     // navigation.navigate('Search');
                                     console.log(response);
@@ -77,7 +114,7 @@ const SelectDayTime = ({ item }) => {
 
                         }
                         else {
-                            axios.post('http://192.168.0.103:3031/api-gateway/current-user/nutritionschedule', { document: item }, { withCredentials: true })
+                            axios.post('http://192.168.0.105:3031/api-gateway/current-user/nutritionschedule', { document: item }, { withCredentials: true })
                                 .then(response => {
                                     // navigation.navigate('Search');
                                     console.log(response);
@@ -104,6 +141,7 @@ const SelectDayTime = ({ item }) => {
               message: "Added Successfully, Please Refresh",
               type: "success",
             });
+            //updateIt();
 
                 }}
             >

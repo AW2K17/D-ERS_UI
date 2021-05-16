@@ -71,13 +71,13 @@ const WorkoutDetail = ({ route, navigation }) => {
                 <View style={{flexDirection:'row',marginLeft:windowWidth*0.092,marginBottom:55,marginTop:30}}>
                     <TouchableOpacity onPress={async () => {
                         try {
-                            const res = await axios.get('http://192.168.43.126:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
+                            const res = await axios.get('http://192.168.0.105:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
                             // .then(response => {
                             console.log(res);
 
                             if (res.data.schedulee[0].id) {
                                 setScheduleId(res.data.schedulee[0].id)
-                                axios.put('http://192.168.43.126:3021/api-gateway/current-user/schedulee/object/' + res.data.schedulee[0].id + "/" + workout.param.item.sameExercise, { document: document }, { withCredentials: true })
+                                axios.put('http://192.168.0.105:3021/api-gateway/current-user/schedulee/object/' + res.data.schedulee[0].id + "/" + workout.param.item.sameExercise, { document: document }, { withCredentials: true })
                                     .then(response => {
                                         // navigation.navigate('Search');
                                         console.log(response);

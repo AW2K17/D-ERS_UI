@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import Minicard from './Minicard copy';
 import DietDetail from './DietDetail';
 import WorkoutDetail from './WorkoutDetail';
+import { FontAwesome } from '@expo/vector-icons';
 import axios from 'axios';
 
 const Stack = createStackNavigator();
@@ -45,28 +46,32 @@ const WorkoutDay = ({ route, navigation }) => {
         <View style={styles.container}>
             <ScrollView>
             
-            <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 10, marginTop: 30, width: 90, height: 40, backgroundColor: '#BF243D', borderRadius: 30 }}>
-                    <Text style={{ color: 'white', fontSize: 19,textAlign:'center', marginTop: 5 }}>Back</Text>
+            <TouchableOpacity onPress={() => navigation.goBack()} style={{ justifycontent:'center',alignItems: 'center',marginLeft: 10, marginTop: 30, width: 75, height: 50, backgroundColor: '#BF243D', borderRadius: 30,padding:12 }}>
+                    <Text style={{ color: 'white', fontSize: 19}}><FontAwesome name="backward" size={23} color="white" /></Text>
                 </TouchableOpacity>
                 <FlatList
                     data={item.day}
                     //             keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => (
-                        <Minicard style={{flex: 1}}>
+                        <Minicard style={{flex: 1, padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    flexDirection:'row',
+    borderRadius:12}}>
                             {/* <Image source={{ uri: item.day[0].time[0].nutrition.photos[0] }} style={{ width: 100, height: 80, marginLeft: 7 }} /> */}
 
                             {/* <Text style={{ marginLeft: 20 }}>Date : {item.sameDay}</Text> */}
                             <Text style={{ fontSize: 18, marginLeft: 20, marginTop: 5 }}>{item.exercise.exerciseName}</Text>
 
                             <TouchableOpacity onPress={() => navigation.navigate('WorkoutDetail', {screen: 'WorkoutDetail', param: {item, sameDay}})}
-                                style={{ padding: 5, backgroundColor: '#BF243D', marginLeft: 30, width: 68, borderRadius: 20, height: 30 }}
+                                style={{ padding: 12,alignItems:'center',justifyContent: 'center',backgroundColor: '#BF243D', marginLeft: 30, width: 68, borderRadius: 20, height: 35 }}
                             >
-                                <Text style={{ color: 'white', marginLeft: 10 }}>View</Text>
+                                <Text style={{ color: 'white'}}>Views</Text>
 
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => {
                                 try{
-                                    axios.delete('http://192.168.43.126:3021/api-gateway/current-user/schedulee/object/' + scheduleId + '/' + item.sameExercise + '/' + sameDay.replace("-", "").replace("-", ""))
+                                    axios.delete('http://192.168.0.105:3021/api-gateway/current-user/schedulee/object/' + scheduleId + '/' + item.sameExercise + '/' + sameDay.replace("-", "").replace("-", ""))
                                     .then(res => {
                                         console.log(res);
                                     })
@@ -80,9 +85,9 @@ const WorkoutDay = ({ route, navigation }) => {
 
                                 //deleteItem(item.id);
                             }}
-                                style={{ padding: 5, backgroundColor: '#BF243D', marginLeft: 30, width: 75, borderRadius: 20, height: 30 }}
+                                style={{ padding: 12,alignItems:'center',justifyContent: 'center', backgroundColor: '#BF243D', marginLeft: 30, width: 75, borderRadius: 20, height: 35 }}
                             >
-                                <Text style={{ color: 'white', marginLeft: 10 }}>Delete</Text>
+                                <Text style={{ color: 'white'}}>Delete</Text>
                             </TouchableOpacity>
                         </Minicard>
                     )}

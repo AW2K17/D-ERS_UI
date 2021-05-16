@@ -23,13 +23,13 @@ const AddDiet = ({ route, navigation }) => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await axios.get('http://192.168.0.103:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+        const res = await axios.get('http://192.168.0.105:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
         console.log(res);
 
         if (res.data.schedulenf) {
           // setSc(res.data.schedulee);
           // console.log(sc);
-          axios.get('http://192.168.0.103:3032/api-gateway/current-user/nutrition-schedule/count/' + res.data.schedulenf[0].id, { withCredentials: true })
+          axios.get('http://192.168.0.105:3032/api-gateway/current-user/nutrition-schedule/count/' + res.data.schedulenf[0].id, { withCredentials: true })
             .then(response => {
               console.log(response.data.limit);
               setLimit(response.data.limit);

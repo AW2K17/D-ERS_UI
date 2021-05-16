@@ -3,6 +3,7 @@ import { Text, View, StyleSheet,Button,TouchableOpacity} from 'react-native';
 import Constants from 'expo-constants';
 import WorkoutForm from './WorkoutForm';
 import { FlatList } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -16,15 +17,30 @@ export default function Screen1({route,navigation}) {
   const workouts=route.params;  
   let showIt=workouts.workouts;    
   const [wrk,setWrk]=useState(showIt);
+  const [totalExercises,setExercises]=useState(showIt.length);
+    //console.log('Agaya:');
+    console.log("Length: "+showIt.length);
 
-    console.log('Agaya:');
-    console.log(showIt);
+    let rps=0;
+    let wazn=0;
+    console.log('daldaiii');
+    console.log(rps);
+    AsyncStorage.setItem('@repsTotal',JSON.stringify(rps));
+    AsyncStorage.setItem('@waznTotal',JSON.stringify(wazn));
+    
+
+    
     
 
     //console.log("Naashta:");
     //console.log(samaan.naashta);
+
+    function addIt(){
+    
+    AsyncStorage.setItem('@keyOne',JSON.stringify(totalExercises));
     
 
+    }
 
      function check(t){
 
@@ -32,6 +48,8 @@ export default function Screen1({route,navigation}) {
 
 
      }
+
+     addIt();
     
   return (
     <View style={styles.container}>
@@ -63,7 +81,7 @@ export default function Screen1({route,navigation}) {
        <View style={styles.item}>
          <Text style={styles.title}>{item.wo}</Text>
          <TouchableOpacity 
-         style={{backgroundColor:'red',padding:10,width:100,borderRadius:22,position:'absolute',left:240,top:20}}
+         style={{backgroundColor:'#8C1111',padding:10,width:100,borderRadius:22,position:'absolute',left:240,top:30}}
          onPress={()=>check(item.wo)}>
            <Text style={{color:'white',textAlign:'center'}}>View</Text>
          </TouchableOpacity>
@@ -106,9 +124,12 @@ const styles = StyleSheet.create({
     padding: 20,
     marginHorizontal:4,
     flexDirection:'row',
-    marginVertical:10
+    marginVertical:10,
+    height:100,
+    marginTop:15,
   },
   title: {
     fontSize: 20,
+    marginTop:15
   },
 });

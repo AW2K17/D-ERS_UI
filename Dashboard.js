@@ -6,10 +6,10 @@ import { HomeScreen } from './HomeScreen';
 import { WorkoutScreen } from './WorkoutScreen';
 import { DietScreen } from './DietScreen';
 import { ProgressScreen } from './ProgressScreen';
-import { UsersScreen } from './UsersScreen';
+import Input from './Input';
 import { WorkoutsScreen } from './WorkoutsScreen';
 import { MealsScreen } from './MealsScreen';
-import { SettingsScreen } from './SettingsScreen';
+import { HistoryTrack } from './HistoryTrack';
 import { LogoutScreen } from './LogoutScreen';
 import Signin from './Login';
 import LoginScreen from './Login';
@@ -31,10 +31,10 @@ const HomeStack = createStackNavigator();
 const WorkoutStack = createStackNavigator();
 const DietStack = createStackNavigator();
 const ProgressStack = createStackNavigator();
-const UsersStack = createStackNavigator();
+const InputScreen = createStackNavigator();
 const WorkoutsStack = createStackNavigator();
 const MealsStack = createStackNavigator();
-const SettingsStack = createStackNavigator();
+const HistoryStack = createStackNavigator();
 const LogoutStack = createStackNavigator();
 
 const Tab = createBottomTabNavigator();
@@ -123,11 +123,11 @@ const ProgressStackScreen = ({ navigation }) => {
   );
 }
 
-function UsersStackScreen() {
+function InputScreenStack() {
   return (
-    <UsersStack.Navigator headerMode='none'>
-      <UsersStack.Screen name="Users" component={UsersScreen} />
-    </UsersStack.Navigator>
+    <InputScreen.Navigator headerMode='none'>
+      <InputScreen.Screen name="Input" component={Input} />
+    </InputScreen.Navigator>
   );
 }
 
@@ -149,9 +149,9 @@ function MealsStackScreen() {
 
 function SettingsStackScreen() {
   return (
-    <SettingsStack.Navigator headerMode="none">
-      <SettingsStack.Screen name="Setting" component={SettingsScreen} />
-    </SettingsStack.Navigator>
+    <HistoryStack.Navigator headerMode="none">
+      <HistoryStack.Screen name="HistoryTrack" component={HistoryTrack} />
+    </HistoryStack.Navigator>
   );
 }
 
@@ -159,7 +159,7 @@ function Signout() {
 
 
 
-  axios.post('http://192.168.43.126:3010/api-gateway/sign-out/user').then(response => {
+  axios.post('http://192.168.0.105:3010/api-gateway/sign-out/user').then(response => {
 
     console.log(response);
     // navigation.navigate('Login');
@@ -255,9 +255,9 @@ export const Dashboard = ({ navigation }) => {
   // useEffect(() => {
   //   async function fetchData() {
   //     try {
-  //       axios.get('http://localhost:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+  //       axios.get('http:// 192.168.0.105:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
   //         .then((res) => {
-  //           axios.get('http://localhost:3032/api-gateway/current-user/nutrition-schedule/reminder/' + res.data.schedulenf[0].id, { withCredentials: true })
+  //           axios.get('http:// 192.168.0.105:3032/api-gateway/current-user/nutrition-schedule/reminder/' + res.data.schedulenf[0].id, { withCredentials: true })
   //             .then((res) => {
   //               dates = res.data.map((e) => {
   //                 console.log(e.sameDay)
@@ -324,10 +324,10 @@ export const Dashboard = ({ navigation }) => {
 
     <Drawer.Navigator initialRouteName="Home" options={{ headerShown: false }} independent={true}>
       <Drawer.Screen name="Home" component={TabsScreen} options={{ headerShown: false }} />
-      <Drawer.Screen name="Users" component={UsersStackScreen} />
+      <Drawer.Screen name="Input" component={InputScreenStack} />
       <Drawer.Screen name="Meals" component={MealsScreen} />
       <Drawer.Screen name="Workouts" component={WorkoutsStackScreen} />
-      <Drawer.Screen name="Settings" component={SettingsStackScreen} />
+      <Drawer.Screen name="HistoryTrack" component={HistoryTrack} />
       <Drawer.Screen name="Log Out" component={LogoutStackScreen} options={{ headerShown: false }} />
     </Drawer.Navigator>
 

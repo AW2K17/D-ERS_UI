@@ -53,7 +53,7 @@ const Login = ({ navigation }) => {
     async function fetchData() {
       try {
         console.log('I am running')
-        axios.get('http://192.168.0.103:3010/api-gateway/current-user/user', { withCredentials: true })
+        axios.get('http://192.168.0.105:3010/api-gateway/current-user/user', { withCredentials: true })
           .then((res) => {
             console.log(res);
             console.log('inside')
@@ -117,7 +117,7 @@ const Login = ({ navigation }) => {
           console.log(ran);
           try {
             console.log('Login running')
-            axios.post('http://192.168.0.103:3010/api-gateway/sign-in/user', ran, { withCredentials: true })
+            axios.post('http://192.168.0.105:3010/api-gateway/sign-in/user', ran, { withCredentials: true })
               .then(response => {
                 console.log('Login inside')
                 console.log(response);

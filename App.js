@@ -10,10 +10,9 @@ import Breakfast from './Breakfast';
 import Lunch from './Lunch';
 import Dinner from './Dinner';
 import Questions from './Questions';
-import Questions2 from './Questions2';
-import Questions3 from './Questions3';
-import Questions4 from './Questions4';
-import Questions5 from './Questions5';
+import Questions2 from './Question2';
+import Questions3 from './Question3';
+import Questions4 from './Question4';
 import { DietScreen } from './DietScreen';
 import Signin from './Signin';
 import PlanScreen from './Plan';
@@ -25,7 +24,7 @@ import { ApplicationProvider, Layout } from '@ui-kitten/components';
 import SearchScreen from './Search copy';
 import MinicardScreen from './Minicard';
 import FlashMessage from "react-native-flash-message";
-
+console.disableYellowBox = true;
 
 
 

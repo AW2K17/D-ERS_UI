@@ -1,5 +1,5 @@
 import React, { PureComponent, useState } from 'react';
-import { View, StyleSheet, TextInput, TouchableOpacity, ImageBackground } from 'react-native';
+import { View, StyleSheet, TextInput, TouchableOpacity, ImageBackground,ScrollView,KeyboardAvoidingView } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Constants from 'expo-constants';
 import Continue from './Continue';
@@ -14,7 +14,7 @@ import { Button, Card, Modal, Text } from '@ui-kitten/components';
 
 const MAX_LEN = 15,
     MIN_LEN = 6,
-    PASS_LABELS = ["Too Short", "Weak","Normal", "Strong", "Secure"];
+    PASS_LABELS = ["Weak","Normal", "Strong"];
 
 
 
@@ -181,7 +181,10 @@ const Register = ({ navigation }) => {
     }
 
     return (
+        <KeyboardAvoidingView style={{flex: 1}}> 
+        <ScrollView >
         <ImageBackground style={styles.container} source={pic2}>
+        
             <Text style={styles.text}>
                 Sign Up With Your Account!
             </Text>
@@ -199,9 +202,9 @@ const Register = ({ navigation }) => {
                     onBackdropPress={() => setVisible1(false)}>
                     <Card disabled={true}>
                         <Text>{err1}</Text>
-                        <Button onPress={() => setVisible1(false)} style={{ width: 127, backgroundColor: 'red', marginLeft: 100, marginTop: 10, borderRadius: 20 }}>
-                            OK
-                </Button>
+                        <TouchableOpacity onPress={() => setVisible1(false)} style={{ width: 127,height:39, backgroundColor: 'red', marginLeft: 30, marginTop: 10, borderRadius: 20,alignItems:'center' }}>
+                            <Text style={{color: 'white',marginTop:6}}>OK</Text>
+                </TouchableOpacity>
                     </Card>
                 </Modal>
 
@@ -219,9 +222,9 @@ const Register = ({ navigation }) => {
                     onBackdropPress={() => setVisible2(false)}>
                     <Card disabled={true}>
                         <Text>{err2}</Text>
-                        <Button onPress={() => setVisible2(false)} style={{ width: 127, backgroundColor: 'red', marginLeft: 100, marginTop: 10, borderRadius: 20 }}>
-                            OK
-                </Button>
+                        <TouchableOpacity onPress={() => setVisible2(false)} style={{ width: 127,height:39, backgroundColor: 'red', marginLeft: 30, marginTop: 10, borderRadius: 20,alignItems:'center' }}>
+                            <Text style={{color: 'white',marginTop:6}}>OK</Text>
+                </TouchableOpacity>
                     </Card>
                 </Modal>
 
@@ -239,9 +242,9 @@ const Register = ({ navigation }) => {
                     onBackdropPress={() => setVisible3(false)}>
                     <Card disabled={true}>
                         <Text>{err3}</Text>
-                        <Button onPress={() => setVisible3(false)} style={{ width: 127, backgroundColor: 'red', marginLeft: 100, marginTop: 10, borderRadius: 20 }}>
-                            OK
-                </Button>
+                        <TouchableOpacity onPress={() => setVisible3(false)} style={{ width: 127,height:39, backgroundColor: 'red', marginLeft: 20, marginTop: 10, borderRadius: 20,alignItems:'center' }}>
+                            <Text style={{color: 'white',marginTop:6}}>OK</Text>
+                </TouchableOpacity>
                     </Card>
                 </Modal>
 
@@ -249,9 +252,9 @@ const Register = ({ navigation }) => {
                 <View>
                     <View style={styles.inputField2}>
                         <FontAwesome style={styles.passwordIcon} name="lock" />
-                        <TextInput maxLength={15} style={{ width: 165, marginLeft: 10, color: 'white', marginTop: 22 }} placeholder="Password"
+                        <TextInput maxLength={15} style={{ marginLeft: 10, color: 'white', marginTop: 22,width:73 }} placeholder="Password"
                             secureTextEntry={visible} value={password} onChangeText={setPassword} placeholderTextColor="#EDDDDF" />
-                        <TouchableOpacity style={{ marginTop: 30 }} onPress={() => { setShow(!show), setVisible(!visible) }}>
+                        <TouchableOpacity style={{ marginLeft: 90, marginTop: 30 }} onPress={() => { setShow(!show), setVisible(!visible) }}>
                             <MaterialCommunityIcons name={show === false ? 'eye-outline' : 'eye-off-outline'} size={26} color={'white'} />
                         </TouchableOpacity>
                     </View>
@@ -273,9 +276,9 @@ const Register = ({ navigation }) => {
                     onBackdropPress={() => setVisible4(false)}>
                     <Card disabled={true}>
                         <Text>{err4}</Text>
-                        <Button onPress={() => setVisible4(false)} style={{ width: 127, backgroundColor: 'red', marginLeft: 100, marginTop: 10, borderRadius: 20 }}>
-                            OK
-                </Button>
+                        <TouchableOpacity onPress={() => setVisible4(false)} style={{ width: 127,height:39, backgroundColor: 'red', marginLeft: 30, marginTop: 10, borderRadius: 20,alignItems:'center' }}>
+                            <Text style={{color: 'white',marginTop:6}}>OK</Text>
+                </TouchableOpacity>
                     </Card>
                 </Modal>
 
@@ -322,10 +325,12 @@ const Register = ({ navigation }) => {
                 </TouchableOpacity>
             </View>
             <Text style={{ color: 'white', fontSize: 14, marginTop: 22 }}>Already Have An Account?
-            <Text style={{ fontWeight: 'bold', color: 'white' }} onPress={() => navigation.navigate('Signin')}>  Login Here</Text>
+            <Text style={{ fontWeight: 'bold',color:'white' }} onPress={() => navigation.navigate('Signin')}>  Login Here</Text>
             </Text>
 
         </ImageBackground>
+        </ScrollView>
+        </KeyboardAvoidingView>
     )
 
 }
@@ -362,17 +367,17 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         flex: 1,
-        paddingTop: Constants.statusBarHeight
+        paddingTop: Constants.statusBarHeight,paddingBottom:60
         // backgroundColor: '#00ff88'
     },
     text: {
         alignItems: 'center',
         justifyContent: 'center',
-        paddingTop: 10,
-        paddingBottom: 14,
+        paddingTop: 20,
+        paddingBottom: 44,
         fontSize: 38,
         marginLeft: 24,
-        color: 'white'
+        color: 'white', marginTop:80
     },
     inputField: {
         paddingTop: 40,
@@ -384,7 +389,7 @@ const styles = StyleSheet.create({
     },
 
     inputField2: {
-        paddingTop: 20,
+        paddingTop: 10,
         flexDirection: 'row',
         borderBottomColor: 'white',
         borderBottomWidth: 2,

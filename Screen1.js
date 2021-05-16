@@ -3,6 +3,7 @@ import { Text, View, StyleSheet,Button,TouchableOpacity} from 'react-native';
 import Constants from 'expo-constants';
 import Screen2 from './Screen2';
 import { FlatList } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 //console.log(global.Waqtt);
@@ -16,19 +17,39 @@ export default function Screen1({route,navigation}) {
 
     const [waqt,setWaqt]=useState(samaan.times);
 
-    console.log('Agaya:');
+    // console.log('size agaya:');
     
 
-    console.log('Yeh:');
-    console.log(waqt);
+   
+    // console.log(samaan.naashta.length);
+    // console.log(samaan.lunch.length);
+    // console.log(samaan.dinner.length);
+    
+    let b=samaan.naashta.length.toString();
+    let l=samaan.lunch.length.toString();
+    let d=samaan.dinner.length.toString();
+    
+    AsyncStorage.setItem("@bfOne",b);
+    AsyncStorage.setItem("@lhOne",l);
+    AsyncStorage.setItem("@drOne",d);
+    
+
+
+
+    // AsyncStorage.setItem('@bf',samaan.naashta.length);
+    // AsyncStorage.setItem('@lnh',samaan.lunch.length);
+   
+    
+
     let naashta=route.params;
-    //console.log("Naashta:");
-    //console.log(samaan.naashta);
+    console.log("time kya");
+    console.log(waqt);
     
 
 
-    function check(t){
+    async function check(t){
 
+       await AsyncStorage.setItem("@waqt",JSON.stringify(t));
       
         if(t==="Breakfast"){
             navigation.navigate('Screen2',samaan.naashta);
@@ -75,7 +96,7 @@ export default function Screen1({route,navigation}) {
        <View style={styles.item}>
          <Text style={styles.title}>{item.wo}</Text>
          <TouchableOpacity 
-         style={{backgroundColor:'red',padding:10,width:100,borderRadius:22,position:'absolute',left:240,top:20}}
+         style={{backgroundColor:'#8C2020',padding:10,width:100,borderRadius:22,position:'absolute',left:240,top:20}}
          onPress={()=>check(item.wo)}>
            <Text style={{color:'white',textAlign:'center'}}>View</Text>
          </TouchableOpacity>

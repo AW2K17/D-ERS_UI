@@ -47,12 +47,12 @@ const Search = ({ navigation }) => {
     const [albumId, setAlbumId] = useState('&albumId=3');
 
     var filters = [disp1, disp2, disp3, disp4];
-    var add = ['exerciseCategory=Biceps', 'exerciseCategory=Triceps', 'exerciseCategory=Lats', 'exerciseCategory=Chest'];
+    var add = ['&exerciseCategory=Bicep', '&exerciseCategory=Tricep', '&exerciseCategory=Lats', '&exerciseCategory=Chest'];
 
 
 
 
-    var link = 'http://192.168.0.103:3020/api-gateway/current-user/exercise/?' + result;
+    var link = 'http://192.168.0.105:3020/api-gateway/current-user/exercise/?';
     const link1 = 'https://jsonplaceholder.typicode.com/photos?q=' + result;
     const link2 = link1 + '&title=' + title;
 
@@ -123,6 +123,9 @@ const Search = ({ navigation }) => {
     function fetchData() {
 
 
+        if(result===''){
+
+            var link = 'http://192.168.0.105:3020/api-gateway/current-user/exercise/?';
         for (var i = 0; i < 4; i++) {
             if (filters[i] === 'true') {
                 link = link + add[i];
@@ -144,7 +147,84 @@ const Search = ({ navigation }) => {
                 console.log(error)
             });
 
+        }
 
+        else{
+
+            setResult(result.toLowerCase());
+
+            if(result==='bicep' || result==='biceps'){
+                var linkX = 'http://192.168.0.105:3020/api-gateway/current-user/exercise/?'
+                linkX=linkX+add[0];
+                console.log('dkeho:');
+
+                console.log(linkX);
+
+                
+                fetch(linkX)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    setMiniCard(data)
+                    setD(data.exercise)
+                    console.log(miniCard)
+                    console.log(d)
+                }).catch((error) => {
+                    console.log(error)
+                });
+        }
+             else if(result==='tricep' || result==='triceps'){
+                
+                var linkX = 'http://192.168.0.105:3020/api-gateway/current-user/exercise/?'
+                linkX=linkX+add[1];
+                console.log(linkX);
+                fetch(linkX)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                setMiniCard(data)
+                setD(data.exercise)
+                console.log(miniCard)
+                console.log(d)
+            }).catch((error) => {
+                console.log(error)
+            });
+
+
+
+
+
+
+
+
+
+            }
+            else if(result==='chest' || result==='chests'){
+                
+                var linkX = 'http://192.168.0.105:3020/api-gateway/current-user/exercise/?';
+                linkX=linkX+add[3];
+                console.log(linkX);
+                fetch(linkX)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                setMiniCard(data)
+                setD(data.exercise)
+                console.log(miniCard)
+                console.log(d)
+            }).catch((error) => {
+                console.log(error)
+            });
+
+
+
+
+
+
+
+
+            }
+        }
         // }
         // else if(show1=='false'){
 

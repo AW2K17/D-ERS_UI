@@ -57,7 +57,7 @@ export function Plan({ navigation }) {
 
     // async function fetchData() {
     //     try {
-    //         const res = await axios.get('http://192.168.0.103:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
+    //         const res = await axios.get('http:// 192.168.0.105:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
     //          .then(response => {
     //         //console.log(Object.values(res));
     //         console.log("If: ");
@@ -66,7 +66,7 @@ export function Plan({ navigation }) {
     //         if (res.data.schedulee[0].id) {
     //             setScheduleId(res.data.schedulee[0].id)
     //             // setExe(response.data.schedulee[0].document[1].day[0].exercise);
-    //             axios.get('http://192.168.0.103:3021/api-gateway/current-user/schedulee/' + res.data.schedulee[0].id, { withCredentials: true })
+    //             axios.get('http:// 192.168.0.105:3021/api-gateway/current-user/schedulee/' + res.data.schedulee[0].id, { withCredentials: true })
     //                 .then((res) => {
     //                     // setWorkouts(res.data.schedule.document[2].day[0].exercise.photos);
     //                     // setExe(res.data.schedule.document[2].day[0].exercise);
@@ -123,7 +123,7 @@ export function Plan({ navigation }) {
             color: "white", backgroundColor: 'black'
           })
 
-          setTimeout(() => {  Remind2() }, 4000);
+          setTimeout(() => {  Remind2() }, 5000);
     }
 
     function Remind2(){
@@ -140,14 +140,14 @@ export function Plan({ navigation }) {
 
     async function fetchData() {
         try {
-            const res = await axios.get('http://192.168.0.103:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
+            const res = await axios.get('http://192.168.0.105:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
             // .then(response => {
             //console.log(Object.values(res));
             //console.log(JSON.stringify(res));
             if (res.data.schedulee[0].id) {
                 setScheduleId(res.data.schedulee[0].id)
                 // setExe(response.data.schedulee[0].document[1].day[0].exercise);
-                axios.get('http://192.168.0.103:3021/api-gateway/current-user/schedulee/' + res.data.schedulee[0].id, { withCredentials: true })
+                axios.get('http://192.168.0.105:3021/api-gateway/current-user/schedulee/' + res.data.schedulee[0].id, { withCredentials: true })
                     .then((res) => {
                         // setWorkouts(res.data.schedule.document[2].day[0].exercise.photos);
                         // setExe(res.data.schedule.document[2].day[0].exercise);
@@ -212,7 +212,7 @@ export function Plan({ navigation }) {
         let ran=x.slice(0,10);
         let obj={};
         try {
-            const res = await axios.get('http://192.168.0.103:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
+            const res = await axios.get('http://192.168.0.105:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
             .then(response=>{
                 console.log("CheckKro ");
                 console.log(response.data.schedulee[0].document.length);
@@ -234,7 +234,7 @@ export function Plan({ navigation }) {
                 }
             }
             //setTimeout(() => {  Remind1() }, 4000);
-            Remind1();
+            setTimeout(() => {  Remind1() }, 4000);
             
             console.log(workouts);
             })
@@ -377,7 +377,7 @@ export function Plan({ navigation }) {
 
     function deleteSchedule(d) {
         var dt = d.replace("-", "").replace("-", "");
-        axios.delete('http://192.168.0.103:3021/api-gateway/current-user/schedulee/day/' + scheduleId + '/' + dt, { withCredentials: true })
+        axios.delete('http://192.168.0.105:3021/api-gateway/current-user/schedulee/day/' + scheduleId + '/' + dt, { withCredentials: true })
             .then(response => {
                 console.log('Schedule deleted');
                 console.log(response);
@@ -389,7 +389,7 @@ export function Plan({ navigation }) {
 
     function deleteAllSchedules() {
         try {
-            axios.delete('http://192.168.0.103:3021/api-gateway/current-user/schedulee/' + scheduleId, { withCredentials: true })
+            axios.delete('http://192.168.0.105:3021/api-gateway/current-user/schedulee/' + scheduleId, { withCredentials: true })
                 .then(res => {
                     console.log(res);
                 })
@@ -414,7 +414,7 @@ export function Plan({ navigation }) {
                 <TouchableOpacity style={{ flexDirection: 'row', padding: 12, backgroundColor: '#BF243D',marginRight:11,marginTop:40, width: windowWidth*0.366,alignItems: 'center',borderRadius: 20, height:  windowHeight*0.057 }}
                     onPress={() => {
                         try {
-                            axios.get('http://192.168.0.103:3022/api-gateway/current-user/exercise-schedule/reschedule/' + scheduleId, { withCredentials: true })
+                            axios.get('http://192.168.0.105:3022/api-gateway/current-user/exercise-schedule/reschedule/' + scheduleId, { withCredentials: true })
                                 .then(res => {
                                     console.log(res);
                                 })
@@ -463,9 +463,9 @@ export function Plan({ navigation }) {
            <Text style={{ fontSize: 28, marginTop: 5 }}>{item.sameDay}</Text>
 
            <TouchableOpacity onPress={() => navigation.navigate('WorkoutDay', { screen: 'WorkoutDay', params: { item, scheduleId } })}
-               style={{ padding: 5, backgroundColor: '#BF243D', marginLeft: 30, marginTop: 8, width: 68, borderRadius: 20, height: 30 }}
+               style={{ padding: 12,alignItems:'center',justifyContent:'center', backgroundColor: '#BF243D', marginLeft: 30, marginTop: 8, width: 68, borderRadius: 20, height: 35 }}
            >
-               <Text style={{ color: 'white', marginLeft: 10 }}>View</Text>
+               <Text style={{ color: 'white'}}>View</Text>
 
            </TouchableOpacity>
            <TouchableOpacity onPress={() => {
@@ -475,9 +475,9 @@ export function Plan({ navigation }) {
                deleteItem(item.id);
                // setModalVisible(true);
            }}
-               style={{ padding: 5, backgroundColor: '#BF243D', marginLeft: 24, marginTop: 8, width: 75, borderRadius: 20, height: 30 }}
+               style={{ padding: 12,alignItems:'center',justifyContent:'center', backgroundColor: '#BF243D', marginLeft: 24, marginTop: 8, width: 75, borderRadius: 20, height: 35 }}
            >
-               <Text style={{ color: 'white', marginLeft: 10 }}>Delete</Text>
+               <Text style={{ color: 'white' }}>Delete</Text>
            </TouchableOpacity>
 
 

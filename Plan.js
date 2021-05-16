@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Button, Text, View, TextInput, Platform, TouchableOpacity,Dimensions } from 'react-native';
+import { StyleSheet, Button, Text, View,Modal, TextInput, Platform,Pressable, TouchableOpacity,Dimensions } from 'react-native';
 import Constants from 'expo-constants';
 import Search from './Search';
 import SearchD from './Search copy';
 import NewScreen from './NewScreen';
+import Input from './Input';
+import Result2 from './Result2';
+import CheckDiet from './CheckDiet';
+import CheckDetail from './CheckDetail';
+import Result from './Result';
+import CheckList from './CheckList';
+import CheckDetail2 from './CheckDetail2';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { showMessage, hideMessage } from "react-native-flash-message";
@@ -18,6 +25,8 @@ const windowHeight = Dimensions.get('window').height;
 const Stack = createStackNavigator();
 
 const Plans = ({ navigation }) => {
+
+  const [modalVisible, setModalVisible] = useState(false);
 
 
   var intervalId = null;
@@ -115,10 +124,10 @@ const Plans = ({ navigation }) => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await axios.get('http://192.168.0.103:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+        const res = await axios.get('http://192.168.0.105:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
         console.log(res)
         if (res.data.schedulenf != null) {
-          axios.get('http://192.168.0.103:3032/api-gateway/current-user/nutrition-schedule/reminder/' + res.data.schedulenf[0].id, { withCredentials: true })
+          axios.get('http://192.168.0.105:3032/api-gateway/current-user/nutrition-schedule/reminder/' + res.data.schedulenf[0].id, { withCredentials: true })
             .then((res) => {
               console.log(res)
               if (res.data != 'No-Date') {
@@ -149,10 +158,10 @@ const Plans = ({ navigation }) => {
 
     async function fetchExerciseData() {
       try {
-        const res = await axios.get('http://192.168.0.103:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
+        const res = await axios.get('http://192.168.0.105:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
 
         if (res.data.schedulee[0]) {
-          axios.get('http://192.168.0.103:3022/api-gateway/current-user/exercise-schedule/reminder/' + res.data.schedulee[0].id, { withCredentials: true })
+          axios.get('http://192.168.0.105:3022/api-gateway/current-user/exercise-schedule/reminder/' + res.data.schedulee[0].id, { withCredentials: true })
             .then((res) => {
               console.log(res)
               if (res.data != 'No-Date') {
@@ -298,11 +307,80 @@ const Plans = ({ navigation }) => {
   };
 
 
-  stopDiet();
+  //stopDiet();
 
-  stopExercise();
+  //stopExercise();
 
   //triggerNotificationHandler();
+
+
+ 
+  async function checkIf(){
+
+   
+    try {
+        const res = await axios.get('http://192.168.0.105:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
+        .then(res=>{
+            console.log("Dekho Agr Hai ");
+        //     if(response.data.schedulee[0].document.length===0){
+        //       console.log("Kuch Nai h");
+        //     }
+        //     else {
+        //       showMessage({
+        //         message: "Can't take both plans at once.Customized Exercise exist.",
+        //         type: "danger",
+        //       });
+           
+            
+                      
+        // }
+
+        navigation.navigate('Result');
+   
+      })
+    }
+    catch(err){
+            console.log(err);
+    }
+    
+}
+
+async function checkIf2(){
+
+   
+  try {
+      const res = await axios.get('http://192.168.0.105:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+      .then(res=>{
+          console.log("Dekho Agr diet Hai ");
+          //console.log(res.data.schedulenf[0].document.length);
+          // if((res.data.schedulenf[0].document.length)>0){
+          //   showMessage({
+          //     message: "Can't take both plans at once.Customized Diet Exists.",
+          //     type: "danger",
+          //   });
+          // }
+          // else {
+            console.log('Chalo');
+            // showMessage({
+            //   message: "Can't take both plans at once.Customized Diet Exists.",
+            //   type: "danger",
+            // });
+            navigation.navigate('Result2');
+
+         
+          
+                    
+      
+ 
+    })
+  }
+  catch(err){
+          console.log(err);
+  }
+  
+}
+
+
 
   return (
     <View style={styles.container}>
@@ -310,13 +388,13 @@ const Plans = ({ navigation }) => {
       
 
       <View >
-      <TouchableOpacity onPress={() => navigation.navigate('SearchD')}>
+      <TouchableOpacity onPress={()=> navigation.navigate('SearchD')}>
         <View style={styles.option}>
           <Text style={styles.choice}>Custom Diet</Text>
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity disabled={true}>
+      <TouchableOpacity onPress={checkIf2}>
         <View style={styles.option2}>
           <Text style={styles.choice}>Recommended Diet</Text>
         </View>
@@ -327,7 +405,7 @@ const Plans = ({ navigation }) => {
           <Text style={styles.choice}>Custom Exercise</Text>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={checkIf}>
         <View style={styles.option4}>
           <Text style={styles.choice}>Recommended Exercise</Text>
         </View>
@@ -363,6 +441,37 @@ export const PlanScreen = ({ navigation }) => {
         component={NewScreen}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="Input"
+        component={Input}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="Result2" 
+      component={Result2} 
+      options={{ headerShown: false }}  
+      />
+      <Stack.Screen name="Result" 
+      component={Result} 
+      options={{ headerShown: false }}  
+      />
+      <Stack.Screen name="CheckList" 
+      component={CheckList} 
+      options={{ headerShown: false }}  
+      />
+      <Stack.Screen name="CheckDiet" 
+      component={CheckDiet} 
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="CheckDetail" 
+      component={CheckDetail} 
+      options={{ headerShown: false }}  
+      />
+      <Stack.Screen name="CheckDetail2" 
+      component={CheckDetail2} 
+      options={{ headerShown: false }}  
+      />
+      
+        
     </Stack.Navigator>
 
   );

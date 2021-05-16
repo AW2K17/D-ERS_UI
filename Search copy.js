@@ -18,6 +18,9 @@ const windowHeight = Dimensions.get('window').height;
 
 const Stack = createStackNavigator();
 
+
+
+
 const SearchD = ({ navigation }) => {
 
     const [d, setD] = useState([]);
@@ -48,10 +51,10 @@ const SearchD = ({ navigation }) => {
     const [title, setTitle] = useState('');
 
     var filters = [disp1, disp2, disp3, disp4, disp5];
-    var add = ['nutritionCategory=Dairy', 'nutritionCategory=Vegetable', 'nutritionCategory=Fruit', 'nutritionCategory=Nuts', 'nutritionCategory=Meat'];
+    var add = ['&nutritionCategory=Dairy', '&nutritionCategory=Vegetable', '&nutritionCategory=Fruit', '&nutritionCategory=Nuts', '&nutritionCategory=Meat'];
 
 
-    var link = 'http://192.168.0.103:3030/api-gateway/current-user/nutritionFact/?' + result;
+    var link = 'http://192.168.0.105:3030/api-gateway/current-user/nutritionFact/?' ;
     const link1 = 'https://jsonplaceholder.typicode.com/photos?q=' + result;
     const link2 = link1 + '&title=' + title;
 
@@ -135,11 +138,20 @@ const SearchD = ({ navigation }) => {
 
     function fetchData() {
 
+
+        if(result===''){
+
+            var link = 'http://192.168.0.105:3030/api-gateway/current-user/nutritionFact/?';
+
+
         for (var i = 0; i < 5; i++) {
             if (filters[i] === 'true') {
                 link = link + add[i];
+                console.log(add[i]);
             }
         }
+        console.log('Aya:');
+        console.log(link);
 
 
         // fetch(link, {credentials: "include"}).then((e) => e.json().then((f) => console.log(f)));    
@@ -156,7 +168,110 @@ const SearchD = ({ navigation }) => {
                 console.log(error)
             });
 
+        }
 
+        else {
+            
+            
+            
+                setResult(result.toLowerCase());
+            
+                
+                
+                
+                if(result==='apple' || result==='orange'){
+                var linkX = 'http://192.168.0.105:3030/api-gateway/current-user/nutritionFact/?'
+                linkX=linkX+add[2];
+
+                console.log('saib');
+                fetch(linkX)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                setMiniCard(data)
+                setD(data.nutrition)
+                console.log(miniCard)
+                console.log(d)
+            }).catch((error) => {
+                console.log(error)
+            });
+        }
+             else if(result==='tomato' || result==='potato'){
+                
+                var linkX = 'http://192.168.0.105:3030/api-gateway/current-user/nutritionFact/?'
+                linkX=linkX+add[1];
+                fetch(linkX)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    setMiniCard(data)
+                    setD(data.nutrition)
+                    console.log(miniCard)
+                    console.log(d)
+                }).catch((error) => {
+                    console.log(error)
+                });
+
+
+
+
+
+
+
+
+
+            }
+            else if(result==='milk' || result==='eggs' || result==='egg'){
+                
+                var linkX = 'http://192.168.0.105:3030/api-gateway/current-user/nutritionFact/?'
+                linkX=linkX+add[0];
+                fetch(linkX)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    setMiniCard(data)
+                    setD(data.nutrition)
+                    console.log(miniCard)
+                    console.log(d)
+                }).catch((error) => {
+                    console.log(error)
+                });
+
+
+
+
+
+
+
+
+
+            }else if(result==='meat'){
+                
+                var linkX = 'http://192.168.0.105:3030/api-gateway/current-user/nutritionFact/?'
+                linkX=linkX+add[4];
+                fetch(linkX)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    setMiniCard(data)
+                    setD(data.nutrition)
+                    console.log(miniCard)
+                    console.log(d)
+                }).catch((error) => {
+                    console.log(error)
+                });
+
+
+
+
+
+
+
+
+
+            }
+        
+        }
         // }
         // else if(show1=='false'){
 

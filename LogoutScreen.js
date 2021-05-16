@@ -12,7 +12,7 @@ export const Logout = ({ navigation }) => {
     useEffect(() => {
         function Signout() {
 
-            axios.post('http://192.168.0.102:3010/api-gateway/sign-out/user', { withCredentials: true })
+            axios.post('http://192.168.0.105:3010/api-gateway/sign-out/user', { withCredentials: true })
                 .then(response => {
                     // console.log(document.cookie)
                     // var c = document.cookie.getCookie('express:sess')

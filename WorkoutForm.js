@@ -1,12 +1,15 @@
 import React, { useState } from "react";
-import { TextInput, SafeAreaView, ScrollView, View, Text,Dimensions,StyleSheet,TouchableOpacity } from "react-native";
+import { TextInput ,SafeAreaView, ScrollView, View, Text,Dimensions,StyleSheet,TouchableOpacity } from "react-native";
 import Constants from 'expo-constants';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const windowWidth = Dimensions.get('window').width;
 const WorkoutForm = ({route,navigation}) => {
   const [inputFields, setInputFields] = useState(0);
+  const [repps,setRepps]=useState();
   const [textValues, setTextValues] = useState({});
-  const [weight,setWeight]=useState();
+  const [weight1,setWeight]=useState();
   let Val=[];
 
 
@@ -39,7 +42,7 @@ const WorkoutForm = ({route,navigation}) => {
         //       })
         //   }
         //   catch (error) {
-        //     console.log(error);
+        //     console.log(errror);
         //   }
         // }}
       
@@ -94,11 +97,68 @@ const [weight,setWeight]=useState();
 
 
 
-function sendWorkout(){
+const sendWorkout= async ()=>{
+
+  let x={
+
+    weightCapacity:{
+
+      exerciseName:workout,
+      reps:12,
+      weight:weight1
+    }
+  }
+
+  let weightCapacity={
+
+    exerciseName:workout,
+    reps:12,
+    weight:weight1
+  }
+
+  
+
+  let ran=weight1;
+  
+  
+  await AsyncStorage.setItem('@wtg',JSON.stringify(ran));
+  await AsyncStorage.setItem('@exName',JSON.stringify(workout));
+  let c=await AsyncStorage.getItem('@repsTotal');
+  let w=await AsyncStorage.getItem('@waznTotal');
+  
+  console.log("gdd");
+  let conv=Number(JSON.parse(c));
+  let conv2=Number(JSON.parse(w));
+  
+  console.log(typeof conv2);
+  console.log(weight1);
+  
+
+  conv+=Number(repps);
+  conv2+=Number(weight1); 
+  console.log(conv);
+  
+
+
+  await AsyncStorage.setItem('@repsTotal',JSON.stringify(conv));
+  await AsyncStorage.setItem('@waznTotal',JSON.stringify(conv2));
+  
+  
+ 
+  
+  
 //   console.log(ran);
 try {
 
-axios.post('http://192.168.0.103:3023/api-gateway/current-user/exercise-track/addWeight', weight)
+axios.post('http://192.168.0.105:3023/api-gateway/current-user/exercise-track/addWeight', {
+
+  weightCapacity:{
+
+    exerciseName:workout,
+    reps:repps,
+    weight:weight1
+  }
+})
   .then(response => {
       console.log("Gaya!");
     console.log(response);
@@ -140,14 +200,22 @@ console.log("This:"+global.workOut);
   return (
     <View style={{ flex: 1, alignItems: "center"}}>
     <ScrollView>
-    <Text style={{fontSize:30,marginTop:20,textAlign:'center'}}>Enter the weight of dumbbells for {workout}</Text>
+    <Text style={{fontSize:29,fontWeight:'normal',marginTop:20,textAlign:'left',marginLeft:14}}>Data Related Your {workout}</Text>
     <View style={{marginTop:60}}>
 
         <View style={{justifyContent: 'center',alignItems:'center'}}>
-        <TextInput style={{padding:12,backgroundColor:'silver',width:150}} placeholder="Dumbbells Weight" onChangeText={(text)=>setWeight(text)}/>
+        <Text style={{fontSize:20,fontWeight:'bold',marginTop:20,marginRight:102}}>Weight of Dumbbells</Text>
+        <TextInput  style={{padding:8,backgroundColor:'silver',width:320,height:50,marginTop:10}} placeholder="In Kilos" onChangeText={(text)=>setWeight(text)}/>
+        
         </View>
-      <View style={{marginTop:150,align:'center',justifyContent:'center',marginLeft:90}}>
-          <TouchableOpacity style={{padding:10,backgroundColor:'green',width:windowWidth*0.55,borderRadius:30,alignItems:'center'}}
+        <View style={{justifyContent: 'center',alignItems:'center'}}>
+        <Text style={{fontSize:20,fontWeight:'bold',marginTop:20,marginRight:152}}>Reps Performed</Text>
+        <TextInput  style={{padding:8,backgroundColor:'silver',width:320,height:50,marginTop:10}} onChangeText={(text)=>setRepps(text)}/>
+        
+        </View>
+        
+      <View style={{marginTop:30,align:'center',justifyContent:'center',marginLeft:43}}>
+          <TouchableOpacity style={{padding:10,backgroundColor:'#8C2020',width:windowWidth*0.79,borderRadius:10,alignItems:'center'}}
           onPress={sendWorkout}>
       <Text style={{color:'white'}}>Submit</Text>
       </TouchableOpacity>

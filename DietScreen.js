@@ -3,6 +3,7 @@ import { Alert, StyleSheet, Text, View, Dimensions, ImageBackground, Image, Touc
 
 import Constants from 'expo-constants';
 import { FlatList } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -62,7 +63,7 @@ const Diet = ({ navigation }) => {
 
     async function fetchData2() {
         try {
-            const res = await axios.get('http://192.168.0.103:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+            const res = await axios.get('http://192.168.0.105:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
             // .then(response => {
             console.log("Yahan Hai: ");
             console.log(res.data.schedulenf[1])
@@ -70,7 +71,7 @@ const Diet = ({ navigation }) => {
 
                 setScheduleId(res.data.schedulenf[0].id)
                 //console.log(res.data.schedulenf[0])
-                axios.get('http://192.168.0.103:3031/api-gateway/current-user/schedulenf/' + res.data.schedulenf[0].id, { withCredentials: true })
+                axios.get('http://192.168.0.105:3031/api-gateway/current-user/schedulenf/' + res.data.schedulenf[0].id, { withCredentials: true })
                     .then((response) => {
                         //console.log(response)
                         dates = response.data.schedule.document.map((e) => {
@@ -116,7 +117,7 @@ const Diet = ({ navigation }) => {
             // setExe(response.data.schedulee[0].document[1].day[0].exercise);
         }
         catch (err) {
-            console.log("Outside catch", err);
+            console.log("Outside catches", err);
         }
     }
 
@@ -150,16 +151,16 @@ const Diet = ({ navigation }) => {
         
         
 
-        console.log("Chalraha: ");
+        //console.log("Chalraha: ");
 
         try{
-            const res = await axios.get('http://192.168.0.103:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+            const res = await axios.get('http://192.168.0.105:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
             .then(res=>{
                 //console.log(res.data.schedulenf[0].document[3].sameDay);
                 for(i=0;i<(res.data.schedulenf[0].document.length);i++){
                     if(ran===res.data.schedulenf[0].document[i].sameDay){
-                    //console.log('yes');
-                console.log(res.data.schedulenf[0].document[i].sameDay);
+                    //console.log('Mila kuch: ');
+                //console.log(res.data.schedulenf[0].document[i].sameDay);
                 for(j=0;j<(res.data.schedulenf[0].document[i].day.length);j++){
 
                     //workouts.push(res.data.schedulee[0].document[i].day[j].exercise.exerciseName);
@@ -218,10 +219,63 @@ const Diet = ({ navigation }) => {
                 }
 
             }
-            console.log(naashta);
-            console.log(lunch);
-            console.log(dinner);
-            console.log(waqt);
+            // console.log("Mila:");
+            // let dietLength={ 
+            //     bf:naashta.length,
+            //     lnh:lunch.length,
+            //     dnr:dinner.length
+            // }
+            // AsyncStorage.setItem('@dietOne',JSON.stringify(dietLength))
+            //console.log(naashta.length);
+            
+             console.log('Subah: ');
+             console.log(naashta);
+             
+             let sum = 0;
+             let sum2=0;
+             let sum3=0;
+
+             for(let i=0;i<naashta.length;i++){
+                 sum+=naashta[i].c;
+                 sum+=naashta[i].cal;
+                 sum+=naashta[i].f;
+                 sum+=naashta[i].p;
+             }
+
+             for(let i=0;i<lunch.length;i++){
+                sum2+=lunch[i].c;
+                sum2+=lunch[i].cal;
+                sum2+=lunch[i].f;
+                sum2+=lunch[i].p;
+            }
+
+            for(let i=0;i<dinner.length;i++){
+                sum3+=dinner[i].c;
+                sum3+=dinner[i].cal;
+                sum3+=dinner[i].f;
+                sum3+=dinner[i].p;
+            }
+
+             //for(let i = 0; i < naashta[].length; i++)
+// for (let i of Object.values(typeof naashta[1].c)) {
+//   sum += i;
+// }
+             console.log('SUm: ');
+             console.log(sum);
+             let x=sum.toString();
+             let y=sum2.toString();
+             let z=sum3.toString();
+             
+            
+             AsyncStorage.setItem('nutritions',x);
+             AsyncStorage.setItem('nutritions2',y);
+             AsyncStorage.setItem('nutritions3',z);
+             
+             
+           // console.log(naashta);
+            //console.log(lunch);
+            //console.log(dinner);
+            //console.log("Nikala: "+waqt);
             
             
             
@@ -238,13 +292,21 @@ const Diet = ({ navigation }) => {
             dinner:dinner,
         };
 
-        showMessage({
+        // showMessage({
+        //     message: 'Hi User, Tell Us About Your Meal', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
+        //     color: "white", backgroundColor: 'black',
+        //     onPress: () => {
+        //         navigation.navigate( 'Screen1',samaan);
+        //        }
+        //   })         
+
+          setTimeout(() => {  showMessage({
             message: 'Hi User, Tell Us About Your Meal', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
             color: "white", backgroundColor: 'black',
             onPress: () => {
                 navigation.navigate( 'Screen1',samaan);
                }
-          })         
+          })    }, 7000);
         
     
     }
@@ -286,7 +348,7 @@ const Diet = ({ navigation }) => {
 
     function deleteSchedule(d) {
         var dt = d.replace("-", "").replace("-", "");
-        axios.delete('http://192.168.0.103:3031/api-gateway/current-user/schedulenf/day/' + scheduleId + '/' + dt, { withCredentials: true })
+        axios.delete('http://192.168.0.105:3031/api-gateway/current-user/schedulenf/day/' + scheduleId + '/' + dt, { withCredentials: true })
             .then(response => {
                 console.log('Schedule deleted');
                 console.log(response);
@@ -299,7 +361,7 @@ const Diet = ({ navigation }) => {
 
     function deleteAllSchedules() {
         try {
-            axios.delete('http://192.168.0.103:3031/api-gateway/current-user/schedulenf/' + scheduleId, { withCredentials: true })
+            axios.delete('http://192.168.0.105:3031/api-gateway/current-user/schedulenf/' + scheduleId, { withCredentials: true })
                 .then(res => {
                     console.log(res);
                 })
@@ -354,7 +416,7 @@ const Diet = ({ navigation }) => {
                 <TouchableOpacity style={{ flexDirection: 'row', padding: 12, backgroundColor: '#BF243D',marginRight:10, marginTop: 40, width: windowWidth*0.386,alignItems:'center', borderRadius: 20, height: windowHeight*0.057 }}
                     onPress={() => {
                         try {
-                            axios.get('http://192.168.0.103:3032/api-gateway/current-user/nutrition-schedule/reschedule/' + scheduleId, { withCredentials: true })
+                            axios.get('http://192.168.0.105:3032/api-gateway/current-user/nutrition-schedule/reschedule/' + scheduleId, { withCredentials: true })
                                 .then(res => {
                                     //console.log(res);
                                     //console.log('I am running try')
@@ -367,7 +429,7 @@ const Diet = ({ navigation }) => {
                             console.log(err);
                         }
                     }} >
-                    <MaterialIcons name={'replay'} style={{ color: 'white' }} size={20} />
+                    <MaterialIcons name="schedule" size={20} color="white" />
                     <Text style={{ fontSize: 15, color: 'white', marginLeft: 10 }}>Reschedule</Text>
                 </TouchableOpacity>
 
@@ -409,12 +471,16 @@ const Diet = ({ navigation }) => {
                         <Minicard>
                             {/* <Image source={{ uri: item.day[0].time[0].nutrition.photos[0] }} style={{ width: 100, height: 80, marginLeft: 7 }} /> */}
 
-                            <Text style={{ fontSize: 25, marginLeft: 20, marginTop: 5 }}>{item.sameDay}</Text>
+                            <View style={{flexDirection:'column'}}>
+                            <Text style={{ fontSize: 23,fontWeight:'700', marginLeft: 20, marginTop: 5 }}>Today's Plan</Text>
+                            <Text style={{ fontSize: 13,fontWeight:'200', marginLeft: 20, marginTop: 5 }}>{item.sameDay}</Text>
+                            </View>
+                            
 
                             <TouchableOpacity onPress={() => navigation.navigate('DietDay', { screen: 'DietDay', params: { item, scheduleId } })}
-                                style={{ padding: 5, backgroundColor: '#BF243D', marginLeft: 30, marginTop: 8, width: 68, borderRadius: 20, height: 30 }}
+                                style={{ padding: 5,justifyContent:'center',alignItems:'center', backgroundColor: '#BF243D', marginLeft: 30, marginTop: 8, width: 72, borderRadius: 20, height: 37 }}
                             >
-                                <Text style={{ color: 'white', marginLeft: 10 }}>View</Text>
+                                <Text style={{ color: 'white' }}>View</Text>
 
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => {
@@ -424,9 +490,9 @@ const Diet = ({ navigation }) => {
                                 console.log(item.sameDay);
                                 // setModalVisible(true);
                             }}
-                                style={{ padding: 5, backgroundColor: '#BF243D', marginLeft: 30, marginTop: 8, width: 75, borderRadius: 20, height: 30 }}
+                                style={{ padding: 5,justifyContent:'center',alignItems:'center', backgroundColor: '#BF243D', marginLeft: 30, marginTop: 8, width: 78, borderRadius: 20, height: 37 }}
                             >
-                                <Text style={{ color: 'white', marginLeft: 10 }}>Delete</Text>
+                                <Text style={{ color: 'white' }}>Delete</Text>
                             </TouchableOpacity>
                             {/* 
                     <TouchableOpacity onPress={setTest(item.sameDay)}
