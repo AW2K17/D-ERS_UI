@@ -27,7 +27,9 @@ const Stack = createStackNavigator();
 const Plans = ({ navigation }) => {
 
   const [modalVisible, setModalVisible] = useState(false);
-
+  const [check1,setCheck1]=useState([]);
+  const [check2,setCheck2]=useState([]);
+  
 
   var intervalId = null;
   var intervalId2 = null;
@@ -124,10 +126,10 @@ const Plans = ({ navigation }) => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await axios.get('http://192.168.0.105:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+        const res = await axios.get('http://192.168.0.102:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
         console.log(res)
         if (res.data.schedulenf != null) {
-          axios.get('http://192.168.0.105:3032/api-gateway/current-user/nutrition-schedule/reminder/' + res.data.schedulenf[0].id, { withCredentials: true })
+          axios.get('http://192.168.0.102:3032/api-gateway/current-user/nutrition-schedule/reminder/' + res.data.schedulenf[0].id, { withCredentials: true })
             .then((res) => {
               console.log(res)
               if (res.data != 'No-Date') {
@@ -158,10 +160,10 @@ const Plans = ({ navigation }) => {
 
     async function fetchExerciseData() {
       try {
-        const res = await axios.get('http://192.168.0.105:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
+        const res = await axios.get('http://192.168.0.102:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
 
         if (res.data.schedulee[0]) {
-          axios.get('http://192.168.0.105:3022/api-gateway/current-user/exercise-schedule/reminder/' + res.data.schedulee[0].id, { withCredentials: true })
+          axios.get('http://192.168.0.102:3022/api-gateway/current-user/exercise-schedule/reminder/' + res.data.schedulee[0].id, { withCredentials: true })
             .then((res) => {
               console.log(res)
               if (res.data != 'No-Date') {
@@ -319,9 +321,14 @@ const Plans = ({ navigation }) => {
 
    
     try {
-        const res = await axios.get('http://192.168.0.105:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
+        const res = await axios.get('http://192.168.0.102:3021/api-gateway/current-user/schedulee-user/generateschedule', { withCredentials: true })
         .then(res=>{
-            console.log("Dekho Agr Hai ");
+            console.log("bangaya?");
+            showMessage({
+                      message: "Plan Generated!, Check The Workout Tab",
+                      type: "success",
+                      position:"center"
+                    });
         //     if(response.data.schedulee[0].document.length===0){
         //       console.log("Kuch Nai h");
         //     }
@@ -335,7 +342,7 @@ const Plans = ({ navigation }) => {
                       
         // }
 
-        navigation.navigate('Result');
+        //navigation.navigate('Result');
    
       })
     }
@@ -349,9 +356,9 @@ async function checkIf2(){
 
    
   try {
-      const res = await axios.get('http://192.168.0.105:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+      const res = await axios.get('http://192.168.0.102:3031/api-gateway/current-user/schedulenf-user/generateschedule', { withCredentials: true })
       .then(res=>{
-          console.log("Dekho Agr diet Hai ");
+          console.log("wait");
           //console.log(res.data.schedulenf[0].document.length);
           // if((res.data.schedulenf[0].document.length)>0){
           //   showMessage({
@@ -360,13 +367,17 @@ async function checkIf2(){
           //   });
           // }
           // else {
-            console.log('Chalo');
+            console.log('Generate hogaya');
             // showMessage({
             //   message: "Can't take both plans at once.Customized Diet Exists.",
             //   type: "danger",
             // });
-            navigation.navigate('Result2');
-
+           // navigation.navigate('Result2');
+           showMessage({
+            message: "Plan Generated!, Check The Diet Tab",
+            type: "success",
+            position:"center"
+          });
          
           
                     

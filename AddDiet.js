@@ -18,18 +18,18 @@ const AddDiet = ({ route, navigation }) => {
 
 
   const item = route.params;
-  const image = { uri: item.photos.mainPhoto}
+  const image = { uri:  item.photos.photosUrl[0]}
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await axios.get('http://192.168.0.105:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+        const res = await axios.get('http://192.168.0.102:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
         console.log(res);
 
         if (res.data.schedulenf) {
           // setSc(res.data.schedulee);
           // console.log(sc);
-          axios.get('http://192.168.0.105:3032/api-gateway/current-user/nutrition-schedule/count/' + res.data.schedulenf[0].id, { withCredentials: true })
+          axios.get('http://192.168.0.102:3032/api-gateway/current-user/nutrition-schedule/count/' + res.data.schedulenf[0].id, { withCredentials: true })
             .then(response => {
               console.log(response.data.limit);
               setLimit(response.data.limit);
@@ -95,7 +95,7 @@ const AddDiet = ({ route, navigation }) => {
   const renderItem = data => (
     <View key={data.text} style={styles.item}>
 
-      <ImageBackground source={data.img} style={{ width: '100%', height: '100%' }}></ImageBackground>
+      <ImageBackground source={data.img} style={{ width: '100%', height: '100%' }} imageStyle={{ borderRadius: 16}}></ImageBackground>
 
     </View>
   );

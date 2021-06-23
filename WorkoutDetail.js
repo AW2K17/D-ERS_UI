@@ -6,6 +6,7 @@ import { FlatList } from 'react-native-gesture-handler';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 import { showMessage, hideMessage } from "react-native-flash-message";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const pic1 = { uri: 'https://www.dymatize.com/wp-content/uploads/2017/08/brandan-fokkens-best-chest-workout-header-v2-DYMATIZE-830x467.jpg' }
 
@@ -42,6 +43,20 @@ const WorkoutDetail = ({ route, navigation }) => {
     }];
 
 
+    let history=[];
+
+    async function historyBanao(){
+
+        try {
+            await AsyncStorage.setItem('@wkHistory', JSON.stringify(history));
+          } catch (error) {
+            
+          }
+    }
+
+
+
+    historyBanao();
 
 
     return (
@@ -49,18 +64,26 @@ const WorkoutDetail = ({ route, navigation }) => {
             <ScrollView>
                 <View style={styles.today}>
                     <Text style={styles.h1}>{workout.param.item.exercise.exerciseName}</Text>
-                    <ImageBackground source={image} style={styles.workoutPic}>
+                    <ImageBackground source={image} style={styles.workoutPic}
+                    imageStyle={{ borderRadius: 16}}>
 
                     </ImageBackground>
                 </View>
 
                 
-                <View style={{flexDirection:'row',alignItems:'center',marginLeft:windowWidth*0.122}}>
+                <View style={{}}>
                     
-                    <TextInput style={{ padding: 10, marginTop: 30, marginLeft: 23, fontSize: 15,backgroundColor:'#B8B2B2' }} placeholder="Enter Sets" value={sets.toString()}
+                <Text style={{position:'absolute',top:10,left:43,fontSize:18,fontWeight:'bold'}}>Sets</Text>
+                    
+                    <View style={{justifyContent:'center',alignItems: 'center'}}>
+                    <TextInput editable={false} selectTextOnFocus={false} style={{width:320,borderRadius:7,padding: 9, marginTop: 50, marginLeft: 1,fontSize: 15,backgroundColor:'#E0DCDC' }} placeholder="Enter Sets" value={sets.toString()}
                         onChangeText={text => setSets(text)} />
-                    
-                    <TextInput style={{ padding: 10, marginTop: 30, marginLeft: 23, fontSize: 15,backgroundColor:'#B8B2B2' }} placeholder="Enter Reps" value={workout.param.item.exercise.reps[0].toString()} />
+                    </View>
+                   <Text style={{position:'absolute',top:114,left:43,fontSize:18,fontWeight:'bold'}}>Reps</Text>
+                     
+                     <View style={{justifyContent:'center',alignItems: 'center'}}>
+                    <TextInput editable={false} selectTextOnFocus={false} style={{width:320, borderRadius:8,padding: 10, marginTop: 60, marginLeft: 1, fontSize: 15,backgroundColor:'#E0DCDC' }} placeholder="Enter Reps" value={workout.param.item.exercise.reps[0].toString()} />
+                    </View>
                     </View>
                     
                     {/* <Text style={{marginTop:30,marginLeft:62,fontSize:25,fontWeight:'bold'}}>{workout[0].day[0].exercise.exerciseName}</Text>
@@ -68,16 +91,16 @@ const WorkoutDetail = ({ route, navigation }) => {
                 <Text style={{marginTop:30,marginLeft:1,fontSize:21}}>{"Sets:   "}{workout[0].day[0].exercise.sets}{"      "}</Text>
                 <Text style={{marginTop:30,marginLeft:1,fontSize:21}}>{"Reps:   "}{workout[0].day[0].exercise.reps[0]}{"     "}</Text> */}
 
-                <View style={{flexDirection:'row',marginLeft:windowWidth*0.092,marginBottom:55,marginTop:30}}>
+                <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center',marginBottom:55,marginTop:30}}>
                     <TouchableOpacity onPress={async () => {
                         try {
-                            const res = await axios.get('http://192.168.0.105:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
+                            const res = await axios.get('http://192.168.0.102:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
                             // .then(response => {
                             console.log(res);
 
                             if (res.data.schedulee[0].id) {
                                 setScheduleId(res.data.schedulee[0].id)
-                                axios.put('http://192.168.0.105:3021/api-gateway/current-user/schedulee/object/' + res.data.schedulee[0].id + "/" + workout.param.item.sameExercise, { document: document }, { withCredentials: true })
+                                axios.put('http://192.168.0.102:3021/api-gateway/current-user/schedulee/object/' + res.data.schedulee[0].id + "/" + workout.param.item.sameExercise, { document: document }, { withCredentials: true })
                                     .then(response => {
                                         // navigation.navigate('Search');
                                         console.log(response);
@@ -161,8 +184,9 @@ const styles = StyleSheet.create({
     },
     h1: {
         fontSize: 33,
-        marginRight: 100,
-        marginTop: 50
+        
+        marginTop: 10,
+        textAlign:'center'
 
     },
     today: {
@@ -212,5 +236,12 @@ const styles = StyleSheet.create({
         fontSize: 30,
         marginRight: -75,
         marginTop: 59,
+    },
+    today: {
+        marginTop: 7,
+        alignItems:'center', 
+        justifyContent:'center'
+
+
     }
 });

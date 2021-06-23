@@ -17,11 +17,19 @@ export default function Screen1({route,navigation}) {
 
     const [waqt,setWaqt]=useState(samaan.times);
 
-    // console.log('size agaya:');
+     console.log('size agaya:');
+     console.log(samaan.times);
+     console.log('item1 agaya:');
+     console.log(samaan.naashta);
     
+     console.log('item2 agaya:');
+     console.log(samaan.lunch);
+     
+     console.log('item3 agaya:');
+     console.log(samaan.dinner[0]);
 
    
-    // console.log(samaan.naashta.length);
+     console.log(samaan);
     // console.log(samaan.lunch.length);
     // console.log(samaan.dinner.length);
     
@@ -43,7 +51,8 @@ export default function Screen1({route,navigation}) {
 
     let naashta=route.params;
     console.log("time kya");
-    console.log(waqt);
+    //console.log(waqt);
+    console.log(naashta.dinner);
     
 
 
@@ -51,16 +60,22 @@ export default function Screen1({route,navigation}) {
 
        await AsyncStorage.setItem("@waqt",JSON.stringify(t));
       
-        if(t==="Breakfast"){
+       console.log('DDDDD');
+       console.log(t);
+       
+        if(t==="breakfast"){
+            
+          console.log('samaan ka naashta');
+          console.log(samaan.naashta);
             navigation.navigate('Screen2',samaan.naashta);
 
         }
 
-        else if(t==="Lunch"){
+        else if(t==="lunch"){
             navigation.navigate('Screen2',samaan.lunch);
             
         }
-        else if(t==="Dinner"){
+        else if(t==="dinner"){
             navigation.navigate('Screen2',samaan.dinner);
         }
 
@@ -98,7 +113,7 @@ export default function Screen1({route,navigation}) {
          <TouchableOpacity 
          style={{backgroundColor:'#8C2020',padding:10,width:100,borderRadius:22,position:'absolute',left:240,top:20}}
          onPress={()=>check(item.wo)}>
-           <Text style={{color:'white',textAlign:'center'}}>View</Text>
+           <Text style={{color:'white',textAlign:'center'}}>Views</Text>
          </TouchableOpacity>
          
         

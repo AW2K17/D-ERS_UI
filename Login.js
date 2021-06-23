@@ -13,7 +13,7 @@ import axios from 'axios';
 import { Button, Card, Modal, Text } from '@ui-kitten/components';
 import Signin from './Signin';
 import { NetworkInfo } from "react-native-network-info";
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -28,6 +28,20 @@ console.log(windowWidth);
 const MAX_LEN = 15,
   MIN_LEN = 6,
   PASS_LABELS = ["Too Short", "Weak", "Normal", "Strong", "Secure"];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 const Login = ({ navigation }) => {
@@ -53,7 +67,7 @@ const Login = ({ navigation }) => {
     async function fetchData() {
       try {
         console.log('I am running')
-        axios.get('http://192.168.0.105:3010/api-gateway/current-user/user', { withCredentials: true })
+        axios.get('http://192.168.0.102:3010/api-gateway/current-user/user', { withCredentials: true })
           .then((res) => {
             console.log(res);
             console.log('inside')
@@ -65,7 +79,7 @@ const Login = ({ navigation }) => {
             }
           }).catch((error) => {
             navigation.navigate('Login')
-            console.log('Error', error)
+            console.log(error)
           })
 
 
@@ -79,6 +93,52 @@ const Login = ({ navigation }) => {
   }, []);
 
 
+async function loginKro(){
+
+
+
+   AsyncStorage.setItem('@eml',JSON.stringify(email));
+
+
+  console.log('nikala!');
+  
+  console.log('fff');
+
+ const ran = {
+
+            email: email,
+            password: password
+
+          }
+
+          
+          console.log(ran);
+          try {
+            console.log('Login running')
+            axios.post('http://192.168.0.102:3010/api-gateway/sign-in/user', ran, { withCredentials: true })
+              .then(response => {
+                console.log('Login inside')
+                console.log(response);
+                setVisible1(false)
+         
+                //AsyncStorage.setItem('@eml',JSON.stringify(email));
+                navigation.navigate('Dashboard');
+
+              }).catch(error => {
+                if (error) {
+                  console.log("Inside", error)
+                  setVisible1(true);
+                  // setError(error);
+                  setError("Email Or Password Not Correct, Make Sure You're Registered!");
+                }
+              })
+          }
+          catch (error) {
+            console.log(error);
+          }
+
+
+}
 
 
 
@@ -105,38 +165,7 @@ const Login = ({ navigation }) => {
 
         </View>
 
-        <TouchableOpacity style={styles.Btn} onPress={() => {
-          const ran = {
-
-            email: email,
-            password: password
-
-          }
-
-
-          console.log(ran);
-          try {
-            console.log('Login running')
-            axios.post('http://192.168.0.105:3010/api-gateway/sign-in/user', ran, { withCredentials: true })
-              .then(response => {
-                console.log('Login inside')
-                console.log(response);
-                setVisible1(false)
-                navigation.navigate('Dashboard');
-
-              }).catch(error => {
-                if (error) {
-                  console.log("Inside", error)
-                  setVisible1(true);
-                  // setError(error);
-                  setError("Email Or Password Not Correct, Make Sure You're Registered!");
-                }
-              })
-          }
-          catch (error) {
-            console.log(error);
-          }
-        }}
+        <TouchableOpacity style={styles.Btn} onPress={()=>loginKro()}
         >
           <Text style={{ color: 'white' }}>Login</Text>
         </TouchableOpacity>

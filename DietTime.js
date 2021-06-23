@@ -22,18 +22,21 @@ const DietTime = ({ route, navigation }) => {
     const {sameDay} = route.params;
     const {scheduleId} = route.params;
     //const {nutritionName}=item.params.item.nutrition.nutritionName;
-    console.log(route.params);
+    console.log('pic hai andr?');
+    //console.log(route.params);
     const dayTime = item.dayTime;
+    console.log('pic times:');
+    console.log(item.time[0].nutrition.photos[0]);
   
     
     let image;
    //console.log(item.params.item.nutrition.photos[0]);
-   if(dayTime==='Breakfast'){
-   image={ uri: item.time[0].nutrition.photos[0] }
-   }
-   else if(dayTime==='Lunch'){
-     image={ uri: item.time[1].nutrition.photos[0] }
-   }
+//    if(dayTime==='Breakfast'){
+//    image={ uri: item.time[0].nutrition.photos[0] }
+//    }
+//    else if(dayTime==='Lunch'){
+//      image={ uri: item.time[1].nutrition.photos[0] }
+//    }
     //const image = { uri: route.params.item.nutrition.photos[0] };
     // console.log(navigation);
     // const random = route.params;
@@ -50,7 +53,7 @@ const DietTime = ({ route, navigation }) => {
                     renderItem={({ item }) => (
                         <TouchableOpacity onPress={() => navigation.navigate('DietDetail', {screen: 'DietDetail', params: {item, dayTime, sameDay, scheduleId}})} >
                         <Minicard >
-                             {/* <Image source={image} style={{ width: 100, height: 90, marginLeft: 12,borderRadius:15 }} />  */}
+                             <Image source={ {uri: item.nutrition.photos[0] }} style={{ width: 100, height: 90, marginLeft: 12,borderRadius:15 }} />  
 
                             {/* <Text style={{ fontSize: 18, marginLeft: 20, marginTop: 5 }}>{item.dayTime}</Text> */}
                             <Text style={{ fontSize: 25, marginLeft: 30, marginTop: 5 }}>{item.nutrition.nutritionName}</Text>
@@ -63,7 +66,7 @@ const DietTime = ({ route, navigation }) => {
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => {
                                 try{
-                                    axios.delete('http://192.168.0.105:3031/api-gateway/current-user/schedulenf/object/' + scheduleId + '/' + item.sameNutrition + '/' + sameDay.replace("-", "").replace("-", "") + '/' + dayTime, { withCredentials: true })
+                                    axios.delete('http://192.168.0.102:3031/api-gateway/current-user/schedulenf/object/' + scheduleId + '/' + item.sameNutrition + '/' + sameDay.replace("-", "").replace("-", "") + '/' + dayTime, { withCredentials: true })
                                     .then(res => {
                                         console.log(res);
                                     })

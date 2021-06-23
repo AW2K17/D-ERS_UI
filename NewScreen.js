@@ -78,16 +78,12 @@ export default function Screen1({route,navigation}) {
        
        renderItem={({item})=>
        
-       <View style={styles.item}>
+       <TouchableOpacity style={styles.item} onPress={()=>check(item.wo)}>
          <Text style={styles.title}>{item.wo}</Text>
-         <TouchableOpacity 
-         style={{backgroundColor:'#8C1111',padding:10,width:100,borderRadius:22,position:'absolute',left:240,top:30}}
-         onPress={()=>check(item.wo)}>
-           <Text style={{color:'white',textAlign:'center'}}>View</Text>
-         </TouchableOpacity>
+         
          
         
-       </View>
+       </TouchableOpacity>
 
        
        

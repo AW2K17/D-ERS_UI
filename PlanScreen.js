@@ -12,11 +12,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import axios from 'axios';
+import Minicard3 from './Minicard3';
 import MinicardWorkout from './MinicardWorkout';
 import WorkoutDay from './WorkoutDay';
  //import Modal from 'modal-react-native-web';
 import Modal from 'react-native-modal';
-
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+const image = { uri: "https://i.dlpng.com/static/png/6377816_preview.png" };
 // import fetchData from './fetch';
 import NewScreen from './NewScreen';
 import WorkoutForm from './WorkoutForm';
@@ -33,6 +35,10 @@ const pic3 = { uri: 'https://www.muscleandfitness.com/wp-content/uploads/2019/01
 
 const Stack = createStackNavigator();
 
+
+let itemX;
+let Upcoming=[];
+
 export function Plan({ navigation }) {
     // const [workouts, setWorkouts] = useState([]);
 
@@ -47,6 +53,7 @@ export function Plan({ navigation }) {
 
     const [exercise, setExercise] = useState([]);
     const [wrk,setWrk]=useState([]);
+    const [upcoming,setUpcoming]=useState([]);
 
     var exercises;
     var dates;
@@ -57,7 +64,7 @@ export function Plan({ navigation }) {
 
     // async function fetchData() {
     //     try {
-    //         const res = await axios.get('http:// 192.168.0.105:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
+    //         const res = await axios.get('http:// 192.168.0.102:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
     //          .then(response => {
     //         //console.log(Object.values(res));
     //         console.log("If: ");
@@ -66,7 +73,7 @@ export function Plan({ navigation }) {
     //         if (res.data.schedulee[0].id) {
     //             setScheduleId(res.data.schedulee[0].id)
     //             // setExe(response.data.schedulee[0].document[1].day[0].exercise);
-    //             axios.get('http:// 192.168.0.105:3021/api-gateway/current-user/schedulee/' + res.data.schedulee[0].id, { withCredentials: true })
+    //             axios.get('http:// 192.168.0.102:3021/api-gateway/current-user/schedulee/' + res.data.schedulee[0].id, { withCredentials: true })
     //                 .then((res) => {
     //                     // setWorkouts(res.data.schedule.document[2].day[0].exercise.photos);
     //                     // setExe(res.data.schedule.document[2].day[0].exercise);
@@ -140,14 +147,14 @@ export function Plan({ navigation }) {
 
     async function fetchData() {
         try {
-            const res = await axios.get('http://192.168.0.105:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
+            const res = await axios.get('http://192.168.0.102:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
             // .then(response => {
             //console.log(Object.values(res));
             //console.log(JSON.stringify(res));
             if (res.data.schedulee[0].id) {
                 setScheduleId(res.data.schedulee[0].id)
                 // setExe(response.data.schedulee[0].document[1].day[0].exercise);
-                axios.get('http://192.168.0.105:3021/api-gateway/current-user/schedulee/' + res.data.schedulee[0].id, { withCredentials: true })
+                axios.get('http://192.168.0.102:3021/api-gateway/current-user/schedulee/' + res.data.schedulee[0].id, { withCredentials: true })
                     .then((res) => {
                         // setWorkouts(res.data.schedule.document[2].day[0].exercise.photos);
                         // setExe(res.data.schedule.document[2].day[0].exercise);
@@ -181,6 +188,10 @@ export function Plan({ navigation }) {
                         if (datt2) {
                             exercises = datt2
                             setExercise(exercises)
+                            itemX=exercises[0]
+                            Upcoming=[...exercises];
+                            exercise.shift();
+                           setUpcoming(exercise);
                         }
                     })
                     .catch(error => {
@@ -212,7 +223,7 @@ export function Plan({ navigation }) {
         let ran=x.slice(0,10);
         let obj={};
         try {
-            const res = await axios.get('http://192.168.0.105:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
+            const res = await axios.get('http://192.168.0.102:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
             .then(response=>{
                 console.log("CheckKro ");
                 console.log(response.data.schedulee[0].document.length);
@@ -377,7 +388,7 @@ export function Plan({ navigation }) {
 
     function deleteSchedule(d) {
         var dt = d.replace("-", "").replace("-", "");
-        axios.delete('http://192.168.0.105:3021/api-gateway/current-user/schedulee/day/' + scheduleId + '/' + dt, { withCredentials: true })
+        axios.delete('http://192.168.0.102:3021/api-gateway/current-user/schedulee/day/' + scheduleId + '/' + dt, { withCredentials: true })
             .then(response => {
                 console.log('Schedule deleted');
                 console.log(response);
@@ -389,7 +400,7 @@ export function Plan({ navigation }) {
 
     function deleteAllSchedules() {
         try {
-            axios.delete('http://192.168.0.105:3021/api-gateway/current-user/schedulee/' + scheduleId, { withCredentials: true })
+            axios.delete('http://192.168.0.102:3021/api-gateway/current-user/schedulee/' + scheduleId, { withCredentials: true })
                 .then(res => {
                     console.log(res);
                 })
@@ -401,6 +412,7 @@ export function Plan({ navigation }) {
             console.log(err);
         }
         setExercise([]);
+        setUpcoming([]);
     }
 
 
@@ -409,12 +421,13 @@ export function Plan({ navigation }) {
     if (typeof window !== undefined) {
         return (
             <View style={styles.centeredView}>
-
+            
+                <ScrollView>
                 <View style={{flexDirection:'row'}}>
-                <TouchableOpacity style={{ flexDirection: 'row', padding: 12, backgroundColor: '#BF243D',marginRight:11,marginTop:40, width: windowWidth*0.366,alignItems: 'center',borderRadius: 20, height:  windowHeight*0.057 }}
+                <TouchableOpacity style={{ flexDirection: 'row', padding: 12, backgroundColor: '#BF243D',marginRight:11,marginTop:20, width: windowWidth*0.366,alignItems: 'center',borderRadius: 20, height:  windowHeight*0.057 }}
                     onPress={() => {
                         try {
-                            axios.get('http://192.168.0.105:3022/api-gateway/current-user/exercise-schedule/reschedule/' + scheduleId, { withCredentials: true })
+                            axios.get('http://192.168.0.102:3022/api-gateway/current-user/exercise-schedule/reschedule/' + scheduleId, { withCredentials: true })
                                 .then(res => {
                                     console.log(res);
                                 })
@@ -431,7 +444,7 @@ export function Plan({ navigation }) {
                 </TouchableOpacity>
 
 
-                <TouchableOpacity style={{ flexDirection: 'row', padding: 14, backgroundColor: '#BF243D', marginLeft: 2,marginRight:11, marginTop: 40,alignItems: 'center',width: windowWidth*0.366, borderRadius: 20, height: windowHeight*0.057 }}
+                <TouchableOpacity style={{ flexDirection: 'row', padding: 14, backgroundColor: '#BF243D', marginLeft: 2,marginRight:11, marginTop: 20,alignItems: 'center',width: windowWidth*0.366, borderRadius: 20, height: windowHeight*0.057 }}
                     onPress={() => {
                         setModalVisible(true);
                     }} >
@@ -439,7 +452,7 @@ export function Plan({ navigation }) {
                     <Text style={{ fontSize: 15, color: 'white', marginLeft:windowWidth*0.024}}>Delete All</Text>
                 </TouchableOpacity>
                 
-                <TouchableOpacity style={{ flexDirection: 'row', padding: 18, backgroundColor: '#BF243D', marginLeft: 2, marginTop: 40,alignItems: 'center',width: windowWidth*0.146, borderRadius: 50, height: windowHeight*0.057 }}
+                <TouchableOpacity style={{ flexDirection: 'row', padding: 18, backgroundColor: '#BF243D', marginLeft: 2, marginTop: 20,alignItems: 'center',width: windowWidth*0.146, borderRadius: 50, height: windowHeight*0.057 }}
                     onPress={() => {
                         fetchData();
                         //Remind();
@@ -452,40 +465,73 @@ export function Plan({ navigation }) {
 
                 
                 </View>
+                <Text style={styles.paragraph}>
+       Today's Workouts
+      </Text>
+      {exercise.length===0 ?(
+                    <View>
+
+                    </View>
+                ):(
+      <TouchableOpacity style={{position:'absolute',top:165,left:20}} onPress={() => navigation.navigate('WorkoutDay', { screen: 'WorkoutDay', params: { itemX, scheduleId } })} >
+      <View style={styles.tag1}>  
+          <ImageBackground source={image} imageStyle={{ borderTopLeftRadius: 26,borderTopRightRadius:26}} style={styles.image}>
+      
+    </ImageBackground>
+    <Text style={styles.todayHeading}>Check It Out</Text>
+      </View>
+       </TouchableOpacity>)}
+       <Text style={styles.paragraph2}>Upcoming Workouts</Text>
                
+               <View style={{marginTop:460}}>
                 <FlatList
-   data={exercise}
+   data={upcoming}
    // keyExtractor={(item, index) => index.toString()}
+   horizontal
    renderItem={({ item }) => (
-       <MinicardWorkout date={item.sameDay}>
-           {/* <Image source={{ uri: item.day[0].time[0].nutrition.photos[0] }} style={{ width: 100, height: 80, marginLeft: 7 }} /> */}
+    
+    <Minicard3 >
+                            {/* <Image source={{ uri: item.day[0].time[0].nutrition.photos[0] }} style={{ width: 100, height: 80, marginLeft: 7 }} /> */}
 
-           <Text style={{ fontSize: 28, marginTop: 5 }}>{item.sameDay}</Text>
+                            <View style={{flexDirection:'column'}}>
+                            <Text style={{ fontSize: 23,fontWeight:'700', marginLeft: 20, marginTop: 5 }}>Pending Plans</Text>
+                            {/* <Text style={{ fontSize: 13,fontWeight:'200', marginLeft: 20, marginTop: 5 }}>{item.sameDay}</Text> */}
+                            </View>
+                            
+                            
+                            {/* <TouchableOpacity onPress={() => navigation.navigate('DietDay', { screen: 'DietDay', params: { item, scheduleId } })}
+                                style={{ padding: 5,justifyContent:'center',alignItems:'center', backgroundColor: '#BF243D', marginLeft: 30, marginTop: 8, width: 72, borderRadius: 20, height: 37 }}
+                            >
+                                <Text style={{ color: 'white' }}>View</Text>
 
-           <TouchableOpacity onPress={() => navigation.navigate('WorkoutDay', { screen: 'WorkoutDay', params: { item, scheduleId } })}
-               style={{ padding: 12,alignItems:'center',justifyContent:'center', backgroundColor: '#BF243D', marginLeft: 30, marginTop: 8, width: 68, borderRadius: 20, height: 35 }}
-           >
-               <Text style={{ color: 'white'}}>View</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => {
+                                setDeleteDay(item.sameDay);
+                                deleteSchedule(item.sameDay);
+                                deleteItem(item.id);
+                                console.log(item.sameDay);
+                                // setModalVisible(true);
+                            }}
+                                style={{ padding: 5,justifyContent:'center',alignItems:'center', backgroundColor: '#BF243D', marginLeft: 30, marginTop: 8, width: 78, borderRadius: 20, height: 37 }}
+                            >
+                                <Text style={{ color: 'white' }}>Delete</Text>
+                            </TouchableOpacity> */}
+                            {/* 
+                    <TouchableOpacity onPress={setTest(item.sameDay)}
+                        style={{ backgroundColor: '#BF243D', marginLeft: 60, width: 55, borderRadius: 20, height: 20 }}
+                    >
+                        <Text style={{ color: 'white', marginLeft: 10 }}>Set</Text>
+                    </TouchableOpacity> */}
+                            {/* <Text>Test = {test}</Text> */}
+                        </Minicard3>
+                     
 
-           </TouchableOpacity>
-           <TouchableOpacity onPress={() => {
-               setDeleteDate(item.sameDay)
-               console.log(item.sameDay)
-               deleteSchedule(item.sameDay)
-               deleteItem(item.id);
-               // setModalVisible(true);
-           }}
-               style={{ padding: 12,alignItems:'center',justifyContent:'center', backgroundColor: '#BF243D', marginLeft: 24, marginTop: 8, width: 75, borderRadius: 20, height: 35 }}
-           >
-               <Text style={{ color: 'white' }}>Delete</Text>
-           </TouchableOpacity>
 
-
-       </MinicardWorkout>
 
 
    )}
 />
+</View>
 
         
                
@@ -559,6 +605,7 @@ export function Plan({ navigation }) {
                         </View>
                     </View>
                 </Modal>
+                </ScrollView>
             </View>
         );
         // <View style={styles.container}>
@@ -605,7 +652,9 @@ export function Plan({ navigation }) {
                     </View>
                 )}
             /> */}
+            
         // </View >
+        
 
 
 
@@ -749,5 +798,44 @@ const styles = StyleSheet.create({
     modalText: {
         marginBottom: 15,
         textAlign: "center"
-    }
+    },
+    paragraph: {
+      position:"absolute",
+      top:90,
+      left:25,
+      fontSize: 28,
+      fontWeight: 'bold',
+      textAlign: 'center',
+    },
+    paragraph2: {
+      position:"absolute",
+      top:0.564*windowHeight,
+      left:25,
+      fontSize: 28,
+      fontWeight: 'bold',
+      textAlign: 'center',
+    },
+    todayHeading:{
+      fontSize:17,
+      marginLeft:13,
+      marginTop:14,
+      margin:'1.79%'
+    },
+    image: {
+        flex: 0.92,
+        resizeMode: "cover",
+        justifyContent: "center",
+        borderRadius:22,
+        
+      },
+
+      tag1:{
+        width:wp('57.3%'),
+        height:hp('30.97%'),
+        backgroundColor:'white',
+        
+        marginLeft:4,
+        borderRadius:22
+       
+      }
 });

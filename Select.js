@@ -10,9 +10,9 @@ const windowHeight = Dimensions.get('window').height;
 
 
 const data = [
-    'Breakfast',
-    'Lunch',
-    'Dinner',
+    'breakfast',
+    'lunch',
+    'dinner',
 ];
 
 
@@ -27,6 +27,7 @@ const SelectDayTime = ({ item }) => {
 
     item[0].day[0].dayTime = displayValue;
     item[0].sameDay = date.toISOString().substring(0, 10);
+    
     console.log(item[0].day[0].dayTime)
     console.log(item[0].sameDay);
 
@@ -101,10 +102,10 @@ const SelectDayTime = ({ item }) => {
                         // navigation.navigate('Search');
                         // console.log(response);
 
-                        const res = await axios.get('http://192.168.0.105:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+                        const res = await axios.get('http://192.168.0.102:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
                         console.log(res);
                         if (res.data.schedulenf && res.data.schedulenf.length) {
-                            axios.put('http://192.168.0.105:3031/api-gateway/current-user/schedulenf/' + res.data.schedulenf[0].id, { document: item }, { withCredentials: true })
+                            axios.put('http://192.168.0.102:3031/api-gateway/current-user/schedulenf/' + res.data.schedulenf[0].id, { document: item }, { withCredentials: true })
                                 .then(response => {
                                     // navigation.navigate('Search');
                                     console.log(response);
@@ -114,7 +115,7 @@ const SelectDayTime = ({ item }) => {
 
                         }
                         else {
-                            axios.post('http://192.168.0.105:3031/api-gateway/current-user/nutritionschedule', { document: item }, { withCredentials: true })
+                            axios.post('http://192.168.0.102:3031/api-gateway/current-user/nutritionschedule', { document: item }, { withCredentials: true })
                                 .then(response => {
                                     // navigation.navigate('Search');
                                     console.log(response);

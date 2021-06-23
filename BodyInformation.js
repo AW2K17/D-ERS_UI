@@ -2,11 +2,11 @@ import React,{useState} from 'react';
 import { Text, View, StyleSheet,Modal,Pressable,TouchableOpacity,Button,Dimensions } from 'react-native';
 import Constants from 'expo-constants';
 import axios from 'axios';
-import Question2 from './Question2';
-import Question3 from './Question3';
-import Question4 from './Question4';
-import Question5 from './Question5';
-
+import ChestLevel from './ChestLevel';
+import AbsLevel from './AbsLevel';
+import LegLevel from './LegLevel';
+import BackLevel from './BackLevel';
+import ShoulderLevel from './ShoulderLevel';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -18,10 +18,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Onboarding from 'react-native-onboarding-custom-swiper';
 
 const bhejde=async()=>{
-  console.log('hogaya');
-   const jsonValue = await AsyncStorage.getItem('@options')
+  console.log('han bhai');
+   const jsonValue = await AsyncStorage.getItem('@options2')
     const x=JSON.parse(jsonValue);
-    console.log('final: ');
+    console.log('finally jaraha: ');
     console.log(x);
     let ans=[]
     ans.push(x);
@@ -43,13 +43,13 @@ const bhejde=async()=>{
   });
 }
 
-export default function Sawalaat({navigation}) {
+export default function BodyInformation({navigation}) {
 
   const [modalVisible, setModalVisible] = useState(false);
 
 
   return (
-  <Onboarding pages={[Question2,Question3,Question4,Question5]}  skipToPage={3} 
+  <Onboarding pages={[ChestLevel,AbsLevel,BackLevel,LegLevel,ShoulderLevel]}  skipToPage={4} 
   onDone={bhejde}/>
   
   

@@ -12,7 +12,7 @@ import PassMeter from "react-native-passmeter";
 import { Button, Card, Modal, Text } from '@ui-kitten/components';
 
 
-const MAX_LEN = 15,
+const MAX_LEN = 10,
     MIN_LEN = 6,
     PASS_LABELS = ["Weak","Normal", "Strong"];
 

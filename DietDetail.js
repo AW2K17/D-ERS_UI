@@ -13,7 +13,8 @@ const DietDetail = ({ route, navigation }) => {
     const {dayTime} = route.params;
     const item = route.params;
     const {sameDay} = route.params;
-    console.log(item)
+    console.log('tasweer:');
+    console.log(item.params.item.nutrition)
     const image = { uri: item.params.item.nutrition.photos[0] };
     const [scheduleId, setScheduleId] = useState();
 
@@ -52,6 +53,25 @@ const DietDetail = ({ route, navigation }) => {
       }];
 
 
+
+      let history2=[];
+
+    async function historyBanao2(){
+
+        try {
+            await AsyncStorage.setItem('@nfHistory', JSON.stringify(history2));
+          } catch (error) {
+            
+          }
+    }
+
+
+
+    historyBanao2();
+
+
+
+
     return (
         <View style={styles.container}>
             <ScrollView>
@@ -67,19 +87,19 @@ const DietDetail = ({ route, navigation }) => {
                 <View style={{}}>
                     
                     <Text style={{position:'absolute',top:10,left:23,fontSize:18,fontWeight:'bold'}}>Calories</Text>
-                    <TextInput style={{ borderRadius:7,padding: 10, marginTop: 50, marginLeft: 23, fontSize: 15 ,backgroundColor:'#E0DCDC' }} placeholder="Enter Calories" value={calories.toString()} onChangeText={(text) => setCalories(text)}/>
+                    <TextInput editable={false} selectTextOnFocus={false} style={{ borderRadius:7,padding: 10, marginTop: 50, marginLeft: 23, fontSize: 15 ,backgroundColor:'#E0DCDC' }} placeholder="Enter Calories" value={calories.toString()} onChangeText={(text) => setCalories(text)}/>
 
                     <Text style={{position:'absolute',top:114,left:23,fontSize:18,fontWeight:'bold'}}>Carbohydrates</Text>
-                    <TextInput style={{ borderRadius:7,padding: 10, marginTop: 50, marginLeft: 23, fontSize: 15,backgroundColor:'#E0DCDC' }} placeholder="Enter Carbohydrates" value={carbohydrates.toString()} onChangeText={(text) => setCarbohydrates(text)}/>
+                    <TextInput editable={false} selectTextOnFocus={false} style={{ borderRadius:7,padding: 10, marginTop: 50, marginLeft: 23, fontSize: 15,backgroundColor:'#E0DCDC' }} placeholder="Enter Carbohydrates" value={carbohydrates.toString()} onChangeText={(text) => setCarbohydrates(text)}/>
                     
                     <Text style={{position:'absolute',top:210,left:23,fontSize:18,fontWeight:'bold'}}>Proteins</Text>
                     
-                    <TextInput style={{borderRadius:7, padding: 10,paddingRight:36, marginTop: 50, marginLeft: 23, fontSize: 15,backgroundColor:'#E0DCDC' }} placeholder="Enter Fats" value={fats.toString()} onChangeText={(text) => setFats(text)}/>
+                    <TextInput editable={false} selectTextOnFocus={false} style={{borderRadius:7, padding: 10,paddingRight:36, marginTop: 50, marginLeft: 23, fontSize: 15,backgroundColor:'#E0DCDC' }} placeholder="Enter Fats" value={fats.toString()} onChangeText={(text) => setFats(text)}/>
 
                     <Text style={{position:'absolute',top:310,left:23,fontSize:18,fontWeight:'bold'}}>Fats</Text>
                     
                     
-                    <TextInput style={{ borderRadius:7,padding: 10, marginTop: 50,paddingRight:49, marginLeft: 22, fontSize: 15,backgroundColor:'#E0DCDC' }} placeholder="Enter Proteins" value={proteins.toString()} onChangeText={(text) => setProteins(text)}/>
+                    <TextInput editable={false} selectTextOnFocus={false} style={{ borderRadius:7,padding: 10, marginTop: 50,paddingRight:49, marginLeft: 22, fontSize: 15,backgroundColor:'#E0DCDC' }} placeholder="Enter Proteins" value={proteins.toString()} onChangeText={(text) => setProteins(text)}/>
                    
                    
                    </View>
@@ -100,14 +120,14 @@ const DietDetail = ({ route, navigation }) => {
                 <TouchableOpacity onPress={async () => {
 
                     try{
-                        const res = await axios.get('http://192.168.0.105:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+                        const res = await axios.get('http://192.168.0.102:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
                         // .then(response => {
                         console.log(res);
 
                         if (res.data.schedulenf[0].id) {
                             setScheduleId(res.data.schedulenf[0].id)
 
-                            axios.put('http://192.168.0.105:3031/api-gateway/current-user/schedulenf/object/' + res.data.schedulenf[0].id + '/' + nutrition.param.sameNutrition, { document: document }, { withCredentials: true })
+                            axios.put('http://192.168.0.102:3031/api-gateway/current-user/schedulenf/object/' + res.data.schedulenf[0].id + '/' + nutrition.param.sameNutrition, { document: document }, { withCredentials: true })
                                 .then(response => {
                                     // navigation.navigate('Search');
                                     console.log(response);

@@ -61,7 +61,7 @@ const CheckList = ({navigation}) => {
     let x=tareekh.toISOString();
     let ran=x.slice(0,10);
   
-     axios.get('http://192.168.0.105:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
+     axios.get('http://192.168.0.102:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
     .then(res=> {
       console.log("Kuch yun aya:");
       console.log(res.data.schedulee[0].document[0].day[0].exercise.photos[0]);

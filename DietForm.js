@@ -6,7 +6,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
-
+let match;
+let history2=[];
 
 
 
@@ -14,8 +15,12 @@ export default function DietForm({route,navigation}) {
 
     let data=route.params;
     let values=[];
+    console.log('peeche se');
+    console.log(route.params);
     const [d,setD]=useState(data);
-    const match=d.t;
+    match=d.t;
+    console.log('match');
+    console.log(match);
     for(let i=0;i<d.data.length;i++) {
       if(d.data[i].khana===match){
           values.push(d.data[i].cal);
@@ -82,6 +87,46 @@ for(var i in values) { total += values[i]; }
        let z=await AsyncStorage.getItem('nutritions3');
 
 
+       const hty2 = await AsyncStorage.getItem('@nfHistory');
+
+       console.log('pehle2');
+       console.log(hty2);
+       history=JSON.parse(hty2);
+           console.log('after2')
+           console.log(history2);
+   
+   
+
+
+       let obj2={
+         
+        khana:match,
+        cal:parseInt(calo),
+        carb:parseInt(carb),
+        fat:parseInt(fat),
+        pro:parseInt(pro)
+    
+    
+      }
+
+      console.log(obj2);
+      history2.push({ khana:match,
+        cal:parseInt(calo).toFixed(1),
+        carb:parseInt(carb).toFixed(1),
+        fat:parseInt(fat).toFixed(1),
+        pro:parseInt(pro).toFixed(1)});
+      console.log('pushitt2');
+    
+      console.log(history2);
+    
+    
+      await AsyncStorage.setItem('@nfHistory', JSON.stringify(history2));
+      
+
+
+
+
+
 
       //  if(t==='Breakfast'){
 
@@ -102,14 +147,16 @@ for(var i in values) { total += values[i]; }
 
       //  }
       //  await AsyncStorage.setItem('@sumJama',JSON.stringify(tt))
-
+      let tareekh=new Date();
+      let dte=tareekh.toISOString();
+      let ran=dte.slice(0,10);
 
        console.log("Sums"+sum);
 
-       axios.post('http://192.168.0.105:3033/api-gateway/current-user/diet-track/add', {
+       axios.post('http://192.168.0.102:3033/api-gateway/current-user/diet-track/add', {
         //sum:sum,
-        dietScheduleId:"ffrc3",
-        dayDate:'2021-05-16',
+        dietScheduleId:"tew7t7tw775gjdk",
+        dayDate:ran,
         totalCaloriesIntake:parseInt(calo),
         totalProteinIntake:parseInt(pro),
         totalCarbohydratesIntake:parseInt(fat),
@@ -142,11 +189,11 @@ for(var i in values) { total += values[i]; }
                     <Text style={{fontWeight:'bold',marginTop:10,fontSize:20,marginRight:210}}>Calories</Text>
                     <TextInput style={{ width:330,padding: 10, marginTop: 20, marginLeft: 23, fontSize: 15 ,backgroundColor:'#E0DCDC' }} placeholder="Enter Calories" value={calo.toString()} onChangeText={(text)=>setCal(text)} />
                    
-                   <Text style={{fontWeight:'bold',marginTop:30,marginRight:150,fontSize:20}}>Carbohydrates</Text>
+                   <Text style={{fontWeight:'bold',marginTop:30,marginRight:250,fontSize:20}}>Fats</Text>
                     <TextInput style={{  width:330,padding: 10, marginTop: 20, marginLeft: 23, fontSize: 15,backgroundColor:'#E0DCDC' }} placeholder="Enter Carbohydrates" value={fat.toString()} onChangeText={(text)=>setFat(text)} />
                    </View>
                    <View style={{justifyContent:'center',alignItems: 'center'}}>
-                   <Text style={{fontWeight:'bold',marginTop:20,fontSize:20,marginRight:250}}>Fats</Text>
+                   <Text style={{fontWeight:'bold',marginTop:20,fontSize:20,marginRight:150}}>Carbohydrates</Text>
 
                     <TextInput style={{  width:330, padding: 10,paddingRight:36, marginTop: 20, marginLeft: 23, fontSize: 15,backgroundColor:'#E0DCDC' }} placeholder="Enter Fats" value={carb.toString()} onChangeText={(text)=>setCarb(text)} />
                     <Text style={{fontWeight:'bold',marginTop:20,fontSize:20,marginRight:200}}>Proteins</Text>
@@ -156,7 +203,7 @@ for(var i in values) { total += values[i]; }
                 </View>
                 <View style={{justifyContent: 'center',alignItems: 'center'}}>
                 <TouchableOpacity 
-                style={{padding:13,backgroundColor:'#8C2020',marginBottom:50,borderRadius:12,marginTop:60,width:330,marginLeft:10}}
+                style={{padding:13,backgroundColor:'#8C2020',marginBottom:50,borderRadius:12,marginTop:60,width:330}}
                 onPress={confirmChanges}>
                 
                 

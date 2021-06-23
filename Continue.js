@@ -7,8 +7,10 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import React, { PureComponent, useState } from 'react';
 import RNPickerSelect, { defaultStyles } from 'react-native-picker-select';
+import { showMessage, hideMessage } from "react-native-flash-message";
 import { Fontisto } from '@expo/vector-icons';
 import { createStackNavigator } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import Dashboard from './Dashboard';
 import Signin from './Login';
@@ -22,6 +24,9 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const Stack = createStackNavigator();
+
+let history=[];
+let history2=[];
 
 const Continue = ({ navigation, route }) => {
 
@@ -113,7 +118,7 @@ const Continue = ({ navigation, route }) => {
 
 
 
-    function Validations() {
+    async function Validations() {
 
         const c1 = wgtCheck();
         const c2 = hgtCheck();
@@ -138,7 +143,7 @@ const Continue = ({ navigation, route }) => {
             }
 
 
-            // axios.get('http:// 192.168.0.105:3010/api-gateway/current-user/user', { withCredentials: true })
+            // axios.get('http:// 192.168.0.102:3010/api-gateway/current-user/user', { withCredentials: true })
             //     .then(response => {
             //         console.log(response.data)
             //     })
@@ -146,7 +151,22 @@ const Continue = ({ navigation, route }) => {
             //         console.log(error)
             //     })
 
+            const hty = await AsyncStorage.getItem('@wkHistory');
+            const hty2 = await AsyncStorage.getItem('@nfHistory');
+            
+            AsyncStorage.setItem('@fn',JSON.stringify(fn));
+            AsyncStorage.setItem('@eml',JSON.stringify(eml));
 
+            history=JSON.parse(hty);
+            history2=JSON.parse(hty2);
+            
+            history=[];
+            history2=[];
+            await AsyncStorage.setItem('@wkHistory', JSON.stringify(history));
+            await AsyncStorage.setItem('@nfHistory', JSON.stringify(history2));
+            
+            
+            
 
 
 
@@ -154,9 +174,15 @@ const Continue = ({ navigation, route }) => {
 
             console.log(ran);
             try{
-                axios.post('http://192.168.0.105:3010/api-gateway/sign-up/user', ran, { withCredentials: true })
+                axios.post('http://192.168.0.102:3010/api-gateway/sign-up/user', ran, { withCredentials: true })
                 .then(response => {
                     console.log(response.data);
+                    // showMessage({
+                    //     message: 'Fill The Questionnaire In The Input Tab', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
+                    //     color: "black", backgroundColor: 'info',position:'center'
+                    //   })
+            
+                    //   setTimeout(() => {  Remind2() }, 5000);
                     navigation.navigate('Dashboard')
                 })
                 .catch(error => {

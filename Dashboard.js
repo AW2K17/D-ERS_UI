@@ -5,6 +5,7 @@ import axios from 'axios';
 import { HomeScreen } from './HomeScreen';
 import { WorkoutScreen } from './WorkoutScreen';
 import { DietScreen } from './DietScreen';
+import {PhotosScreen} from './PhotosScreen';
 import { ProgressScreen } from './ProgressScreen';
 import Input from './Input';
 import { WorkoutsScreen } from './WorkoutsScreen';
@@ -15,6 +16,7 @@ import Signin from './Login';
 import LoginScreen from './Login';
 import PlanScreen from './Plan';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import DrawerContent from './DrawerContent';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -36,6 +38,7 @@ const WorkoutsStack = createStackNavigator();
 const MealsStack = createStackNavigator();
 const HistoryStack = createStackNavigator();
 const LogoutStack = createStackNavigator();
+const PhotoStack = createStackNavigator();
 
 const Tab = createBottomTabNavigator();
 
@@ -139,6 +142,15 @@ function WorkoutsStackScreen() {
   );
 }
 
+function PhotosStackScreen(){
+
+  return(
+    <PhotoStack.Navigator headerMode="none">
+      <PhotoStack.Screen name="PhotosScreen" component={PhotosScreen}/>
+    </PhotoStack.Navigator>
+  )
+}
+
 function MealsStackScreen() {
   return (
     <MealsStack.Navigator headerMode="none">
@@ -159,7 +171,7 @@ function Signout() {
 
 
 
-  axios.post('http://192.168.0.105:3010/api-gateway/sign-out/user').then(response => {
+  axios.post('http://192.168.0.102:3010/api-gateway/sign-out/user').then(response => {
 
     console.log(response);
     // navigation.navigate('Login');
@@ -255,9 +267,9 @@ export const Dashboard = ({ navigation }) => {
   // useEffect(() => {
   //   async function fetchData() {
   //     try {
-  //       axios.get('http:// 192.168.0.105:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+  //       axios.get('http:// 192.168.0.102:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
   //         .then((res) => {
-  //           axios.get('http:// 192.168.0.105:3032/api-gateway/current-user/nutrition-schedule/reminder/' + res.data.schedulenf[0].id, { withCredentials: true })
+  //           axios.get('http:// 192.168.0.102:3032/api-gateway/current-user/nutrition-schedule/reminder/' + res.data.schedulenf[0].id, { withCredentials: true })
   //             .then((res) => {
   //               dates = res.data.map((e) => {
   //                 console.log(e.sameDay)
@@ -322,12 +334,14 @@ export const Dashboard = ({ navigation }) => {
 
   return (
 
-    <Drawer.Navigator initialRouteName="Home" options={{ headerShown: false }} independent={true}>
+    <Drawer.Navigator initialRouteName="Home" options={{ headerShown: false }} independent={true}
+    drawerContent={props => <DrawerContent {...props} />}>
       <Drawer.Screen name="Home" component={TabsScreen} options={{ headerShown: false }} />
       <Drawer.Screen name="Input" component={InputScreenStack} />
-      <Drawer.Screen name="Meals" component={MealsScreen} />
+      
       <Drawer.Screen name="Workouts" component={WorkoutsStackScreen} />
       <Drawer.Screen name="HistoryTrack" component={HistoryTrack} />
+      <Drawer.Screen name="PhotosScreen" component={PhotosScreen} />
       <Drawer.Screen name="Log Out" component={LogoutStackScreen} options={{ headerShown: false }} />
     </Drawer.Navigator>
 

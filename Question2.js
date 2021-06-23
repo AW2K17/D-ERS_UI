@@ -1,14 +1,15 @@
 import React,{useState} from 'react';
-import { Text, View, StyleSheet,Button,TouchableOpacity,Dimensions } from 'react-native';
+import { Text, View, StyleSheet,Button,TouchableOpacity,Dimensions,TextInput } from 'react-native';
 import Constants from 'expo-constants';
   const windowsWidth=Dimensions.get('window').width;
 import AsyncStorage from '@react-native-async-storage/async-storage';
  
  
  let obj={
-    fitnessGoal:" ",
-    physicalActivity:0,
-    gynecomastia:'false'
+    targetGoal:0,
+    activityLevel:0,
+    waist:0,
+    lat:0
   }
 export default function Question2() {
 
@@ -21,6 +22,7 @@ export default function Question2() {
   const [color2,setColor2]=useState('black');
   const [color3,setColor3]=useState('black');
   const [wWidth,setwWidth]=useState(windowsWidth);
+  const [target,setTarget]=useState();
   
 
   
@@ -46,33 +48,18 @@ export default function Question2() {
     
 
 
-obj.fitnessGoal='LooseWeight';
+obj.targetGoal=1;
 console.log(obj);
 
   let x=JSON.stringify(obj);
   AsyncStorage.setItem('@options', x)
   }
 
-  function changeColor2(){
+  function changeColor(){
 
-    if(color2=='black')
-    {
-      setColor2('green');
-      setColor1('black');
-      setColor3('black');
-      
-      
-    }
-    else if(color2=='green')
-    {
-      setColor2('black');
-      
-      
-    }
-    const fitnessGoal="gainWeight";
+   
 
-
-obj.fitnessGoal='gainWeight';
+obj.targetGoal=parseInt(target, 10);
 console.log(obj);
 let x=JSON.stringify(obj);
   AsyncStorage.setItem('@options', x)
@@ -98,7 +85,7 @@ let x=JSON.stringify(obj);
   
 
 
-obj.fitnessGoal='maintainCurrentPhysique';
+obj.targetGoal=parseInt(target);
 console.log(obj);
 let x=JSON.stringify(obj);
   AsyncStorage.setItem('@options', x)
@@ -113,23 +100,37 @@ let x=JSON.stringify(obj);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.paragraph}>
-      Choose Your Goal
+      <Text style={{  marginTop: -190,
+    fontSize: 39,
+    margin: 30,
+    fontWeight: 'normal'}}>
+      Choose Your Target Weight
       </Text>
-      <View style={{justifyContent:'center',alignItems:'center',marginTop:74}}>
-      <TouchableOpacity style={{backgroundColor:color1,alignItems:'center',padding:14,width:windowsWidth*0.75,marginBottom:40,borderRadius:25}} onPress={changeColor1}>
-      <Text style={{color:'white',fontSize:17}}>Loose Weight</Text>
+      <View
+        style={{
+          
+          marginTop: 40,
+          borderBottomWidth: 2,
+          borderTopWidth: 2,
+          borderRightWidth: 2,
+          borderLeftWidth: 2,
+          borderRadius: 9,
+        }}>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Target Weight"
+          value={target}
+          onChangeText={setTarget}
+          placeholderTextColor="black"
+        />
+         
+        
+       
+      </View>
+      <TouchableOpacity style={{backgroundColor:'black',borderRadius:26,marginTop:15,padding:15}} onPress={changeColor}>
+        <Text style={{color:'white',textAlign:'center'}}>Set Value</Text>
       </TouchableOpacity>
-    
-     <TouchableOpacity style={{backgroundColor:color2,alignItems:'center',padding:14,width:windowsWidth*0.75,marginBottom:40,borderRadius:25}} onPress={changeColor2}>
-      <Text style={{color:'white',fontSize:17}}>Gain Weight</Text>
-      </TouchableOpacity>
-
-        <TouchableOpacity style={{backgroundColor:color3,alignItems:'center',padding:14,width:windowsWidth*0.75,marginBottom:40,borderRadius:25}} onPress={changeColor3}>
-      <Text style={{color:'white',fontSize:17}}>Maintain Current Physique</Text>
-      </TouchableOpacity>
-    </View>
-   
+      
     </View>
   );
 }
@@ -150,6 +151,16 @@ const styles = StyleSheet.create({
     fontSize: 30,
     
   },
+  
+
+  textInput: {
+    marginLeft: 10,
+    color: 'black',
+    marginRight: -55,
+    fontSize: 27,
+    width: 300,
+    padding:10
+  }
 
   
 });

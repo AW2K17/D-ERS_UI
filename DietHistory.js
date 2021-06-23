@@ -1,25 +1,45 @@
 import React,{useState,useEffect} from 'react';
-import { Text, View, StyleSheet,Dimensions,Button } from 'react-native';
+import { Text, View, StyleSheet,Dimensions,Button,FlatList } from 'react-native';
 import Constants from 'expo-constants';
 import { MaterialIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart
+  LineChart
 } from "react-native-chart-kit";
 
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
+let mila;
+
+
+
+const Item = ({khana,cal,carb,fat,pro }) => (
+  <View style={styles.item}>
+    <Text style={styles.title}>{khana}</Text>
+    <Text style={styles.title3}>{cal} Calories</Text>
+    <Text style={styles.title3}>{carb} Carbs</Text>
+    <Text style={styles.title3}>{fat} Fats</Text>
+    <Text style={styles.title3}>{pro} Proteins</Text>
+    
+    
+    
+  </View>
+);
+
 export default function DietHistory() {
+
+
+
+  const renderItem = ({ item }) => (
+    <Item khana={item.khana} cal={item.cal} carb={item.carb} fat={item.fat} pro={item.pro} />
+  );
+
 
   const [b,setB]=useState('');
   const [l,setL]=useState('');
@@ -27,6 +47,26 @@ export default function DietHistory() {
   const [p,setP]=useState(0);
   const [p2,setP2]=useState(0);
   const [p3,setP3]=useState(0);
+  const [content,setContent]=useState([]);
+  const [sumF,setSumF]=useState(0);
+  const [sumCal,setSumCal]=useState(0);
+  const [sumCarb,setSumCarb]=useState(0);
+  const [sumPro,setSumPro]=useState(0);
+  const [sum,setSum]=useState(0);
+
+  let sumA=0;
+  let sumB=0;
+  let sumC=0;
+  let sumD=0;
+  
+  
+  
+  
+  
+
+
+
+
   
   
   
@@ -42,16 +82,55 @@ export default function DietHistory() {
   const loadIt=async ()=>{
     
   
-    try {
-      const response = await axios.get('http://192.168.0.105:3033/api-gateway/current-user/diet-track/userId');
-      console.log(response.data);
-      console.log('EEXI');
+    // try {
+    //   const response = await axios.get('http://192.168.0.102:3033/api-gateway/current-user/diet-track/userId');
+    //   console.log('yeh history:');
+    //   console.log(response.data);
+      
      
-    } catch (error) {
-      console.error("bhand"+error);
+    // } catch (error) {
+    //   console.error("bhand"+error);
+    // }
+  
+    let hty2=await AsyncStorage.getItem('@nfHistory');
+
+
+    console.log('data milgaya!2:');
+    console.log(hty2);
+    
+     mila=JSON.parse(hty2);
+     console.log('hell yeah');
+    console.log(mila);
+    setContent(mila);
+
+
+
+
+    for (let i=0;i<mila.length;i++){
+
+      sumA+=Number(mila[i].fat);
+      sumB+=Number(mila[i].pro);
+      sumC+=Number(mila[i].cal);
+      sumD+=Number(mila[i].carb);
+      
+
     }
-  
-  
+
+    setSumF(sumA);
+    setSumPro(sumB);
+    setSumCarb(sumC);
+    setSumCal(sumD);
+    
+    console.log('fat ka sum:');
+    console.log(sumA);
+    console.log('pro ka sum:');
+    console.log(sumB);
+    console.log('cal ka sum:');
+    console.log(sumC);
+    console.log('carb ka sum:');
+    console.log(sumD);
+
+    setSum(sumA+sumB+sumC+sumD);
     
     
     let bb= await AsyncStorage.getItem("@bfOne");
@@ -77,26 +156,7 @@ export default function DietHistory() {
     ran2=Number(y);
     ran3=Number(z);
     
-    //ran=x;
-    
-    // console.log('typehai');
-    // console.log(JSON.parse(sumObj).S);
-    
 
-    // if(JSON.parse(sumObj).T==='Breakfast')
-    // {
-    //   setP(JSON.parse(sumObj).S);
-    //   console.log('typeki');
-    //   console.log(JSON.parse(sumObj).T);
-    // }
-
-    // else if(JSON.parse(sumObj).T==='Lunch'){
-    //   setP2(JSON.parse(sumObj).S);
-    // }
-    
-    // else if(JSON.parse(sumObj).T==='Dinner'){
-    //   setP3(JSON.parse(sumObj).S);
-    // }
     setP(ran);
     setP2(ran2);
     setP3(ran3);
@@ -104,6 +164,20 @@ export default function DietHistory() {
     
     
     //obj.datasets[0].data.push(34);
+
+
+    axios.get('http://192.168.0.102:3033/api-gateway/dietTrack/expectedWeight')
+  .then(function (response) {
+    console.log('ex vs real:');
+    console.log(response.data);
+  })
+  .catch(function (error) {
+    console.log('bugs:');
+    console.log(error);
+  })
+  .then(function () {
+    // always executed
+  });
     
     
     
@@ -128,7 +202,6 @@ export default function DietHistory() {
 
   return (
     <View style={styles.container}>
-      <Text style={{fontSize:28,fontWeight:'bold',marginTop:100,marginLeft:6}}>Nutritions Consumed Recently</Text>
      <View style={{flexDirection:'row',position:'absolute',top:70}} >
      
         <View style={styles.tag1}>
@@ -150,12 +223,12 @@ export default function DietHistory() {
       <Text style={{marginLeft:16,fontSize:17,fontWeight:'bold'}}>{d} Items In Dinner</Text>
         </View>
         </View>
-        <View style={{marginTop:40}}>
+        <View style={{marginTop:340}}>
         <LineChart
     data={{
-      labels: ['Breakfast','Lunch','Dinner'],
+      labels: ['Fat','Protein','Carbs','Calories'],
       datasets: [{
-        data: [p,p2,p3]}]
+        data: [sumF,sumPro,sumCal,sumCarb]}]
     }}
     width={Dimensions.get('window').width} 
     height={200}
@@ -164,14 +237,34 @@ export default function DietHistory() {
       backgroundGradientFrom: 'white',
       backgroundGradientTo: 'white',
       decimalPlaces: 2, // optional, defaults to 2dp
-      color: (opacity =0.6) => `rgba(61, 59, 59, ${opacity})`,
+      color: (opacity =0.3) => `rgba(61, 59, 59, ${opacity})`,
      
     }}
     bezier
   
   />
   </View>
-    
+  <Text style={{fontSize:28,fontWeight:'bold',position:'absolute',top:300,left:20}}>Nutrition Progress</Text>
+  <View style={{position:'absolute',top:380,width:wp('100%'),backgroundColor:'white',paddingBottom:34,paddingTop:8}}>
+  <Text style={{fontSize:32,fontWeight:'bold',marginLeft:23}}>{sum} gm</Text>
+  <Text style={{marginLeft:23,fontSize:15}}>Overall Nutrition Consumed</Text>
+  </View>
+  
+    {/* <View style={{flexDirection:'row'}}>
+      <View>
+          <Text>Expected Weight</Text>
+      </View>
+      <View>
+          <Text>Current Weight</Text>
+      </View>
+    </View> */}
+  {/* <View style={{marginTop:380}}>
+  <FlatList
+        data={content}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+      />
+      </View> */}
     
      
     </View>
@@ -231,5 +324,23 @@ tag3:{
   
   
 
+},
+item: {
+  backgroundColor: 'white',
+  padding: 40,
+  marginVertical: 8,
+  marginHorizontal: 16,
+  flex:1,
+  borderRadius:13
+},
+title: {
+  fontSize: 18,
+  fontWeight:'bold'
+},
+title2: {
+  fontSize: 15,
+},
+title3: {
+  fontSize: 15,
 }
 });

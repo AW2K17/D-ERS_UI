@@ -7,6 +7,7 @@ import Question3 from './Question3';
 import Question4 from './Question4';
 import Sawalaat from './Sawalaat';
 import CaptureIt from './CaptureIt';
+import BodyInformation from './BodyInformation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -28,7 +29,7 @@ const bhejde=async()=>{
     console.log('Array me');
     console.log(ans);
 
-    axios.post('http://192.168.0.105:3010/api-gateway/current-user/adduserinformation', x)
+    axios.post('http://192.168.0.102:3010/api-gateway/current-user/adduserinformation', x)
   .then(function (response) {
     console.log('Chali gai');
     showMessage({
@@ -56,25 +57,34 @@ export default function ChooseOptions({navigation}) {
   <View style={styles.container}>
     
     <View style={{justifyContent:'center',alignItems:'center'}}>
-        <TouchableOpacity style={{top:-80,width:320,height:60,position:'absolute',backgroundColor:'#802626',borderRadius:12,alignItems:'center',justifyContent:'center'}}
-        onPress={()=>navigation.navigate('CaptureIt')}
+        <TouchableOpacity style={{top:-220,width:320,height:60,position:'absolute',backgroundColor:'#802626',borderRadius:12,alignItems:'center',justifyContent:'center'}}
+        onPress={()=>navigation.navigate('Sawalaat')}
         
         >
-      
-        <Text style={{color:'white',fontSize:19,fontWeight:'100'}}>Capture Physique</Text>
-      
-    </TouchableOpacity>
-    <TouchableOpacity style={{top:10,width:320,height:60,position:'absolute',backgroundColor:'#802626',borderRadius:12,alignItems:'center',justifyContent:'center'}}
-    
-    onPress={()=>navigation.navigate('Sawalaat')}
-    
-    >
       
         <Text style={{color:'white',fontSize:19,fontWeight:'100'}}>Questionaire</Text>
       
     </TouchableOpacity>
+    <TouchableOpacity style={{top:-90,width:320,height:60,position:'absolute',backgroundColor:'#802626',borderRadius:12,alignItems:'center',justifyContent:'center'}}
+        onPress={()=>navigation.navigate('BodyInformation')}
+        
+        >
+      
+        <Text style={{color:'white',fontSize:19,fontWeight:'100'}}>Body Information</Text>
+      
+    </TouchableOpacity>
+    <Text style={{top:-10,fontSize:23}}>OR</Text>
+    <TouchableOpacity style={{top:40,width:320,height:60,position:'absolute',backgroundColor:'#802626',borderRadius:12,alignItems:'center',justifyContent:'center'}}
+    
+    onPress={()=>navigation.navigate('CaptureIt')}
+    
+    >
+      
+        <Text style={{color:'white',fontSize:19,fontWeight:'100'}}>Capture Physique</Text>
+      
+    </TouchableOpacity>
     </View>
-
+      <Text style={{textAlign:'center',marginTop:90,fontWeight:'bold'}}>Please Provide Body Information or Capture Physique</Text>
   </View>
   
   

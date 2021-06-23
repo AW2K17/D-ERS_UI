@@ -50,7 +50,7 @@ const Question3 = () => {
     const x=JSON.parse(jsonValue);
     console.log('mili: ');
     console.log(x);
-    x.physicalActivity='1'
+    x.activityLevel=1.5
     
     let y=JSON.stringify(x);
     console.log('updated:');
@@ -87,7 +87,7 @@ const Question3 = () => {
     const x=JSON.parse(jsonValue);
     console.log('mili: ');
     console.log(x);
-    x.physicalActivity='2'
+    x.activityLevel=1.6
     
     let y=JSON.stringify(x);
     console.log('updated:');
@@ -122,7 +122,7 @@ const Question3 = () => {
     const x=JSON.parse(jsonValue);
     console.log('mili: ');
     console.log(x);
-    x.physicalActivity='3'
+    x.activityLevel=1.8
     
     let y=JSON.stringify(x);
     console.log('updated:');
@@ -163,7 +163,7 @@ const changeColor4=async()=>{
     const x=JSON.parse(jsonValue);
     console.log('mili: ');
     console.log(x);
-    x.physicalActivity='4'
+    x.activityLevel=2
     
     let y=JSON.stringify(x);
     console.log('updated:');
@@ -199,7 +199,7 @@ const changeColor5= async()=>{
     const x=JSON.parse(jsonValue);
     console.log('mili: ');
     console.log(x);
-    x.physicalActivity='5'
+    x.activityLevel=2.1
     
     let y=JSON.stringify(x);
     console.log('updated:');

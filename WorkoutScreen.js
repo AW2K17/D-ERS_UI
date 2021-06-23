@@ -31,9 +31,9 @@ function HistoryStackScreen() {
 
 export const WorkoutScreen = () => {
     return (
-        <Tab.Navigator>
-            <Tab.Screen name="Plan" component={PlanScreen} />
-            <Tab.Screen name="History" component={HistoryStackScreen} />
+        <Tab.Navigator >
+            <Tab.Screen name="Plan" component={PlanScreen}  />
+            {/* <Tab.Screen name="History" component={HistoryStackScreen} /> */}
         </Tab.Navigator>
     );
 }

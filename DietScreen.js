@@ -11,6 +11,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import Screen1 from './Screen1';
 import Screen2 from './Screen2';
 import DietForm from './DietForm';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 
 
@@ -25,19 +26,21 @@ import { Card } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 // import Modal from 'modal-react-native-web';
 import Modal from 'react-native-modal';
+import Minicard3 from './Minicard3';
 import { REMINDERS } from 'expo-permissions';
 
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-
+const image = { uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ21ki14yx0cKNNkQYmsO3xqjJiY4ACBTOyw&usqp=CAU" };
 
 const pic1 = { uri: 'https://realhousemoms.com/wp-content/uploads/Eggs-in-a-Basket-IG.jpg' }
 const pic2 = { uri: 'https://thestayathomechef.com/wp-content/uploads/2020/04/Grilled-Chicken-2-scaled.jpg' }
 const pic3 = { uri: 'https://media-cdn.tripadvisor.com/media/photo-s/12/4e/29/14/500g-t-bone-steak-with.jpg' }
 
 const Stack = createStackNavigator();
-
+let itemX;
+let Upcoming=[];
 const Diet = ({ navigation }) => {
     // const navigation = new useNavigation();
 
@@ -47,6 +50,7 @@ const Diet = ({ navigation }) => {
     const [scheduleId, setScheduleId] = useState();
     const [deleteDate, setDeleteDay] = useState();
     const [diet, setDiet] = useState([]);
+    const [later,setLater]=useState([]);
     const [workouts, setWorkouts] = useState([
         pic1,
         pic2,
@@ -59,11 +63,12 @@ const Diet = ({ navigation }) => {
 
     var diets;
     var dates;
+    
 
 
     async function fetchData2() {
         try {
-            const res = await axios.get('http://192.168.0.105:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+            const res = await axios.get('http://192.168.0.102:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
             // .then(response => {
             console.log("Yahan Hai: ");
             console.log(res.data.schedulenf[1])
@@ -71,7 +76,7 @@ const Diet = ({ navigation }) => {
 
                 setScheduleId(res.data.schedulenf[0].id)
                 //console.log(res.data.schedulenf[0])
-                axios.get('http://192.168.0.105:3031/api-gateway/current-user/schedulenf/' + res.data.schedulenf[0].id, { withCredentials: true })
+                axios.get('http://192.168.0.102:3031/api-gateway/current-user/schedulenf/' + res.data.schedulenf[0].id, { withCredentials: true })
                     .then((response) => {
                         //console.log(response)
                         dates = response.data.schedule.document.map((e) => {
@@ -107,6 +112,21 @@ const Diet = ({ navigation }) => {
                             diets = datt2
                             console.log(diets)
                             setDiet(diets)
+                            let a=diet.shift();
+                            console.log('ek do')
+                            itemX=diets[0]
+                            
+                            //setLater(diet);
+                            Upcoming=[...diet]
+                            setLater(Upcoming)
+                            // for(let i=1;i<diets.length;i++) {
+
+                            //     upcoming[i]=diets[i];
+                            // }
+                            //Upcoming=[...diets];
+                            
+                            console.log('new waley')
+                           
                         }
                     })
                     .catch(error => {
@@ -154,8 +174,16 @@ const Diet = ({ navigation }) => {
         //console.log("Chalraha: ");
 
         try{
-            const res = await axios.get('http://192.168.0.105:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
+            const res = await axios.get('http://192.168.0.102:3031/api-gateway/current-user/schedulenf-user/getschedule', { withCredentials: true })
             .then(res=>{
+                console.log('khali ya nai:');
+                console.log(res.data.schedulenf);
+                // if(res.data.schedulenf[0]){
+                //     console.log('Empty items');
+                // }
+                // else{
+                //     console.log('Dataa exists');
+                // }
                 //console.log(res.data.schedulenf[0].document[3].sameDay);
                 for(i=0;i<(res.data.schedulenf[0].document.length);i++){
                     if(ran===res.data.schedulenf[0].document[i].sameDay){
@@ -172,7 +200,7 @@ const Diet = ({ navigation }) => {
 
                     for(let k=0;k<(res.data.schedulenf[0].document[i].day[j].time.length);k++){
 
-                        if(res.data.schedulenf[0].document[i].day[j].dayTime==="Breakfast"){
+                        if(res.data.schedulenf[0].document[i].day[j].dayTime==="breakfast"){
 
                             Object.assign(obj,{id:k+1,
                                 khana:res.data.schedulenf[0].document[i].day[j].time[k].nutrition.nutritionName,
@@ -184,7 +212,7 @@ const Diet = ({ navigation }) => {
                             naashta.push(obj);
                             obj={};
                         }
-                        else if(res.data.schedulenf[0].document[i].day[j].dayTime==="Lunch"){
+                        else if(res.data.schedulenf[0].document[i].day[j].dayTime==="lunch"){
                             Object.assign(obj,{id:k+1,
                                 khana:res.data.schedulenf[0].document[i].day[j].time[k].nutrition.nutritionName,
                                 f:res.data.schedulenf[0].document[i].day[j].time[k].nutrition.fats,
@@ -196,15 +224,18 @@ const Diet = ({ navigation }) => {
                             obj={};
                         
                         }
-                        else if(res.data.schedulenf[0].document[i].day[j].dayTime==="Dinner"){
+                        else if(res.data.schedulenf[0].document[i].day[j].dayTime==="dinner"){
                                 Object.assign(obj,{id:k+1,
                                 khana:res.data.schedulenf[0].document[i].day[j].time[k].nutrition.nutritionName,
                                 f:res.data.schedulenf[0].document[i].day[j].time[k].nutrition.fats,
                                 c:res.data.schedulenf[0].document[i].day[j].time[k].nutrition.carbohydrates,
                                 p:res.data.schedulenf[0].document[i].day[j].time[k].nutrition.protein,
                                 cal:res.data.schedulenf[0].document[i].day[j].time[k].nutrition.calories})
-                    
+                            
+                            console.log('dalkrdekho');
+                            console.log(obj);
                             dinner.push(obj);
+
                             obj={};
                         }
 
@@ -292,6 +323,9 @@ const Diet = ({ navigation }) => {
             dinner:dinner,
         };
 
+        console.log('dalraha');
+        console.log(samaan);
+
         // showMessage({
         //     message: 'Hi User, Tell Us About Your Meal', type: 'info', color: "white", type: 'info', icon: { icon: "auto", position: "left" },
         //     color: "white", backgroundColor: 'black',
@@ -348,7 +382,7 @@ const Diet = ({ navigation }) => {
 
     function deleteSchedule(d) {
         var dt = d.replace("-", "").replace("-", "");
-        axios.delete('http://192.168.0.105:3031/api-gateway/current-user/schedulenf/day/' + scheduleId + '/' + dt, { withCredentials: true })
+        axios.delete('http://192.168.0.102:3031/api-gateway/current-user/schedulenf/day/' + scheduleId + '/' + dt, { withCredentials: true })
             .then(response => {
                 console.log('Schedule deleted');
                 console.log(response);
@@ -361,7 +395,7 @@ const Diet = ({ navigation }) => {
 
     function deleteAllSchedules() {
         try {
-            axios.delete('http://192.168.0.105:3031/api-gateway/current-user/schedulenf/' + scheduleId, { withCredentials: true })
+            axios.delete('http://192.168.0.102:3031/api-gateway/current-user/schedulenf/' + scheduleId, { withCredentials: true })
                 .then(res => {
                     console.log(res);
                 })
@@ -374,6 +408,8 @@ const Diet = ({ navigation }) => {
         }
 
         setDiet([]);
+        setLater([]);
+        Upcoming=[];
     }
     // function settter() {
 
@@ -410,13 +446,12 @@ const Diet = ({ navigation }) => {
     // else {
         return (
             <View style={styles.centeredView}>
-
-
+            <ScrollView>
                 <View style={{flexDirection: 'row'}}>
                 <TouchableOpacity style={{ flexDirection: 'row', padding: 12, backgroundColor: '#BF243D',marginRight:10, marginTop: 40, width: windowWidth*0.386,alignItems:'center', borderRadius: 20, height: windowHeight*0.057 }}
                     onPress={() => {
                         try {
-                            axios.get('http://192.168.0.105:3032/api-gateway/current-user/nutrition-schedule/reschedule/' + scheduleId, { withCredentials: true })
+                            axios.get('http://192.168.0.102:3032/api-gateway/current-user/nutrition-schedule/reschedule/' + scheduleId, { withCredentials: true })
                                 .then(res => {
                                     //console.log(res);
                                     //console.log('I am running try')
@@ -462,22 +497,51 @@ const Diet = ({ navigation }) => {
                
 
                 </View>
+                {diet.length===0 ?(
+                    <View>
 
-
+                    </View>
+                ):(
+                    <View>
+                    <Text style={styles.paragraph}>
+       Today's Diet Plan
+      </Text>
+                
+                <TouchableOpacity style={{position:'absolute',top:105,left:20}}  onPress={() => navigation.navigate('DietDay', { screen: 'DietDay', params: { itemX, scheduleId } })}>
+      <View style={styles.tag1}>  
+          <ImageBackground source={image} imageStyle={{ borderTopLeftRadius: 26,borderTopRightRadius:26}} style={styles.image}>
+      
+    </ImageBackground>
+    <Text style={styles.todayHeading}>Check It Out</Text>
+      </View>
+       </TouchableOpacity>
+       </View>
+                )}
+               
+        
+       <Text style={{position:"absolute",
+    top:0.594*windowHeight,
+    left:25,
+    fontSize: 28,
+    fontWeight: 'bold',
+    textAlign: 'center',}}>Upcoming Plans</Text>
+       <View style={{marginTop:470}}>
                 <FlatList
-                    data={diet}
+                    data={later}
+                    horizontal
                     // keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => (
-                        <Minicard>
-                            {/* <Image source={{ uri: item.day[0].time[0].nutrition.photos[0] }} style={{ width: 100, height: 80, marginLeft: 7 }} /> */}
+                        
+                        <Minicard3 >
+                            {/* <Image source={{ image }} style={{ width: 100, height: 80, marginLeft: 7 }} /> */}
 
                             <View style={{flexDirection:'column'}}>
-                            <Text style={{ fontSize: 23,fontWeight:'700', marginLeft: 20, marginTop: 5 }}>Today's Plan</Text>
-                            <Text style={{ fontSize: 13,fontWeight:'200', marginLeft: 20, marginTop: 5 }}>{item.sameDay}</Text>
+                            <Text style={{ fontSize: 23,fontWeight:'700', marginLeft: 20, marginTop: 5 }}>Pending Diet </Text>
+                            {/* <Text style={{ fontSize: 13,fontWeight:'200', marginLeft: 20, marginTop: 5 }}>{item.sameDay}</Text> */}
                             </View>
                             
-
-                            <TouchableOpacity onPress={() => navigation.navigate('DietDay', { screen: 'DietDay', params: { item, scheduleId } })}
+                            
+                            {/* <TouchableOpacity onPress={() => navigation.navigate('DietDay', { screen: 'DietDay', params: { item, scheduleId } })}
                                 style={{ padding: 5,justifyContent:'center',alignItems:'center', backgroundColor: '#BF243D', marginLeft: 30, marginTop: 8, width: 72, borderRadius: 20, height: 37 }}
                             >
                                 <Text style={{ color: 'white' }}>View</Text>
@@ -493,7 +557,7 @@ const Diet = ({ navigation }) => {
                                 style={{ padding: 5,justifyContent:'center',alignItems:'center', backgroundColor: '#BF243D', marginLeft: 30, marginTop: 8, width: 78, borderRadius: 20, height: 37 }}
                             >
                                 <Text style={{ color: 'white' }}>Delete</Text>
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                             {/* 
                     <TouchableOpacity onPress={setTest(item.sameDay)}
                         style={{ backgroundColor: '#BF243D', marginLeft: 60, width: 55, borderRadius: 20, height: 20 }}
@@ -501,12 +565,14 @@ const Diet = ({ navigation }) => {
                         <Text style={{ color: 'white', marginLeft: 10 }}>Set</Text>
                     </TouchableOpacity> */}
                             {/* <Text>Test = {test}</Text> */}
-                        </Minicard>
+                        </Minicard3>
+                     
 
 
                     )}
                 />
 
+    </View>
                 <Modal
                     animationType="slide"
                     transparent={false}
@@ -576,6 +642,8 @@ const Diet = ({ navigation }) => {
                         </View>
                     </View>
                 </Modal>
+                </ScrollView>
+
             </View>
         );
     // }
@@ -800,5 +868,42 @@ const styles = StyleSheet.create({
     modalText: {
         marginBottom: 15,
         textAlign: "center"
-    }
+    },
+    
+    tag1:{
+        width:wp('57.3%'),
+        height:hp('30.97%'),
+        backgroundColor:'white',
+        
+        marginLeft:4,
+        borderRadius:22
+       
+      },
+      image: {
+        flex: 0.92,
+        resizeMode: "cover",
+        justifyContent: "center",
+        borderRadius:22,
+        
+      },
+      todayHeading:{
+        fontSize:23,
+        margin:'1.72%'
+      },
+  paragraph: {
+    position:"absolute",
+    top:45,
+    left:25,
+    fontSize: 28,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  paragraph2: {
+    position:"absolute",
+    top:0.624*windowHeight,
+    left:25,
+    fontSize: 28,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
 });

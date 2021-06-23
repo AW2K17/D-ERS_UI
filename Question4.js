@@ -1,25 +1,54 @@
 import React, { useState } from 'react';
 import {
   StyleSheet,
-  Button,
+ 
   Text,
   View,
   TextInput,
   Platform,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
+  Button
 } from 'react-native';
 import Constants from 'expo-constants';
 import RNPickerSelect, { defaultStyles } from 'react-native-picker-select';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Questions4 = () => {
   const [firstName, setFname] = useState('');
-  const [lats, setLats] = useState('');
+  const [waist, setWaist] = useState();
+
   
+
+
+  async function change1(){
+
+    
+
+    try {
+      const jsonValue = await AsyncStorage.getItem('@options')
+      const x=JSON.parse(jsonValue);
+      console.log('mili: ');
+      console.log(x);
+      x.waist=parseInt(waist,10);
+      
+      let y=JSON.stringify(x);
+      console.log('updated:');
+      console.log(y);
+    AsyncStorage.setItem('@options', y)
+    } catch(e) {
+      // error reading value
+    }
+      
+  
+  
+
+
+  }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.Qus}>Enter Your Waist / Lats Length </Text>
+      <Text style={styles.Qus}>Enter Your Waist Length</Text>
       <View
         style={{
           
@@ -33,75 +62,17 @@ const Questions4 = () => {
         <TextInput
           style={styles.textInput}
           placeholder="Waist"
-          value={firstName}
-          onChangeText={setFname}
+          value={waist}
+          onChangeText={setWaist}
           placeholderTextColor="black"
         />
+         
         
-        {/* <RNPickerSelect
-          placeholder={{
-            label: 'Select Unit',
-            value: null,
-            color: 'red',
-          }}
-          style={{
-            inputAndroid: {
-              fontSize: 19,
-              color: 'black',
-              backgroundColor: 'transparent',
-              width: 120,
-              marginLeft: 10,
-            },
-          }}
-          placeholderColor="black"
-          onValueChange={(value) => console.log(value)}
-          items={[
-            { label: 'Inches', value: 'ht1' },
-            { label: 'CM', value: 'ht2' },
-          ]}
-        /> */}
+       
       </View>
-      <View
-        style={{
-          
-          marginTop: 70,
-          borderBottomWidth: 2,
-          borderTopWidth: 2,
-          borderRightWidth: 2,
-          borderLeftWidth: 2,
-          borderRadius: 9,
-        }}>
-        <TextInput
-          style={styles.textInput2}
-          placeholder="Lats"
-          value={lats}
-          onChangeText={setLats}
-          placeholderTextColor="black"
-        />
-        
-        {/* <RNPickerSelect
-          placeholder={{
-            label: 'Select Unit',
-            value: null,
-            color: 'red',
-          }}
-          style={{
-            inputAndroid: {
-              fontSize: 19,
-              color: 'black',
-              backgroundColor: 'transparent',
-              width: 120,
-              marginLeft: 10,
-            },
-          }}
-          placeholderColor="black"
-          onValueChange={(value) => console.log(value)}
-          items={[
-            { label: 'Inches', value: 'ht1' },
-            { label: 'CM', value: 'ht2' },
-          ]}
-        /> */}
-      </View>
+      <TouchableOpacity style={{backgroundColor:'black',borderRadius:26,marginTop:15,padding:15}} onPress={change1}>
+        <Text style={{color:'white',textAlign:'center'}}>Set Value</Text>
+      </TouchableOpacity>
     </View>
   );
 };

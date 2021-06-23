@@ -23,6 +23,8 @@ const Chart = ({ item }) => {
     const fats = item[0].day[0].time[0].nutrition.fats;
     const carbohydrates = item[0].day[0].time[0].nutrition.carbohydrates;
 
+    fats.toFixed(2);
+
     
     const renderOption = (title) => (
 
@@ -56,17 +58,17 @@ const Chart = ({ item }) => {
         [
             {
                 key: 1,
-                amount: protein,
+                amount: protein.toFixed(1),
                 svg: { fill: 'red' },
             },
             {
                 key: 2,
-                amount: fats,
+                amount: fats.toFixed(1),
                 svg: { fill: 'green' }
             },
             {
                 key: 3,
-                amount: carbohydrates,
+                amount: carbohydrates.toFixed(1),
                 svg: { fill: 'blue' }
             }
         ]
@@ -220,7 +222,7 @@ const Chart = ({ item }) => {
         handleGram((parseFloat(quantity) / carbohydrates) * 100, "c")
     }
 
-
+    console.log('values hain:');
     console.log(fat, carbs, pro, calories);
 
 
@@ -254,7 +256,7 @@ const Chart = ({ item }) => {
                     alignmentBaseline={'middle'}
                     fontSize={24}
                     stroke={'black'}
-                    strokeWidth={0.2}
+                    strokeWidth={0.1}
                 >
 
                     {data.amount}
@@ -268,11 +270,11 @@ const Chart = ({ item }) => {
 
             
             <PieChart
-                style={{ height: 200, marginTop: 15, marginRight: 2 }}
+                style={{ height: 200, marginTop: 19, marginRight: 2 }}
                 valueAccessor={({ item }) => item.amount}
                 data={data}
                 spacing={0}
-                outerRadius={'95%'}
+                outerRadius={'100%'}
             >
                 <Labels />
             </PieChart>

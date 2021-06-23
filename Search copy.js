@@ -51,10 +51,10 @@ const SearchD = ({ navigation }) => {
     const [title, setTitle] = useState('');
 
     var filters = [disp1, disp2, disp3, disp4, disp5];
-    var add = ['&nutritionCategory=Dairy', '&nutritionCategory=Vegetable', '&nutritionCategory=Fruit', '&nutritionCategory=Nuts', '&nutritionCategory=Meat'];
+    var add = ['&nutritionCategory=MILK', '&nutritionCategory=CHEESE', '&nutritionCategory=YOGURT', '&nutritionCategory=CLOVE', '&nutritionCategory=TURMERIC'];
 
 
-    var link = 'http://192.168.0.105:3030/api-gateway/current-user/nutritionFact/?' ;
+    var link = 'http://192.168.0.102:3030/api-gateway/current-user/nutritionFact/?' ;
     const link1 = 'https://jsonplaceholder.typicode.com/photos?q=' + result;
     const link2 = link1 + '&title=' + title;
 
@@ -141,7 +141,7 @@ const SearchD = ({ navigation }) => {
 
         if(result===''){
 
-            var link = 'http://192.168.0.105:3030/api-gateway/current-user/nutritionFact/?';
+            var link = 'http://192.168.0.102:3030/api-gateway/current-user/nutritionFact/?';
 
 
         for (var i = 0; i < 5; i++) {
@@ -179,14 +179,15 @@ const SearchD = ({ navigation }) => {
                 
                 
                 
-                if(result==='apple' || result==='orange'){
-                var linkX = 'http://192.168.0.105:3030/api-gateway/current-user/nutritionFact/?'
+                if(result==='yogurt' || result==='Yogurt'){
+                var linkX = 'http://192.168.0.102:3030/api-gateway/current-user/nutritionFact/?'
                 linkX=linkX+add[2];
 
-                console.log('saib');
+                //console.log('saib');
                 fetch(linkX)
             .then(response => response.json())
             .then(data => {
+                console.log('pic nai ayi')
                 console.log(data)
                 setMiniCard(data)
                 setD(data.nutrition)
@@ -196,9 +197,9 @@ const SearchD = ({ navigation }) => {
                 console.log(error)
             });
         }
-             else if(result==='tomato' || result==='potato'){
+             else if(result==='Cheese' || result==='cheese'){
                 
-                var linkX = 'http://192.168.0.105:3030/api-gateway/current-user/nutritionFact/?'
+                var linkX = 'http://192.168.0.102:3030/api-gateway/current-user/nutritionFact/?'
                 linkX=linkX+add[1];
                 fetch(linkX)
                 .then(response => response.json())
@@ -221,9 +222,9 @@ const SearchD = ({ navigation }) => {
 
 
             }
-            else if(result==='milk' || result==='eggs' || result==='egg'){
+            else if(result==='milk' || result==='Milk' || result==='MILK'){
                 
-                var linkX = 'http://192.168.0.105:3030/api-gateway/current-user/nutritionFact/?'
+                var linkX = 'http://192.168.0.102:3030/api-gateway/current-user/nutritionFact/?'
                 linkX=linkX+add[0];
                 fetch(linkX)
                 .then(response => response.json())
@@ -245,9 +246,9 @@ const SearchD = ({ navigation }) => {
 
 
 
-            }else if(result==='meat'){
+            }else if(result==='Tumeric'){
                 
-                var linkX = 'http://192.168.0.105:3030/api-gateway/current-user/nutritionFact/?'
+                var linkX = 'http://192.168.0.102:3030/api-gateway/current-user/nutritionFact/?'
                 linkX=linkX+add[4];
                 fetch(linkX)
                 .then(response => response.json())
@@ -309,27 +310,27 @@ const SearchD = ({ navigation }) => {
             </View>
 
             <View style={{ marginTop: 10, marginLeft: windowWidth*0.027, flexDirection: 'row' }}>
-                <Text>Dairy</Text>
+                <Text>Milk</Text>
                 <TouchableOpacity onPress={Check1}>
                     <MaterialIcons name={disp1 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
                 </TouchableOpacity>
 
-                <Text style={{ marginLeft: 8 }}>Vegetable</Text>
+                <Text style={{ marginLeft: 8 }}>Cheese</Text>
                 <TouchableOpacity onPress={Check2}>
                     <MaterialIcons name={disp2 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
                 </TouchableOpacity>
 
-                <Text style={{ marginLeft: 8 }}>Fruit</Text>
+                <Text style={{ marginLeft: 8 }}>Yogurt</Text>
                 <TouchableOpacity onPress={Check3}>
                     <MaterialIcons name={disp3 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
                 </TouchableOpacity>
 
-                <Text style={{ marginLeft: 8 }}>Nuts</Text>
+                <Text style={{ marginLeft: 8 }}>Cloves</Text>
                 <TouchableOpacity onPress={Check4}>
                     <MaterialIcons name={disp4 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
                 </TouchableOpacity>
 
-                <Text style={{ marginLeft: 8 }}>Meat</Text>
+                <Text style={{ marginLeft: 8 }}>Tumeric</Text>
                 <TouchableOpacity onPress={Check5}>
                     <MaterialIcons name={disp5 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
                 </TouchableOpacity>
@@ -348,7 +349,7 @@ const SearchD = ({ navigation }) => {
                     data={d}
                     renderItem={({ item }) => (
                         <Minicard style={{flex:1,width:null}}>
-                            <Image source={{ uri: item.photos.mainPhoto }} style={{ width: 90, height: 80, marginLeft: windowWidth*0.040 }} />
+                            <Image source={{ uri: item.photos.photosUrl[0] }} style={{ borderRadius:16,width: 90, height: 80, marginLeft: windowWidth*0.040 }} />
 
                             <Text style={{ fontSize: 18,flex:0.81, marginLeft: windowWidth*0.0253 }}>{item.nutritionName}</Text>
                             <TouchableOpacity onPress={() => navigation.navigate('AddDiet', item)}

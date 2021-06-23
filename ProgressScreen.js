@@ -91,6 +91,8 @@ export const ProgressScreen = () => {
     };
 
     const endTime = async () => {
+
+        AsyncStorage.setItem('@distance',JSON.stringify(distance));
         let location = await Location.getCurrentPositionAsync({});
         const { coords } = location;
         const { latitude, longitude } = coords;
@@ -112,7 +114,7 @@ export const ProgressScreen = () => {
         // console.log(sTime)
         console.log(data);
         setVisible(true);
-        axios.post('http://192.168.0.105:3023/api-gateway/current-user/exercise-track/addRunning', data, { withCredentials: true })
+        axios.post('http://192.168.0.102:3023/api-gateway/current-user/exercise-track/addRunning', data, { withCredentials: true })
             .then(res => {
                 console.log(res);
             })
@@ -191,9 +193,9 @@ export const ProgressScreen = () => {
                     backdropStyle={styles.backdrop}
                     onBackdropPress={() => setVisible(false)}>
                     <Card disabled={true}>
-                        <Text>Expected Weight: 60</Text>
+                        <Text>Distance Covered {distance}</Text>
                        
-                        <Button onPress={() => setVisible(false)} style={{ width: 107, backgroundColor: 'red', marginLeft: 30, marginTop: 10, borderRadius: 20 }}>
+                        <Button onPress={() => setVisible(false)} style={{ width: 107, backgroundColor: 'red', marginLeft: 10, marginTop: 10, borderRadius: 20 }}>
                             OK
                         </Button>
                     </Card>

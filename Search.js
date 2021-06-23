@@ -47,12 +47,12 @@ const Search = ({ navigation }) => {
     const [albumId, setAlbumId] = useState('&albumId=3');
 
     var filters = [disp1, disp2, disp3, disp4];
-    var add = ['&exerciseCategory=Bicep', '&exerciseCategory=Tricep', '&exerciseCategory=Lats', '&exerciseCategory=Chest'];
+    var add = ['&exerciseCategory=back', '&exerciseCategory=calves', '&exerciseCategory=legs', '&exerciseCategory=chest'];
 
 
 
 
-    var link = 'http://192.168.0.105:3020/api-gateway/current-user/exercise/?';
+    var link = 'http://192.168.0.102:3020/api-gateway/current-user/exercise/?';
     const link1 = 'https://jsonplaceholder.typicode.com/photos?q=' + result;
     const link2 = link1 + '&title=' + title;
 
@@ -120,12 +120,12 @@ const Search = ({ navigation }) => {
     }
 
 
-    function fetchData() {
+    async function fetchData() {
 
 
         if(result===''){
 
-            var link = 'http://192.168.0.105:3020/api-gateway/current-user/exercise/?';
+            var link = 'http://192.168.0.102:3020/api-gateway/current-user/exercise/?';
         for (var i = 0; i < 4; i++) {
             if (filters[i] === 'true') {
                 link = link + add[i];
@@ -135,7 +135,7 @@ const Search = ({ navigation }) => {
 
         // fetch(link, {credentials: "include"}).then((e) => e.json().then((f) => console.log(f)));    
         // if(show1=='true'){
-        fetch(link)
+        await fetch(link)
             .then(response => response.json())
             .then(data => {
                 console.log(data)
@@ -154,33 +154,35 @@ const Search = ({ navigation }) => {
             setResult(result.toLowerCase());
 
             if(result==='bicep' || result==='biceps'){
-                var linkX = 'http://192.168.0.105:3020/api-gateway/current-user/exercise/?'
+                var linkX = 'http://192.168.0.102:3020/api-gateway/current-user/exercise/?'
                 linkX=linkX+add[0];
                 console.log('dkeho:');
 
-                console.log(linkX);
+                console.log(linkX.exercise);
 
                 
-                fetch(linkX)
+                await fetch(linkX)
                 .then(response => response.json())
                 .then(data => {
                     console.log(data)
                     setMiniCard(data)
-                    setD(data.exercise)
+                    
+                    setD(data.exercise[0])
                     console.log(miniCard)
                     console.log(d)
                 }).catch((error) => {
                     console.log(error)
                 });
         }
-             else if(result==='tricep' || result==='triceps'){
+             else if(result==='calves' || result==='calve'){
                 
-                var linkX = 'http://192.168.0.105:3020/api-gateway/current-user/exercise/?'
+                var linkX = 'http://192.168.0.102:3020/api-gateway/current-user/exercise/?'
                 linkX=linkX+add[1];
                 console.log(linkX);
-                fetch(linkX)
+                await fetch(linkX)
             .then(response => response.json())
             .then(data => {
+                console.log('img hai?')
                 console.log(data)
                 setMiniCard(data)
                 setD(data.exercise)
@@ -201,10 +203,10 @@ const Search = ({ navigation }) => {
             }
             else if(result==='chest' || result==='chests'){
                 
-                var linkX = 'http://192.168.0.105:3020/api-gateway/current-user/exercise/?';
+                var linkX = 'http://192.168.0.102:3020/api-gateway/current-user/exercise/?';
                 linkX=linkX+add[3];
                 console.log(linkX);
-                fetch(linkX)
+                await fetch(linkX)
             .then(response => response.json())
             .then(data => {
                 console.log(data)
@@ -263,17 +265,17 @@ const Search = ({ navigation }) => {
             </View>
 
             <View style={{ marginTop: 10, marginLeft: windowWidth*0.127, flexDirection: 'row' }}>
-                <Text>Biceps</Text>
+                <Text>Back</Text>
                 <TouchableOpacity onPress={Check1}>
                     <MaterialIcons name={disp1 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
                 </TouchableOpacity>
 
-                <Text style={{ marginLeft: 8 }}>Triceps</Text>
+                <Text style={{ marginLeft: 8 }}>Calves</Text>
                 <TouchableOpacity onPress={Check2}>
                     <MaterialIcons name={disp2 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
                 </TouchableOpacity>
 
-                <Text style={{ marginLeft: 8 }}>Lats</Text>
+                <Text style={{ marginLeft: 8 }}>Legs</Text>
                 <TouchableOpacity onPress={Check3}>
                     <MaterialIcons name={disp3 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
                 </TouchableOpacity>
@@ -297,7 +299,7 @@ const Search = ({ navigation }) => {
                 data={d}
                 renderItem={({ item }) => (
                     <Minicard style={{flex:1,width:null}}>
-                        <Image source={{ uri: item.photos.mainPhoto }} style={{ width: 90, height: 80, marginLeft: windowWidth*0.040  }} />
+                        <Image source={{ uri: item.photos.photosUrl[0] }} style={{ width: 90, height: 80, marginLeft: windowWidth*0.040,borderRadius:16  }} />
 
                         <Text style={{ fontSize: 15,flex:0.81, marginLeft: 20 }}>{item.exerciseName}</Text>
                         <TouchableOpacity onPress={() => navigation.navigate('AddExercise', item)}

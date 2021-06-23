@@ -31,7 +31,8 @@ export default function Screen2({route,navigation}) {
         navigation.navigate('DietForm',forForm)
     }
         
-
+    console.log('route deko');
+    console.log(route.params);
     let data=route.params;
     const [d,setD]=useState(data);
 
@@ -40,14 +41,14 @@ export default function Screen2({route,navigation}) {
 
     
     console.log('metha');
-    console.log(data);
+    console.log(d[0]);
     
   return (
   
       <View style={styles.container}>
     <FlatList
         
-        data={d}
+        data={data}
        
        renderItem={({item})=>
        

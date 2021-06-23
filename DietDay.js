@@ -18,12 +18,13 @@ const Stack = createStackNavigator();
 
 const DietDay = ({ route, navigation }) => {
 
-    const {item} = route.params;
+    const {itemX} = route.params;
+    console.log('sunao yra');
+   console.log(itemX);
     const {scheduleId} = route.params;
-    const {sameDay} = item;
+    const {sameDay} = itemX;
     console.log(scheduleId);
-    console.log('suno yr');
-    console.log(item);
+    
     
     // console.log(navigation);
     // const random = route.params;
@@ -35,9 +36,10 @@ const DietDay = ({ route, navigation }) => {
                     <Text style={{ color: 'white', fontSize: 19,textAlign:'center', marginTop: 5 }}><AntDesign name="arrowleft" size={24} color="white" /> Go Back</Text>
                 </TouchableOpacity>
                 <FlatList
-                    data={item.day}
+                    data={itemX.day}
                     //             keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => (
+                        <TouchableOpacity onPress={() => navigation.navigate('DietTime', {screen: 'DietTime', params: {item, sameDay, scheduleId}})}>
                         <Minicard>
                             {/* <Image source={{ uri: item.day[0].time[0].nutrition.photos[0] }} style={{ width: 100, height: 80, marginLeft: 7 }} /> */}
                             <View >
@@ -46,15 +48,15 @@ const DietDay = ({ route, navigation }) => {
                             </View>
                             {/* <Text style={{ fontSize: 18, marginLeft: 20, marginTop: 5 }}>{item.time[0].nutrition.nutritionName}</Text> */}
                             <View style={{flexDirection:'row',position:'absolute',left:200,top:55}}>
-                            <TouchableOpacity onPress={() => navigation.navigate('DietTime', {screen: 'DietTime', params: {item, sameDay, scheduleId}})}
+                            {/* <TouchableOpacity onPress={() => navigation.navigate('DietTime', {screen: 'DietTime', params: {item, sameDay, scheduleId}})}
                                 style={{ padding: 5,justifyContent:'center',alignItems: 'center', backgroundColor: '#BF243D', width: 68, borderRadius: 20, height: 37 }}
                             >
                                 <Text style={{ color: 'white'}}>View</Text>
 
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => {
+                            </TouchableOpacity> */}
+                            {/* <TouchableOpacity onPress={() => {
                                 try{
-                                    axios.delete('http://192.168.0.105:3031/api-gateway/current-user/schedulenf/day/' + scheduleId + '/' + sameDay.replace("-", "").replace("-", "") + '/' + item.dayTime, { withCredentials: true })
+                                    axios.delete('http://192.168.0.102:3031/api-gateway/current-user/schedulenf/day/' + scheduleId + '/' + sameDay.replace("-", "").replace("-", "") + '/' + item.dayTime, { withCredentials: true })
                                     .then(res => {
                                         console.log(res);
                                     })
@@ -69,9 +71,10 @@ const DietDay = ({ route, navigation }) => {
                                 style={{ padding: 5,justifyContent:'center',alignItems: 'center',backgroundColor: '#BF243D', width: 75, borderRadius: 20, height: 37,marginLeft:8 }}
                             >
                                 <Text style={{ color: 'white' }}>Delete</Text>
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                             </View>
                         </Minicard>
+                        </TouchableOpacity>
                     )}
                 />
                 {/* <Text>{item.item.sameDay}</Text> */}

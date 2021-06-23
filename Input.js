@@ -8,6 +8,7 @@ import Question4 from './Question4';
 import ChooseOptions from './ChooseOptions';
 import Sawalaat from './Sawalaat';
 import CaptureIt from './CaptureIt';
+import BodyInformation from './BodyInformation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -29,7 +30,7 @@ const bhejde=async()=>{
     console.log('Array me');
     console.log(ans);
 
-    axios.post('http://192.168.0.105:3010/api-gateway/current-user/adduserinformation', x)
+    axios.post('http://192.168.0.102:3010/api-gateway/current-user/adduserinformation', x)
   .then(function (response) {
     console.log('Chali gai');
     showMessage({
@@ -61,6 +62,8 @@ export default function Input() {
         <Stack.Screen name="ChooseOptions" component={ChooseOptions}   options={{ headerShown: false }}/>
         <Stack.Screen name="Sawalaat" component={Sawalaat}  options={{ headerShown: false }} />
         <Stack.Screen name="CaptureIt" component={CaptureIt}  options={{ headerShown: false }} />
+        <Stack.Screen name="BodyInformation" component={BodyInformation}  options={{ headerShown: false }} />
+        
         
       </Stack.Navigator>
  

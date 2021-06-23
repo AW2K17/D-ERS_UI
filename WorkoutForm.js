@@ -11,10 +11,10 @@ const WorkoutForm = ({route,navigation}) => {
   const [textValues, setTextValues] = useState({});
   const [weight1,setWeight]=useState();
   let Val=[];
-
+  let history=[];
 
   let workout=route.params;
-  const genarateInputs = () => {
+  function genarateInputs() {
 
 
       // onPress={() => {
@@ -65,7 +65,7 @@ const WorkoutForm = ({route,navigation}) => {
 
 
 
-const [weight,setWeight]=useState();
+
 
 
     let list = [];
@@ -140,22 +140,58 @@ const sendWorkout= async ()=>{
   
 
 
+    const hty = await AsyncStorage.getItem('@wkHistory');
+
+    console.log('pehle');
+    console.log(hty);
+    history=JSON.parse(hty);
+        console.log('after')
+        console.log(history);
+
+
+
+
+
   await AsyncStorage.setItem('@repsTotal',JSON.stringify(conv));
   await AsyncStorage.setItem('@waznTotal',JSON.stringify(conv2));
   
+  let obj={
+         
+    exerciseName:workout,
+    reps:repps,
+    date:"2020-05-21",
+    wtg:weight1
+
+
+  }
+
+  //let h=[]
+  console.log('andr');
+  console.log(obj);
+  history.push({  exerciseName:workout,
+    reps:repps,
+    wtg:weight1});
+  console.log('pushitt');
+
+  console.log(history);
+
+
+  await AsyncStorage.setItem('@wkHistory', JSON.stringify(history));
   
- 
+  
+  
   
   
 //   console.log(ran);
 try {
 
-axios.post('http://192.168.0.105:3023/api-gateway/current-user/exercise-track/addWeight', {
+axios.post('http://192.168.0.102:3023/api-gateway/current-user/exercise-track/addWeight', {
 
   weightCapacity:{
 
     exerciseName:workout,
     reps:repps,
+    date:"2020-05-20",
     weight:weight1
   }
 })
@@ -167,7 +203,8 @@ axios.post('http://192.168.0.105:3023/api-gateway/current-user/exercise-track/ad
 
   }).catch(error => {
     if (error) {
-      console.log("Inside", error)
+      console.log('bhand2');
+      console.log(error)
       
     }
   })
@@ -200,7 +237,7 @@ console.log("This:"+global.workOut);
   return (
     <View style={{ flex: 1, alignItems: "center"}}>
     <ScrollView>
-    <Text style={{fontSize:29,fontWeight:'normal',marginTop:20,textAlign:'left',marginLeft:14}}>Data Related Your {workout}</Text>
+    <Text style={{fontSize:29,fontWeight:'normal',marginTop:20,textAlign:'left',marginLeft:14}}>Data For {workout}</Text>
     <View style={{marginTop:60}}>
 
         <View style={{justifyContent: 'center',alignItems:'center'}}>
@@ -214,7 +251,7 @@ console.log("This:"+global.workOut);
         
         </View>
         
-      <View style={{marginTop:30,align:'center',justifyContent:'center',marginLeft:43}}>
+      <View style={{marginTop:30,alignItems:'center',justifyContent:'center'}}>
           <TouchableOpacity style={{padding:10,backgroundColor:'#8C2020',width:windowWidth*0.79,borderRadius:10,alignItems:'center'}}
           onPress={sendWorkout}>
       <Text style={{color:'white'}}>Submit</Text>
