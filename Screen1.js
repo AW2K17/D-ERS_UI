@@ -108,16 +108,19 @@ export default function Screen1({route,navigation}) {
        
        renderItem={({item})=>
        
+       <TouchableOpacity onPress={()=>check(item.wo)}>
        <View style={styles.item}>
+       <TouchableOpacity  onPress={()=>check(item.wo)}>
          <Text style={styles.title}>{item.wo}</Text>
-         <TouchableOpacity 
+         {/* <TouchableOpacity 
          style={{backgroundColor:'#8C2020',padding:10,width:100,borderRadius:22,position:'absolute',left:240,top:20}}
          onPress={()=>check(item.wo)}>
            <Text style={{color:'white',textAlign:'center'}}>Views</Text>
-         </TouchableOpacity>
+         </TouchableOpacity> */}
          
-        
+         </TouchableOpacity>
        </View>
+       </TouchableOpacity>
 
        
        
@@ -151,12 +154,12 @@ const styles = StyleSheet.create({
   },
   item: {
     backgroundColor: 'white',
-    padding: 20,
+    padding: 40,
     marginHorizontal:4,
     flexDirection:'row',
     marginVertical:10
   },
   title: {
-    fontSize: 20,
+    fontSize: 18,
   },
 });

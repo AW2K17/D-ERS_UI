@@ -105,7 +105,10 @@ export default function ExerciseHistory() {
 
       let hty=await AsyncStorage.getItem('@wkHistory');
       let dis=await AsyncStorage.getItem('@distance');
+      console.log(dis);
       setR(JSON.parse(dis));
+      console.log('distance mila?');
+      console.log(r);
 
 
       console.log('data milgaya!:');
@@ -201,6 +204,7 @@ export default function ExerciseHistory() {
           borderRadius: 16,
         }}
       /> 
+      <Text style={{marginLeft:144,fontSize:12}}>Dumbbell Weight</Text>
 
         </ScrollView>
     </View>

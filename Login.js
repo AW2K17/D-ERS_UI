@@ -185,7 +185,7 @@ async function loginKro(){
 
 
 
-        <Text style={{ color: 'white', fontSize: 18, marginTop: 30 }}>Or Join With</Text>
+        {/* <Text style={{ color: 'white', fontSize: 18, marginTop: 30 }}>Or Join With</Text>
 
         <View style={{ flexDirection: 'row', marginTop: 28 }}>
 
@@ -198,9 +198,9 @@ async function loginKro(){
             <FontAwesome name="google" size={24} color="white" />
           </View>
 
-        </View>
+        </View> */}
 
-        <Text style={{ color: 'white', fontSize: 14, marginTop: 22 }}>Don't Have An Account?
+        <Text style={{ color: 'white', fontSize: 14, marginTop: 55 }}>Don't Have An Account?
           <Text style={{ fontWeight: 'bold', color: 'white' }} onPress={() => navigation.navigate('Signup')} >  Create Here</Text>
         </Text>
       </ImageBackground>

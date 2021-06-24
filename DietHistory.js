@@ -223,7 +223,7 @@ export default function DietHistory() {
       <Text style={{marginLeft:16,fontSize:17,fontWeight:'bold'}}>{d} Items In Dinner</Text>
         </View>
         </View>
-        <View style={{marginTop:340}}>
+        <View style={{marginTop:360}}>
         <LineChart
     data={{
       labels: ['Fat','Protein','Carbs','Calories'],

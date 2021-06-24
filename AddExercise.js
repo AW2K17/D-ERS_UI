@@ -162,7 +162,8 @@ const AddExercise = ({ route, navigation }) => {
               //   }).catch(error => {
               //     console.log(error);
               //   })
-              console.log(er);
+              //console.log('confirm nai horahi:');
+              console.log("add ex error: "+er);
             }
 
             // }).catch(error => {

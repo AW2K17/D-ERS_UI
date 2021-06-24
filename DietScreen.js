@@ -32,7 +32,7 @@ import { REMINDERS } from 'expo-permissions';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-const image = { uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ21ki14yx0cKNNkQYmsO3xqjJiY4ACBTOyw&usqp=CAU" };
+const image = { uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6YqJIBzOu1_wYPZP28gNz_3M-fxTgaNQIMw&usqp=CAU" };
 
 const pic1 = { uri: 'https://realhousemoms.com/wp-content/uploads/Eggs-in-a-Basket-IG.jpg' }
 const pic2 = { uri: 'https://thestayathomechef.com/wp-content/uploads/2020/04/Grilled-Chicken-2-scaled.jpg' }
@@ -447,8 +447,8 @@ const Diet = ({ navigation }) => {
         return (
             <View style={styles.centeredView}>
             <ScrollView>
-                <View style={{flexDirection: 'row'}}>
-                <TouchableOpacity style={{ flexDirection: 'row', padding: 12, backgroundColor: '#BF243D',marginRight:10, marginTop: 40, width: windowWidth*0.386,alignItems:'center', borderRadius: 20, height: windowHeight*0.057 }}
+                <View style={{flexDirection: 'row',marginLeft:10}}>
+                <TouchableOpacity style={{ flexDirection: 'row', padding: 12, backgroundColor: '#BF243D',marginRight:13, marginTop: 40, width: windowWidth*0.386,alignItems:'center', borderRadius: 20, height: windowHeight*0.057 }}
                     onPress={() => {
                         try {
                             axios.get('http://192.168.0.102:3032/api-gateway/current-user/nutrition-schedule/reschedule/' + scheduleId, { withCredentials: true })
@@ -887,7 +887,8 @@ const styles = StyleSheet.create({
         
       },
       todayHeading:{
-        fontSize:23,
+        fontSize:18,
+        marginLeft:42,
         margin:'1.72%'
       },
   paragraph: {

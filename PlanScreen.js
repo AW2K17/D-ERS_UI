@@ -146,11 +146,15 @@ export function Plan({ navigation }) {
     }
 
     async function fetchData() {
+
+        console.log('chalao plz');
         try {
             const res = await axios.get('http://192.168.0.102:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
             // .then(response => {
             //console.log(Object.values(res));
             //console.log(JSON.stringify(res));
+           
+            
             if (res.data.schedulee[0].id) {
                 setScheduleId(res.data.schedulee[0].id)
                 // setExe(response.data.schedulee[0].document[1].day[0].exercise);
@@ -187,15 +191,19 @@ export function Plan({ navigation }) {
                         console.log(datt2);
                         if (datt2) {
                             exercises = datt2
+                           
                             setExercise(exercises)
                             itemX=exercises[0]
                             Upcoming=[...exercises];
                             exercise.shift();
                            setUpcoming(exercise);
+                           console.log('listing');
+                           console.log(upcoming);
                         }
                     })
                     .catch(error => {
-                        console.log(error.response)
+                        
+                        console.log(error.response);
                     })
             }
 
@@ -225,7 +233,7 @@ export function Plan({ navigation }) {
         try {
             const res = await axios.get('http://192.168.0.102:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
             .then(response=>{
-                console.log("CheckKro ");
+                console.log("CheckKroo ");
                 console.log(response.data.schedulee[0].document.length);
                 for(i=0;i<(response.data.schedulee[0].document.length);i++){
                     if(ran===response.data.schedulee[0].document[i].sameDay){
@@ -237,8 +245,12 @@ export function Plan({ navigation }) {
                     Object.assign(obj,{id:j+1,wo:response.data.schedulee[0].document[i].day[j].exercise.exerciseName})
                     //console.log(obj);
                     workouts.push(obj);
+                    
                     obj={};
                 }
+                console.log('list dkeho');
+                console.log(workouts);
+                //setUpcoming(workouts);
             }
                 else{
                     console.log("No");
@@ -254,6 +266,8 @@ export function Plan({ navigation }) {
                 console.log(err);
         }
         setWrk(workouts);
+
+        
     }
 
     
@@ -405,6 +419,7 @@ export function Plan({ navigation }) {
                     console.log(res);
                 })
                 .catch(error => {
+                    console.log('nai hua dele');
                     console.log(error);
                 })
         }
@@ -429,6 +444,7 @@ export function Plan({ navigation }) {
                         try {
                             axios.get('http://192.168.0.102:3022/api-gateway/current-user/exercise-schedule/reschedule/' + scheduleId, { withCredentials: true })
                                 .then(res => {
+                                    
                                     console.log(res);
                                 })
                                 .catch(error => {
@@ -461,10 +477,8 @@ export function Plan({ navigation }) {
                     <MaterialIcons name={'replay'} style={{ color: 'white' }} size={20} />
                     
                 </TouchableOpacity>
-                
-
-                
-                </View>
+              
+              </View>
                 <Text style={styles.paragraph}>
        Today's Workouts
       </Text>
@@ -494,7 +508,7 @@ export function Plan({ navigation }) {
                             {/* <Image source={{ uri: item.day[0].time[0].nutrition.photos[0] }} style={{ width: 100, height: 80, marginLeft: 7 }} /> */}
 
                             <View style={{flexDirection:'column'}}>
-                            <Text style={{ fontSize: 23,fontWeight:'700', marginLeft: 20, marginTop: 5 }}>Pending Plans</Text>
+                            <Text style={{ fontSize: 23,fontWeight:'700', marginLeft: 20, marginTop: 5 }}>Pending Plan</Text>
                             {/* <Text style={{ fontSize: 13,fontWeight:'200', marginLeft: 20, marginTop: 5 }}>{item.sameDay}</Text> */}
                             </View>
                             
@@ -504,15 +518,15 @@ export function Plan({ navigation }) {
                             >
                                 <Text style={{ color: 'white' }}>View</Text>
 
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => {
+                            </TouchableOpacity>*/}
+                            {/* <TouchableOpacity onPress={() => {
                                 setDeleteDay(item.sameDay);
                                 deleteSchedule(item.sameDay);
                                 deleteItem(item.id);
                                 console.log(item.sameDay);
                                 // setModalVisible(true);
                             }}
-                                style={{ padding: 5,justifyContent:'center',alignItems:'center', backgroundColor: '#BF243D', marginLeft: 30, marginTop: 8, width: 78, borderRadius: 20, height: 37 }}
+                                style={{ padding: 5,justifyContent:'center',alignItems:'center', backgroundColor: '#BF243D', marginTop: 8, width: 78, borderRadius: 20, height: 37 }}
                             >
                                 <Text style={{ color: 'white' }}>Delete</Text>
                             </TouchableOpacity> */}

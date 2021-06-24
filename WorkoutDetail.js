@@ -5,7 +5,7 @@ import Constants from 'expo-constants';
 import { FlatList } from 'react-native-gesture-handler';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-import { showMessage, hideMessage } from "react-native-flash-message";
+import { showMessage, hideMessage, FlashMessageTransition } from "react-native-flash-message";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const pic1 = { uri: 'https://www.dymatize.com/wp-content/uploads/2017/08/brandan-fokkens-best-chest-workout-header-v2-DYMATIZE-830x467.jpg' }
@@ -76,7 +76,7 @@ const WorkoutDetail = ({ route, navigation }) => {
                 <Text style={{position:'absolute',top:10,left:43,fontSize:18,fontWeight:'bold'}}>Sets</Text>
                     
                     <View style={{justifyContent:'center',alignItems: 'center'}}>
-                    <TextInput editable={false} selectTextOnFocus={false} style={{width:320,borderRadius:7,padding: 9, marginTop: 50, marginLeft: 1,fontSize: 15,backgroundColor:'#E0DCDC' }} placeholder="Enter Sets" value={sets.toString()}
+                    <TextInput editable={FlashMessageTransition} selectTextOnFocus={false} style={{width:320,borderRadius:7,padding: 9, marginTop: 50, marginLeft: 1,fontSize: 15,backgroundColor:'#E0DCDC' }} placeholder="Enter Sets" value={sets.toString()}
                         onChangeText={text => setSets(text)} />
                     </View>
                    <Text style={{position:'absolute',top:114,left:43,fontSize:18,fontWeight:'bold'}}>Reps</Text>
@@ -91,7 +91,7 @@ const WorkoutDetail = ({ route, navigation }) => {
                 <Text style={{marginTop:30,marginLeft:1,fontSize:21}}>{"Sets:   "}{workout[0].day[0].exercise.sets}{"      "}</Text>
                 <Text style={{marginTop:30,marginLeft:1,fontSize:21}}>{"Reps:   "}{workout[0].day[0].exercise.reps[0]}{"     "}</Text> */}
 
-                <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center',marginBottom:55,marginTop:30}}>
+                {/* <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center',marginBottom:55,marginTop:30}}>
                     <TouchableOpacity onPress={async () => {
                         try {
                             const res = await axios.get('http://192.168.0.102:3021/api-gateway/current-user/schedulee-user/getschedule', { withCredentials: true })
@@ -118,7 +118,7 @@ const WorkoutDetail = ({ route, navigation }) => {
             });
                     }} style={{ marginLeft: 10, marginTop: 30, width: 120, height: 40, backgroundColor: '#BF243D', borderRadius: 30 }}>
                         <Text style={{ color: 'white', fontSize: 19,textAlign: 'center', marginTop: 5 }}>UPDATE</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 
 
                 {/*
@@ -146,10 +146,10 @@ const WorkoutDetail = ({ route, navigation }) => {
             
             */}
 
-                <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 33, marginTop: 30, width: 120, height: 40, backgroundColor: '#BF243D', borderRadius: 30 }}>
+                {/* <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 33, marginTop: 30, width: 120, height: 40, backgroundColor: '#BF243D', borderRadius: 30 }}>
                     <Text style={{ color: 'white', fontSize: 19,textAlign: 'center', marginTop: 5 }}>BACK</Text>
                 </TouchableOpacity>
-                </View>
+                </View> */}
 
             </ScrollView>
         </View>
@@ -167,6 +167,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: 'white',
         paddingTop: Constants.statusBarHeight,
+        paddingBottom:25
     },
     head: {
         position: 'absolute',

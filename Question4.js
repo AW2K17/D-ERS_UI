@@ -70,7 +70,7 @@ const Questions4 = () => {
         
        
       </View>
-      <TouchableOpacity style={{backgroundColor:'black',borderRadius:26,marginTop:15,padding:15}} onPress={change1}>
+      <TouchableOpacity style={{backgroundColor:'black',borderRadius:36,marginTop:15,paddingRight:55,paddingLeft:55,padding:20}} onPress={change1}>
         <Text style={{color:'white',textAlign:'center'}}>Set Value</Text>
       </TouchableOpacity>
     </View>

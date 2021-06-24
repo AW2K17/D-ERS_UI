@@ -52,16 +52,18 @@ export default function Screen2({route,navigation}) {
        
        renderItem={({item})=>
        
+       <TouchableOpacity onPress={()=>check(item.khana)}>
        <View style={styles.item}>
          <Text style={styles.title}>{item.khana}</Text>
-         <TouchableOpacity 
+         {/* <TouchableOpacity 
          style={{backgroundColor:'#8C2020',padding:10,width:100,borderRadius:22,position:'absolute',left:240,top:20}}
           onPress={()=>check(item.khana)}>
            <Text style={{color:'white',textAlign:'center'}}>View</Text>
-         </TouchableOpacity>
+         </TouchableOpacity> */}
          
         
        </View>
+       </TouchableOpacity>
 
        
        
@@ -98,12 +100,12 @@ const styles = StyleSheet.create({
   
   item: {
     backgroundColor: 'white',
-    padding: 20,
+    padding: 30,
     marginHorizontal:4,
     flexDirection:'row',
     marginVertical:10
   },
   title: {
-    fontSize: 20,
+    fontSize: 18,
   },
 });

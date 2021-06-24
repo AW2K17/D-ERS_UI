@@ -93,7 +93,7 @@ const SelectDayTime = ({ item }) => {
             </Layout>
             </View>
 
-            <TouchableOpacity style={{ marginTop: 30,marginLeft:14, width:windowWidth*0.3387, height: 40, backgroundColor: '#BF243D', borderRadius: 30 }}
+            <TouchableOpacity style={{ marginTop: 35,marginLeft:-12, width:windowWidth*0.3387, height: 40, backgroundColor: '#BF243D', borderRadius: 30 }}
                 onPress={async () => {
 
                     try {
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     },
     select: {
         flex: 1,
-        marginTop:7,
+        marginTop:-12,
         width:windowWidth*0.640,
         //marginLeft:windowWidth*0.1433,
    

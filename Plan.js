@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Button, Text, View,Modal, TextInput, Platform,Pressable, TouchableOpacity,Dimensions } from 'react-native';
+import { StyleSheet, Button, Text, View,Modal,
+   TextInput, Platform,Pressable, TouchableOpacity,Dimensions } from 'react-native';
 import Constants from 'expo-constants';
 import Search from './Search';
 import SearchD from './Search copy';
@@ -25,6 +26,10 @@ const windowHeight = Dimensions.get('window').height;
 const Stack = createStackNavigator();
 
 const Plans = ({ navigation }) => {
+
+
+
+  
 
   const [modalVisible, setModalVisible] = useState(false);
   const [check1,setCheck1]=useState([]);

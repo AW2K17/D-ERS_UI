@@ -186,7 +186,7 @@ const Continue = ({ navigation, route }) => {
                     navigation.navigate('Dashboard')
                 })
                 .catch(error => {
-                    console.log(error);
+                    console.log("No entry"+error);
                 })
             
             }

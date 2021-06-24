@@ -51,7 +51,7 @@ const SearchD = ({ navigation }) => {
     const [title, setTitle] = useState('');
 
     var filters = [disp1, disp2, disp3, disp4, disp5];
-    var add = ['&nutritionCategory=MILK', '&nutritionCategory=CHEESE', '&nutritionCategory=YOGURT', '&nutritionCategory=CLOVE', '&nutritionCategory=TURMERIC'];
+    var add = ['&nutritionCategory=Dairy', '&nutritionCategory=Fruit', '&nutritionCategory=Vegetable', '&nutritionCategory=Grains'];
 
 
     var link = 'http://192.168.0.102:3030/api-gateway/current-user/nutritionFact/?' ;
@@ -179,7 +179,7 @@ const SearchD = ({ navigation }) => {
                 
                 
                 
-                if(result==='yogurt' || result==='Yogurt'){
+                if(result==='okra' || result==='broccoli' || result==='carrot'){
                 var linkX = 'http://192.168.0.102:3030/api-gateway/current-user/nutritionFact/?'
                 linkX=linkX+add[2];
 
@@ -197,7 +197,7 @@ const SearchD = ({ navigation }) => {
                 console.log(error)
             });
         }
-             else if(result==='Cheese' || result==='cheese'){
+             else if(result==='Fruit' || result==='fruit' || result==='apple' || result==='mango' || result==='banana'){
                 
                 var linkX = 'http://192.168.0.102:3030/api-gateway/current-user/nutritionFact/?'
                 linkX=linkX+add[1];
@@ -222,7 +222,7 @@ const SearchD = ({ navigation }) => {
 
 
             }
-            else if(result==='milk' || result==='Milk' || result==='MILK'){
+            else if(result==='milk' || result==='Milk' || result==='MILK' || result==='cheese' || result==='yogurt'){
                 
                 var linkX = 'http://192.168.0.102:3030/api-gateway/current-user/nutritionFact/?'
                 linkX=linkX+add[0];
@@ -246,7 +246,7 @@ const SearchD = ({ navigation }) => {
 
 
 
-            }else if(result==='Tumeric'){
+            }else if(result==='rice' || result==='oats'){
                 
                 var linkX = 'http://192.168.0.102:3030/api-gateway/current-user/nutritionFact/?'
                 linkX=linkX+add[4];
@@ -309,31 +309,31 @@ const SearchD = ({ navigation }) => {
                 <Ionicons name="search" size={30} style={{ marginTop: 4, marginLeft: windowWidth*0.01520 }} color="black" onPress={fetchData} />
             </View>
 
-            <View style={{ marginTop: 10, marginLeft: windowWidth*0.027, flexDirection: 'row' }}>
-                <Text>Milk</Text>
+            <View style={{ marginTop: 10, marginLeft: windowWidth*0.117, flexDirection: 'row' }}>
+                <Text>Dairy</Text>
                 <TouchableOpacity onPress={Check1}>
                     <MaterialIcons name={disp1 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
                 </TouchableOpacity>
 
-                <Text style={{ marginLeft: 8 }}>Cheese</Text>
+                <Text style={{ marginLeft: 8 }}>Fruit</Text>
                 <TouchableOpacity onPress={Check2}>
                     <MaterialIcons name={disp2 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
                 </TouchableOpacity>
 
-                <Text style={{ marginLeft: 8 }}>Yogurt</Text>
+                <Text style={{ marginLeft: 8 }}>Vegetable</Text>
                 <TouchableOpacity onPress={Check3}>
                     <MaterialIcons name={disp3 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
                 </TouchableOpacity>
 
-                <Text style={{ marginLeft: 8 }}>Cloves</Text>
+                <Text style={{ marginLeft: 8 }}>Grains</Text>
                 <TouchableOpacity onPress={Check4}>
                     <MaterialIcons name={disp4 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
                 </TouchableOpacity>
-
+{/* 
                 <Text style={{ marginLeft: 8 }}>Tumeric</Text>
                 <TouchableOpacity onPress={Check5}>
                     <MaterialIcons name={disp5 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
             </View>
 
@@ -351,7 +351,7 @@ const SearchD = ({ navigation }) => {
                         <Minicard style={{flex:1,width:null}}>
                             <Image source={{ uri: item.photos.photosUrl[0] }} style={{ borderRadius:16,width: 90, height: 80, marginLeft: windowWidth*0.040 }} />
 
-                            <Text style={{ fontSize: 18,flex:0.81, marginLeft: windowWidth*0.0253 }}>{item.nutritionName}</Text>
+                            <Text style={{ fontSize: 13.5,flex:0.81, marginLeft: windowWidth*0.0253 }}>{item.nutritionName}</Text>
                             <TouchableOpacity onPress={() => navigation.navigate('AddDiet', item)}
                                 style={{ flexDirection: 'row', padding: 10, backgroundColor: '#BF243D', marginLeft: 60, width: 100, borderRadius: 20, height: 42 }}>
                                 <MaterialIcons name={'add'} style={{ marginRight: 10, color: 'white' }} size={22} />

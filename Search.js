@@ -17,6 +17,7 @@ const Stack = createStackNavigator();
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
+let store=[]
 
 const Search = ({ navigation }) => {
 
@@ -47,7 +48,7 @@ const Search = ({ navigation }) => {
     const [albumId, setAlbumId] = useState('&albumId=3');
 
     var filters = [disp1, disp2, disp3, disp4];
-    var add = ['&exerciseCategory=back', '&exerciseCategory=calves', '&exerciseCategory=legs', '&exerciseCategory=chest'];
+    var add = ['&exerciseCategory=triceps', '&exerciseCategory=calves', '&exerciseCategory=legs', '&exerciseCategory=chest'];
 
 
 
@@ -140,6 +141,8 @@ const Search = ({ navigation }) => {
             .then(data => {
                 console.log(data)
                 setMiniCard(data)
+                console.log('Checking yrr');
+                console.log(data.exercise);
                 setD(data.exercise)
                 console.log(miniCard)
                 console.log(d)
@@ -153,7 +156,7 @@ const Search = ({ navigation }) => {
 
             setResult(result.toLowerCase());
 
-            if(result==='bicep' || result==='biceps'){
+            if(result==='tricep' || result==='triceps'){
                 var linkX = 'http://192.168.0.102:3020/api-gateway/current-user/exercise/?'
                 linkX=linkX+add[0];
                 console.log('dkeho:');
@@ -164,7 +167,8 @@ const Search = ({ navigation }) => {
                 await fetch(linkX)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data)
+                    //console.log('biceps wala');
+                    console.log(data.exercise)
                     setMiniCard(data)
                     
                     setD(data.exercise[0])
@@ -185,7 +189,10 @@ const Search = ({ navigation }) => {
                 console.log('img hai?')
                 console.log(data)
                 setMiniCard(data)
-                setD(data.exercise)
+                for(let i=0;i<10;i++){
+                    setD(data.exercise[i]);
+                }
+                //setD(data.exercise)
                 console.log(miniCard)
                 console.log(d)
             }).catch((error) => {
@@ -211,7 +218,12 @@ const Search = ({ navigation }) => {
             .then(data => {
                 console.log(data)
                 setMiniCard(data)
-                setD(data.exercise)
+                console.log('Checking yrr');
+                console.log(data.exercise);
+                //setD(data.exercise)
+                // for(let i=0;i<10;i++){
+                //     setD(data.exercise[i]);
+                // }
                 console.log(miniCard)
                 console.log(d)
             }).catch((error) => {
@@ -265,7 +277,7 @@ const Search = ({ navigation }) => {
             </View>
 
             <View style={{ marginTop: 10, marginLeft: windowWidth*0.127, flexDirection: 'row' }}>
-                <Text>Back</Text>
+                <Text>Triceps</Text>
                 <TouchableOpacity onPress={Check1}>
                     <MaterialIcons name={disp1 == 'false' ? 'radio-button-unchecked' : 'radio-button-checked'} size={26} />
                 </TouchableOpacity>

@@ -80,6 +80,7 @@ export default function Screen1({route,navigation}) {
        
        <TouchableOpacity style={styles.item} onPress={()=>check(item.wo)}>
          <Text style={styles.title}>{item.wo}</Text>
+        
          
          
         
@@ -117,7 +118,9 @@ const styles = StyleSheet.create({
   },
   item: {
     backgroundColor: 'white',
-    padding: 20,
+    padding: 25,
+    paddingTop:10,
+    paddingBottom:15,
     marginHorizontal:4,
     flexDirection:'row',
     marginVertical:10,
@@ -125,7 +128,7 @@ const styles = StyleSheet.create({
     marginTop:15,
   },
   title: {
-    fontSize: 20,
-    marginTop:15
+    fontSize: 18,
+    marginTop:10
   },
 });

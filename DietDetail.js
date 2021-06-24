@@ -84,7 +84,7 @@ const DietDetail = ({ route, navigation }) => {
                     </ImageBackground>
                 </View>
 
-                <View style={{}}>
+                <View style={{paddingBottom:40}}>
                     
                     <Text style={{position:'absolute',top:10,left:23,fontSize:18,fontWeight:'bold'}}>Calories</Text>
                     <TextInput editable={false} selectTextOnFocus={false} style={{ borderRadius:7,padding: 10, marginTop: 50, marginLeft: 23, fontSize: 15 ,backgroundColor:'#E0DCDC' }} placeholder="Enter Calories" value={calories.toString()} onChangeText={(text) => setCalories(text)}/>
@@ -116,7 +116,7 @@ const DietDetail = ({ route, navigation }) => {
 
                 
 
-                <View style={{flexDirection:'row',marginLeft:windowWidth*0.092,marginBottom:55,marginTop:30}}>
+                {/* <View style={{flexDirection:'row',marginLeft:windowWidth*0.092,marginBottom:55,marginTop:30}}>
                 <TouchableOpacity onPress={async () => {
 
                     try{
@@ -130,9 +130,10 @@ const DietDetail = ({ route, navigation }) => {
                             axios.put('http://192.168.0.102:3031/api-gateway/current-user/schedulenf/object/' + res.data.schedulenf[0].id + '/' + nutrition.param.sameNutrition, { document: document }, { withCredentials: true })
                                 .then(response => {
                                     // navigation.navigate('Search');
+                                    console.log('update hui ya nai?');
                                     console.log(response);
                                 }).catch(error => {
-                                    console.log(error);
+                                    console.log("no update here"+error);
                                 })
                         }
                     }
@@ -150,7 +151,7 @@ const DietDetail = ({ route, navigation }) => {
                 <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 33, marginTop: 30, width: 120, height: 40, backgroundColor: '#BF243D', borderRadius: 30 }}>
                     <Text style={{ color: 'white', fontSize: 19, textAlign: 'center', marginTop: 5 }}>BACK</Text>
                 </TouchableOpacity>
-                </View>
+                </View> */}
             </ScrollView>
         </View>
     );

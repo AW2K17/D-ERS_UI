@@ -269,7 +269,7 @@ const Chart = ({ item }) => {
         <View>
 
             
-            <PieChart
+            {/* <PieChart
                 style={{ height: 200, marginTop: 19, marginRight: 2 }}
                 valueAccessor={({ item }) => item.amount}
                 data={data}
@@ -277,7 +277,7 @@ const Chart = ({ item }) => {
                 outerRadius={'100%'}
             >
                 <Labels />
-            </PieChart>
+            </PieChart> */}
 
             <View style={{ flexDirection: 'row' }}>
 
@@ -289,13 +289,13 @@ const Chart = ({ item }) => {
                     <Text>UPDATE</Text>
                 </TouchableOpacity> */}
                 <View style={{marginLeft:windowWidth*0.080,marginTop:20}}> 
-                <Button title="UPDATE" color="#BF243D" onPress={change}/>
+                {/* <Button title="UPDATE" color="#BF243D" onPress={change}/> */}
                 </View>
 
 
             </View>
             <View style={{ flexDirection: 'row', marginTop: 33,alignItems:'center' }}>
-                <Select
+                {/* <Select
                     style={styles.select}
                     placeholder='Default'
                     value={displayValue}
@@ -304,7 +304,7 @@ const Chart = ({ item }) => {
                     {data2.map(renderOption)}
                 </Select>
 
-                <TextInput style={{ backgroundColor: 'silver', width: windowWidth*0.274, marginLeft: 6 ,padding:5}} placeholder={'Enter Quantity'} onChangeText={setQuantity}></TextInput>
+                <TextInput style={{ backgroundColor: 'silver', width: windowWidth*0.274, marginLeft: 6 ,padding:5}} placeholder={'Enter Quantity'} onChangeText={setQuantity}></TextInput> */}
 
             </View>
 

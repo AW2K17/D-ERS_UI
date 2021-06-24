@@ -1,5 +1,5 @@
 import React,{useState} from 'react';
-import { Text, View, StyleSheet,Button,TouchableOpacity,Dimensions,TextInput } from 'react-native';
+import { Text, View, StyleSheet,Button,TouchableOpacity,Dimensions,TextInput,ScrollView } from 'react-native';
 import Constants from 'expo-constants';
   const windowsWidth=Dimensions.get('window').width;
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -99,7 +99,9 @@ let x=JSON.stringify(obj);
 
 
   return (
+    
     <View style={styles.container}>
+    
       <Text style={{  marginTop: -190,
     fontSize: 39,
     margin: 30,
@@ -132,6 +134,7 @@ let x=JSON.stringify(obj);
       </TouchableOpacity>
       
     </View>
+   
   );
 }
 

@@ -1,5 +1,5 @@
 import React, { PureComponent, useState, useEffect } from 'react';
-import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity,Image } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import Constants from 'expo-constants';
@@ -31,7 +31,7 @@ const WorkoutDay = ({ route, navigation }) => {
     const {itemX} = route.params;
     const {scheduleId} = route.params;
     const {sameDay} = itemX;
-
+    console.log('maal aya');
     console.log(route.params);
     // console.log(item.item.sameDay);
     // setDate(item.item.sameDay)
@@ -61,11 +61,11 @@ const WorkoutDay = ({ route, navigation }) => {
     marginHorizontal: 16,
     flexDirection:'row',
     borderRadius:12}}>
-                            {/* <Image source={{ uri: item.day[0].time[0].nutrition.photos[0] }} style={{ width: 100, height: 80, marginLeft: 7 }} /> */}
+                            <Image source={{ uri: item.exercise.photos[0] }} style={{ width: 100, height: 80, marginLeft: 7 }} /> 
 
                             {/* <Text style={{ marginLeft: 20 }}>Date : {item.sameDay}</Text> */}
                             
-                            <Text style={{ fontSize: 10.5, marginLeft: 20, marginTop: 5 }} numberOfLines={1} ellipsizeMode ={'tail'}>{item.exercise.exerciseName}</Text>
+                            <Text style={{ fontSize: 19.5, marginLeft: 20, marginTop: 5,fontWeight:'bold' }} numberOfLines={1} ellipsizeMode ={'tail'}>{item.exercise.exerciseName}</Text>
 
                           
                             {/* <TouchableOpacity onPress={() => {

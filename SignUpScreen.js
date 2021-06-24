@@ -252,7 +252,7 @@ const Register = ({ navigation }) => {
                 <View>
                     <View style={styles.inputField2}>
                         <FontAwesome style={styles.passwordIcon} name="lock" />
-                        <TextInput maxLength={15} style={{ marginLeft: 10, color: 'white', marginTop: 22,width:73 }} placeholder="Password"
+                        <TextInput maxLength={11} style={{ marginLeft: 10, color: 'white', marginTop: 22,width:73 }} placeholder="Password"
                             secureTextEntry={visible} value={password} onChangeText={setPassword} placeholderTextColor="#EDDDDF" />
                         <TouchableOpacity style={{ marginLeft: 90, marginTop: 30 }} onPress={() => { setShow(!show), setVisible(!visible) }}>
                             <MaterialCommunityIcons name={show === false ? 'eye-outline' : 'eye-off-outline'} size={26} color={'white'} />

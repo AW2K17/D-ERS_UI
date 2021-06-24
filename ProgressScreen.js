@@ -23,7 +23,7 @@ const LONGITUDE = -122.4053769;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-const GOOGLE_MAPS_APIKEY = 'AIzaSyC_UF0doXAdGZ0fugXQeqymIHKPa4k-pvY';
+const GOOGLE_MAPS_APIKEY = 'AIzaSyDyLLZiyE4hYOOFOMZDdaOLG-d1AvH5Y9w';
 
 export const ProgressScreen = () => {
     const [visible, setVisible] = useState(false);
@@ -91,8 +91,8 @@ export const ProgressScreen = () => {
     };
 
     const endTime = async () => {
-
-        AsyncStorage.setItem('@distance',JSON.stringify(distance));
+        let x=0.01;
+        AsyncStorage.setItem('@distance',JSON.stringify(x));
         let location = await Location.getCurrentPositionAsync({});
         const { coords } = location;
         const { latitude, longitude } = coords;
@@ -172,6 +172,8 @@ export const ProgressScreen = () => {
                         }}
                         onError={(errorMessage) => {
                             console.log('GOT AN ERROR');
+                            console.log(errorMessage);
+                            
                         }}
                     />
                 )}
@@ -193,9 +195,9 @@ export const ProgressScreen = () => {
                     backdropStyle={styles.backdrop}
                     onBackdropPress={() => setVisible(false)}>
                     <Card disabled={true}>
-                        <Text>Distance Covered {distance}</Text>
+                        <Text>Distance Covered 0.01</Text>
                        
-                        <Button onPress={() => setVisible(false)} style={{ width: 107, backgroundColor: 'red', marginLeft: 10, marginTop: 10, borderRadius: 20 }}>
+                        <Button onPress={() => setVisible(false)} style={{ width: 107, backgroundColor: 'red', marginLeft: 16, marginTop: 10, borderRadius: 20 }}>
                             OK
                         </Button>
                     </Card>

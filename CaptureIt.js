@@ -41,19 +41,14 @@ const CaptureIt = () => {
       aspect: [4, 3],
       quality: 1,
     });
-    if (!result.cancelled && galleryCount === 1) {
+    if (!result.cancelled) {
       // setImage(result.uri);
       // photos.backPose = result.uri;
-      galleryCount = galleryCount + 1;
+      
       console.log("Back pose", photos.backPose);
       setMsg("Now click Upload button");
     }
-    else if (!result.cancelled && galleryCount === 0){
-      // photos.frontPose = result.uri;
-      galleryCount = galleryCount + 1;
-      console.log("Front pose", photos.frontPose);
-      setMsg("Now take photo of back pose");
-    }
+   
     const uri = 'file://' + result.uri;
     const type = 'image/jpg';
     const name = result.uri.substring(102);
@@ -89,16 +84,11 @@ const CaptureIt = () => {
 
     console.log(result)
 
-    if (!result.cancelled && cameraCount == 1) {
+    if (!result.cancelled) {
       // photos.backPose = result.uri;
       console.log("Back pose", photos.backPose);
       setMsg("Now click Upload button");
-    } else if (!result.cancelled && cameraCount == 0) {
-      // photos.frontPose = result.uri;
-      cameraCount = cameraCount + 1;
-      console.log("Front pose", photos.frontPose);
-      setMsg("Now Upload It ");
-    }
+    } 
     const uri = 'file://' + result.uri;
     const type = 'image/jpg';
     const name = result.uri.substring(102);
@@ -125,13 +115,13 @@ const CaptureIt = () => {
     axios.post("https://api.cloudinary.com/v1_1/dhqfhpemf/image/upload", data, { withCredentials: true })
       .then(res => {
         console.log("CLoudinary uploaded", res.data.url)
-        if(galleryCount == 1) {
+      
           photos.frontPose = res.data.url;
 
-        }
-        else {
-          photos.backPose = res.data.url;
-        }
+      
+       
+          
+        
 
       }).catch(err => {
         alert(err)
